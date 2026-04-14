@@ -109,12 +109,12 @@ const Courses = () => {
   const mentorshipCourses = coursesData.filter(course => course.category === 'mentorship');
 
   return (
-    <section id="courses" className="py-16 max-w-6xl mx-auto px-6">
+    <section id="courses" className="py-12 sm:py-16 max-w-6xl mx-auto px-4 sm:px-6">
       <div className="text-center mb-12">
-        <h1 className="text-3xl md:text-4xl font-bold mb-4">
+        <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold mb-4 sm:mb-6">
           Online Learning Platform · Course Catalogue 2025 ZYPHRA
         </h1>
-        <p className="text-lg text-muted-foreground max-w-4xl mx-auto">
+        <p className="text-base sm:text-lg text-muted-foreground max-w-4xl mx-auto leading-relaxed text-justify px-4">
           Zyphra is a focused, practical online learning platform offering industry-aligned courses in full stack development,
           frontend engineering, backend systems, and DevOps. All programmes are delivered fully online, built around real-world
           projects, hands-on implementation, and job-ready skills. Personalised one-on-one mentorship is also available for
@@ -123,43 +123,43 @@ const Courses = () => {
       </div>
 
       {/* FLAGSHIP PROGRAMMES */}
-      <div className="mb-16">
-        <h2 className="text-2xl font-bold mb-8 text-center">FLAGSHIP PROGRAMMES</h2>
-        <div className="grid md:grid-cols-1 gap-8">
+      <div className="mb-12 sm:mb-16">
+        <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold mb-6 sm:mb-8 text-center">FLAGSHIP PROGRAMMES</h2>
+        <div className="grid gap-6 sm:gap-8">
           {flagshipCourses.map((course) => (
             <div
               key={course.id}
-              className="bg-card border border-border rounded-2xl p-8 hover:shadow-lg transition"
+              className="bg-card border border-border rounded-2xl p-4 sm:p-6 lg:p-8 hover:shadow-lg transition"
             >
-              <div className="flex justify-between items-start mb-4">
-                <h3 className="text-2xl font-semibold">{course.title}</h3>
-                <div className="text-right">
+              <div className="flex flex-col sm:flex-row justify-between items-start mb-4 gap-4">
+                <h3 className="text-xl sm:text-2xl font-semibold">{course.title}</h3>
+                <div className="text-left sm:text-right w-full sm:w-auto">
                   <p className="text-sm text-muted-foreground">Duration: {course.duration}</p>
-                  <div className="flex items-center gap-2">
+                  <div className="flex flex-col sm:items-end gap-1 mt-1">
                     {course.originalPrice && (
-                      <span className="text-lg line-through text-muted-foreground">{course.originalPrice}</span>
+                      <span className="text-base sm:text-lg line-through text-muted-foreground">{course.originalPrice}</span>
                     )}
-                    <span className="text-2xl font-bold text-primary">{course.offerPrice}</span>
+                    <span className="text-xl sm:text-2xl font-bold text-primary">{course.offerPrice}</span>
                   </div>
                 </div>
               </div>
 
-              <p className="text-muted-foreground mb-6">{course.description}</p>
+              <p className="text-muted-foreground mb-6 leading-relaxed text-justify">{course.description}</p>
 
-              <div className="grid md:grid-cols-2 gap-6 mb-6">
+              <div className="grid sm:grid-cols-2 gap-4 sm:gap-6 mb-6">
                 <div>
-                  <h4 className="font-semibold mb-2">What You'll Learn:</h4>
+                  <h4 className="font-semibold mb-2 text-sm sm:text-base">What You'll Learn:</h4>
                   <ul className="space-y-1">
                     {course.whatYouLearn?.map((item, i) => (
-                      <li key={i} className="text-sm text-muted-foreground">• {item}</li>
+                      <li key={i} className="text-xs sm:text-sm text-muted-foreground">• {item}</li>
                     ))}
                   </ul>
                 </div>
                 <div>
-                  <h4 className="font-semibold mb-2">Projects:</h4>
+                  <h4 className="font-semibold mb-2 text-sm sm:text-base">Projects:</h4>
                   <ul className="space-y-1">
                     {course.projects?.map((project, i) => (
-                      <li key={i} className="text-sm text-muted-foreground">• {project}</li>
+                      <li key={i} className="text-xs sm:text-sm text-muted-foreground">• {project}</li>
                     ))}
                   </ul>
                 </div>
@@ -167,7 +167,7 @@ const Courses = () => {
 
               <Link
                 href={`/courses/${course.id}`}
-                className="inline-block bg-primary text-primary-foreground px-6 py-3 rounded-lg hover:opacity-90 transition font-medium"
+                className="inline-block bg-primary text-primary-foreground px-4 sm:px-6 py-2 sm:py-3 rounded-lg hover:opacity-90 transition font-medium text-sm sm:text-base w-full sm:w-auto text-center"
               >
                 View Details & Enroll
               </Link>
@@ -177,26 +177,26 @@ const Courses = () => {
       </div>
 
       {/* SPECIALISATION COURSES */}
-      <div className="mb-16">
-        <h2 className="text-2xl font-bold mb-8 text-center">SPECIALISATION COURSES</h2>
-        <div className="grid md:grid-cols-2 gap-8">
+      <div className="mb-12 sm:mb-16">
+        <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold mb-6 sm:mb-8 text-center">SPECIALISATION COURSES</h2>
+        <div className="grid gap-6 sm:gap-8">
           {specialisationCourses.map((course) => (
             <div
               key={course.id}
-              className="bg-card border border-border rounded-2xl p-6 hover:shadow-lg transition"
+              className="bg-card border border-border rounded-2xl p-4 sm:p-6 hover:shadow-lg transition"
             >
-              <h3 className="text-xl font-semibold mb-2">{course.title}</h3>
-              <div className="flex justify-between items-center mb-4">
+              <h3 className="text-lg sm:text-xl font-semibold mb-2">{course.title}</h3>
+              <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-4 gap-2">
                 <p className="text-sm text-muted-foreground">Duration: {course.duration}</p>
-                <div className="text-right">
+                <div className="flex items-center gap-2 w-full sm:w-auto justify-between sm:justify-end">
                   {course.originalPrice && (
-                    <span className="text-lg line-through text-muted-foreground mr-2">{course.originalPrice}</span>
+                    <span className="text-sm sm:text-base line-through text-muted-foreground">{course.originalPrice}</span>
                   )}
-                  <span className="text-lg font-bold text-primary">{course.offerPrice}</span>
+                  <span className="text-lg sm:text-lg font-bold text-primary">{course.offerPrice}</span>
                 </div>
               </div>
 
-              <p className="text-sm text-muted-foreground mb-4">{course.description}</p>
+              <p className="text-sm text-muted-foreground mb-4 leading-relaxed text-justify">{course.description}</p>
 
               <div className="mb-4">
                 <h4 className="font-semibold mb-2 text-sm">What You'll Learn:</h4>
@@ -218,7 +218,7 @@ const Courses = () => {
 
               <Link
                 href={`/courses/${course.id}`}
-                className="w-full bg-primary text-primary-foreground py-2 rounded-lg hover:opacity-90 transition text-center block"
+                className="w-full bg-primary text-primary-foreground py-2 rounded-lg hover:opacity-90 transition text-center block text-sm sm:text-base"
               >
                 View Details & Enroll
               </Link>
@@ -228,23 +228,23 @@ const Courses = () => {
       </div>
 
       {/* PERSONALISED ONE-ON-ONE CLASSES */}
-      <div className="mb-16">
-        <h2 className="text-2xl font-bold mb-8 text-center">PERSONALISED ONE-ON-ONE CLASSES</h2>
-        <div className="grid md:grid-cols-1 gap-8">
+      <div className="mb-12 sm:mb-16">
+        <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold mb-6 sm:mb-8 text-center">PERSONALISED ONE-ON-ONE CLASSES</h2>
+        <div className="grid gap-6 sm:gap-8">
           {mentorshipCourses.map((course) => (
             <div
               key={course.id}
-              className="bg-card border border-border rounded-2xl p-8 hover:shadow-lg transition"
+              className="bg-card border border-border rounded-2xl p-4 sm:p-6 lg:p-8 hover:shadow-lg transition"
             >
-              <div className="flex justify-between items-start mb-4">
-                <div>
-                  <h3 className="text-2xl font-semibold mb-2">{course.title}</h3>
+              <div className="flex flex-col sm:flex-row justify-between items-start mb-4 gap-4">
+                <div className="w-full sm:w-auto">
+                  <h3 className="text-xl sm:text-2xl font-semibold mb-2">{course.title}</h3>
                   <p className="text-sm text-muted-foreground">Duration: {course.duration}</p>
                 </div>
-                <span className="text-2xl font-bold text-primary">{course.offerPrice}</span>
+                <span className="text-xl sm:text-2xl font-bold text-primary">{course.offerPrice}</span>
               </div>
 
-              <p className="text-muted-foreground mb-6">{course.description}</p>
+              <p className="text-muted-foreground mb-6 leading-relaxed text-justify">{course.description}</p>
 
               <div className="mb-6">
                 <h4 className="font-semibold mb-2">What's included:</h4>
@@ -257,7 +257,7 @@ const Courses = () => {
 
               <Link
                 href={`/courses/${course.id}`}
-                className="inline-block bg-primary text-primary-foreground px-6 py-3 rounded-lg hover:opacity-90 transition font-medium"
+                className="inline-block bg-primary text-primary-foreground px-4 sm:px-6 py-2 sm:py-3 rounded-lg hover:opacity-90 transition font-medium text-sm sm:text-base w-full sm:w-auto text-center"
               >
                 View Details & Enroll
               </Link>
@@ -267,31 +267,31 @@ const Courses = () => {
       </div>
 
       {/* COURSE SUMMARY */}
-      <div className="bg-card border border-border rounded-2xl p-8">
-        <h2 className="text-2xl font-bold mb-6 text-center">COURSE SUMMARY</h2>
+      <div className="bg-card border border-border rounded-2xl p-4 sm:p-6 lg:p-8">
+        <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold mb-6 text-center">COURSE SUMMARY</h2>
         <div className="overflow-x-auto">
-          <table className="w-full text-sm">
+          <table className="w-full text-xs sm:text-sm">
             <thead>
               <tr className="border-b border-border">
-                <th className="text-left py-2">Course</th>
-                <th className="text-left py-2">Duration</th>
-                <th className="text-left py-2">Original Price</th>
-                <th className="text-left py-2">Offer Price</th>
+                <th className="text-left py-2 px-1 sm:px-2">Course</th>
+                <th className="text-left py-2 px-1 sm:px-2">Duration</th>
+                <th className="text-left py-2 px-1 sm:px-2">Original Price</th>
+                <th className="text-left py-2 px-1 sm:px-2">Offer Price</th>
               </tr>
             </thead>
             <tbody>
               {coursesData.map((course) => (
                 <tr key={course.id} className="border-b border-border/50">
-                  <td className="py-3 font-medium">{course.title}</td>
-                  <td className="py-3">{course.duration}</td>
-                  <td className="py-3">{course.originalPrice || "—"}</td>
-                  <td className="py-3 font-bold text-primary">{course.offerPrice}</td>
+                  <td className="py-2 sm:py-3 px-1 sm:px-2 font-medium text-xs sm:text-sm">{course.title}</td>
+                  <td className="py-2 sm:py-3 px-1 sm:px-2 text-xs sm:text-sm">{course.duration}</td>
+                  <td className="py-2 sm:py-3 px-1 sm:px-2 text-xs sm:text-sm">{course.originalPrice || "—"}</td>
+                  <td className="py-2 sm:py-3 px-1 sm:px-2 font-bold text-primary text-xs sm:text-sm">{course.offerPrice}</td>
                 </tr>
               ))}
             </tbody>
           </table>
         </div>
-        <p className="text-sm text-muted-foreground mt-4 text-center">
+        <p className="text-xs sm:text-sm text-muted-foreground mt-4 text-center leading-relaxed text-justify">
           Zyphra Online Learning Platform · All courses include hands-on projects and practical learning support.
           For enrolment and one-on-one class enquiries, please reach out through our official channels.
         </p>
