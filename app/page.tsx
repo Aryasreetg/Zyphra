@@ -1,8 +1,15 @@
+import Home from "@/components/Home";
+import About from "@/components/About";
+import Courses from "@/components/courses";
+import Workshop from "@/components/Workshop";
 
-export default function Home() {
+export default function Page() {
   return (
-  <p className="text-2xl font-semibold text-orange-600 mt-0 flex justify-center items-center h-screen">
-    Welcome to the Project Management Frontend!
-  </p>
+    <main className="flex flex-col gap-16">
+      <Home />
+      <About />
+      <Courses />
+      <Workshop />
+    </main>
   );
 }

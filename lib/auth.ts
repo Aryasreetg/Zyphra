@@ -1,6 +1,16 @@
 import Cookies from "js-cookie";
 import { jwtDecode } from "jwt-decode";
 
+type AuthSession = {
+    name: string;
+    roles: string;
+    uuid: string;
+    email: string;
+    contactNo: string;
+    avatarUrl: string;
+    token: string | null;
+};
+
 export const getClientSession = (): AuthSession | null => {
     const token = Cookies.get("JWT_TOKEN");
     if (!token) return null;
