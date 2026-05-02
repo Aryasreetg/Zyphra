@@ -4,37 +4,98 @@ const Home = () => {
   return (
     <section
       id="home"
-      className="min-h-screen flex flex-col justify-center items-center text-center px-4 sm:px-6 py-16 sm:py-20"
+      className="min-h-screen flex flex-col justify-center items-center text-center px-4 sm:px-6 py-20"
+      style={{ backgroundColor: "#F5EFE6" }}
     >
+      {/* Decorative tag */}
+      <div
+        className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full text-xs font-semibold tracking-[0.15em] uppercase mb-6"
+        style={{ backgroundColor: "#E8DCC8", color: "#8B6914", border: "1px solid #D4C5A9" }}
+      >
+        ✦ Learn. Improve. Grow. Achieve.
+      </div>
+
       {/* Heading */}
-      <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold mb-6 leading-tight max-w-4xl">
+      <h1
+        className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-serif font-bold mb-6 leading-tight max-w-4xl"
+        style={{ color: "#2D4A3E" }}
+      >
         Become a{" "}
-        <span className="text-primary">
-          Job-Ready Developer
+        <span
+          className="italic"
+          style={{ color: "#8B6914" }}
+        >
+          Job-Ready
         </span>{" "}
+        Developer
       </h1>
 
       {/* Subheading */}
-      <p className="text-base sm:text-lg text-muted-foreground max-w-2xl mb-8 leading-relaxed text-justify">
-        Learn Full Stack Development, DevOps, and build real-world projects
-        with Zyphra. No boring theory — just practical skills that get you hired.
+      <p
+        className="text-base sm:text-lg max-w-2xl mb-4 leading-relaxed"
+        style={{ color: "#6B5744" }}
+      >
+        Learn Full Stack Development, DevOps, and build real-world projects with Zyphraa.
+        No boring theory — just practical skills that get you hired.
+      </p>
+
+      {/* Tagline */}
+      <p
+        className="text-sm italic mb-10 tracking-wide"
+        style={{ color: "#8B6914" }}
+      >
+        ♡ New Skills. New Opportunities. New You.
       </p>
 
       {/* Buttons */}
-      <div className="flex flex-col sm:flex-row gap-4 justify-center w-full max-w-md">
-        <button className="bg-primary text-primary-foreground px-6 py-3 rounded-lg font-medium hover:opacity-90 transition text-sm sm:text-base">
-          Join Workshop ₹999
-        </button>
+      <div className="flex flex-col sm:flex-row gap-4 justify-center w-full max-w-sm">
+        <a
+          href="https://forms.gle/AdaaT56F6GMVCEUu9"
+          target="_blank"
+          rel="noopener noreferrer"
+          className="px-7 py-3.5 rounded-full font-semibold text-sm tracking-wide transition-opacity hover:opacity-85 shadow-md"
+          style={{ backgroundColor: "#2D4A3E", color: "#F5EFE6" }}
+        >
+          Join Workshop — ₹999
+        </a>
 
-        <button className="border border-border px-6 py-3 rounded-lg hover:bg-muted transition text-sm sm:text-base">
+        <a
+          href="#courses"
+          className="home-outline-btn px-7 py-3.5 rounded-full font-semibold text-sm tracking-wide transition-colors"
+          style={{
+            border: "1.5px solid #2D4A3E",
+            color: "#2D4A3E",
+            backgroundColor: "transparent",
+          }}
+        >
           View Courses
-        </button>
+        </a>
+        <style>{`
+          .home-outline-btn:hover { background-color: #E8DCC8; }
+        `}</style>
       </div>
 
-      {/* Small Trust Line */}
-      <p className="text-xs sm:text-sm text-muted-foreground mt-6 max-w-md text-center">
-        Limited seats • Live sessions • Real projects
+      {/* Trust line */}
+      <p className="text-xs mt-8 tracking-wide" style={{ color: "#9C8570" }}>
+        Limited seats &nbsp;•&nbsp; Live sessions &nbsp;•&nbsp; Real projects
       </p>
+
+      {/* Bottom tags */}
+      <div className="flex flex-wrap justify-center gap-6 mt-12">
+        {[
+          { icon: "📖", label: "Hands-On Learning" },
+          { icon: "🌐", label: "Real-World Exposure" },
+          { icon: "📈", label: "Career Growth" },
+          { icon: "🎯", label: "Build Confidence" },
+        ].map(({ icon, label }) => (
+          <div key={label} className="flex flex-col items-center gap-1">
+            <span className="text-xl">{icon}</span>
+            <span className="text-[10px] tracking-widest uppercase font-medium" style={{ color: "#8B6914" }}>
+              {label}
+            </span>
+          </div>
+        ))}
+      </div>
     </section>
   );
 };

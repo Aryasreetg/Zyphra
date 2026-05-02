@@ -9,19 +9,21 @@ const coursesData = [
     originalPrice: "₹25,000",
     offerPrice: "₹18,000",
     category: "flagship",
-    description: "Become a job-ready full stack developer by building real-world applications using modern technologies. This programme focuses on practical learning, industry-level projects, and end-to-end deployment — perfectly aligned with current hiring requirements.",
+    badge: "Most Popular",
+    description:
+      "Become a job-ready full stack developer by building real-world applications using modern technologies. This programme focuses on practical learning, industry-level projects, and end-to-end deployment — perfectly aligned with current hiring requirements.",
     whatYouLearn: [
       "Frontend: Next.js, React, Tailwind CSS",
-      "Backend: Spring Boot / Django",
+      "Backend: Spring Boot / Django / Node.js",
       "Database: MongoDB / MySQL",
       "Authentication & REST APIs (JWT)",
-      "DevOps Basics: Docker, CI/CD pipelines"
+      "DevOps Basics: Docker, CI/CD pipelines",
     ],
     projects: [
       "Full Stack Web Application",
       "Authentication System",
-      "Deployment with DevOps tools"
-    ]
+      "Deployment with DevOps tools",
+    ],
   },
   {
     id: "frontend-mastery",
@@ -30,19 +32,16 @@ const coursesData = [
     originalPrice: "₹12,000",
     offerPrice: "₹8,000",
     category: "specialisation",
-    description: "Master modern frontend development by building responsive, high-performance web applications. Gain hands-on experience with industry-standard tools and best practices in UI/UX.",
+    description:
+      "Master modern frontend development by building responsive, high-performance web applications. Gain hands-on experience with industry-standard tools and best practices in UI/UX.",
     whatYouLearn: [
       "React fundamentals & component architecture",
       "Next.js with App Router",
       "Tailwind CSS for responsive design",
       "TypeScript basics",
-      "UI/UX best practices"
+      "UI/UX best practices",
     ],
-    projects: [
-      "Portfolio Website",
-      "Dashboard UI",
-      "Responsive Web Application"
-    ]
+    projects: ["Portfolio Website", "Dashboard UI", "Responsive Web Application"],
   },
   {
     id: "backend-spring-boot",
@@ -51,250 +50,339 @@ const coursesData = [
     originalPrice: "₹12,000",
     offerPrice: "₹8,000",
     category: "specialisation",
-    description: "Learn to build scalable, secure backend systems with real-world REST APIs and authentication. Aligned with Aryasree's professional expertise in Spring Boot and microservices.",
+    description:
+      "Learn to build scalable, secure backend systems with real-world REST APIs and authentication. Aligned with Aryasree's professional expertise in Spring Boot and microservices.",
     whatYouLearn: [
       "Spring Boot fundamentals",
       "REST API development & best practices",
       "JWT Authentication & security",
       "Microservices architecture basics",
-      "Database integration: PostgreSQL / MySQL"
+      "Database integration: PostgreSQL / MySQL",
     ],
     projects: [
       "REST API System",
       "Authentication & Authorisation Service",
-      "Mini Microservices Application"
-    ]
+      "Mini Microservices Application",
+    ],
   },
   {
     id: "git-version-control",
     title: "Git & Version Control",
-    duration: "15 Days",
+    duration: "7 Days",
     originalPrice: null,
     offerPrice: "₹1,499",
     category: "specialisation",
-    description: "A concise, practical course covering everything you need to confidently use Git in professional projects — from basic commands to branching strategies and CI/CD integration.",
+    description:
+      "A concise, practical course covering everything you need to confidently use Git in professional projects — from basic commands to branching strategies and CI/CD integration.",
     whatYouLearn: [
       "Git fundamentals: init, commit, push, pull",
       "Branching strategies (Git Flow)",
       "Merge, rebase, and conflict resolution",
       "Working with GitHub / GitLab",
-      "Integrating Git with CI/CD pipelines"
+      "Integrating Git with CI/CD pipelines",
     ],
     projects: [
       "Team collaboration project using Git",
-      "Setting up a GitLab CI/CD pipeline"
-    ]
+      "Setting up a GitLab CI/CD pipeline",
+    ],
   },
   {
     id: "one-on-one-classes",
     title: "Personalised One-on-One Classes",
     duration: "Flexible",
     originalPrice: null,
-    offerPrice: "Contact us",
+    offerPrice: "Contact Us",
     category: "mentorship",
-    description: "For learners who prefer a tailored experience, Zyphra offers personalised one-on-one mentorship sessions. Classes are fully customised to your current skill level, learning pace, and goals — whether you are a beginner starting from scratch or a working professional upskilling in a specific area.",
+    description:
+      "For learners who prefer a fully tailored experience, Zyphraa offers personalised one-on-one mentorship sessions. Completely customised to your skill level, pace, and goals — whether you're a complete beginner or a working professional.",
     whatsIncluded: [
       "Fully customised curriculum based on your goals",
-      "Flexible scheduling at your convenience",
+      "Flexible scheduling — mornings, evenings, or weekends",
       "Direct mentorship from an experienced Java Spring Boot developer & project lead",
-      "Code reviews, doubt-clearing, and project guidance",
-      "Available for any topic: Full Stack, Backend, Frontend, Git, DevOps basics"
-    ]
-  }
+      "Code reviews, doubt-clearing, and end-to-end project guidance",
+      "Available for: Full Stack, Backend, Frontend, Git, DevOps basics",
+    ],
+  },
 ];
 
+const CategoryLabel = ({ text }: { text: string }) => (
+  <p className="text-xs tracking-[0.2em] uppercase font-semibold mb-3 text-center" style={{ color: "#8B6914" }}>
+    ✦ {text}
+  </p>
+);
+
+const SectionHeading = ({ text }: { text: string }) => (
+  <h2 className="text-2xl sm:text-3xl md:text-4xl font-serif font-bold mb-8 text-center" style={{ color: "#2D4A3E" }}>
+    {text}
+  </h2>
+);
+
 const Courses = () => {
-  const flagshipCourses = coursesData.filter(course => course.category === 'flagship');
-  const specialisationCourses = coursesData.filter(course => course.category === 'specialisation');
-  const mentorshipCourses = coursesData.filter(course => course.category === 'mentorship');
+  const flagshipCourses = coursesData.filter((c) => c.category === "flagship");
+  const specialisationCourses = coursesData.filter((c) => c.category === "specialisation");
+  const mentorshipCourses = coursesData.filter((c) => c.category === "mentorship");
 
   return (
-    <section id="courses" className="py-12 sm:py-16 max-w-6xl mx-auto px-4 sm:px-6">
-      <div className="text-center mb-12">
-        <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold mb-4 sm:mb-6">
-          Online Learning Platform · Course Catalogue 2025 ZYPHRA
-        </h1>
-        <p className="text-base sm:text-lg text-muted-foreground max-w-4xl mx-auto leading-relaxed text-justify px-4">
-          Zyphra is a focused, practical online learning platform offering industry-aligned courses in full stack development,
-          frontend engineering, backend systems, and DevOps. All programmes are delivered fully online, built around real-world
-          projects, hands-on implementation, and job-ready skills. Personalised one-on-one mentorship is also available for
-          learners who prefer a customised learning experience.
-        </p>
-      </div>
+    <section
+      id="courses"
+      className="py-16 sm:py-20"
+      style={{ backgroundColor: "#EDE5D4" }}
+    >
+      <div className="max-w-6xl mx-auto px-4 sm:px-6">
 
-      {/* FLAGSHIP PROGRAMMES */}
-      <div className="mb-12 sm:mb-16">
-        <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold mb-6 sm:mb-8 text-center">FLAGSHIP PROGRAMMES</h2>
-        <div className="grid gap-6 sm:gap-8">
-          {flagshipCourses.map((course) => (
-            <div
-              key={course.id}
-              className="bg-card border border-border rounded-2xl p-4 sm:p-6 lg:p-8 hover:shadow-lg transition"
-            >
-              <div className="flex flex-col sm:flex-row justify-between items-start mb-4 gap-4">
-                <h3 className="text-xl sm:text-2xl font-semibold">{course.title}</h3>
-                <div className="text-left sm:text-right w-full sm:w-auto">
-                  <p className="text-sm text-muted-foreground">Duration: {course.duration}</p>
-                  <div className="flex flex-col sm:items-end gap-1 mt-1">
+        {/* Header */}
+        <div className="text-center mb-14">
+          <p className="text-xs tracking-[0.25em] uppercase font-semibold mb-3" style={{ color: "#8B6914" }}>
+            ✦ Course Catalogue 2026
+          </p>
+          <h1 className="text-4xl sm:text-5xl md:text-6xl font-serif font-bold mb-4" style={{ color: "#2D4A3E" }}>
+            Zyphraa Courses
+          </h1>
+          <p className="text-base sm:text-lg max-w-3xl mx-auto leading-relaxed" style={{ color: "#6B5744" }}>
+            Industry-aligned programmes built around real-world projects, hands-on implementation,
+            and job-ready skills. All courses include practical projects and personalised support.
+          </p>
+        </div>
+
+        {/* FLAGSHIP */}
+        <div className="mb-16">
+          <CategoryLabel text="Flagship Programme" />
+          <SectionHeading text="Full Stack Developer Program" />
+          <div className="grid gap-8">
+            {flagshipCourses.map((course) => (
+              <div
+                key={course.id}
+                className="rounded-2xl p-6 sm:p-8 lg:p-10 shadow-sm relative overflow-hidden"
+                style={{ backgroundColor: "#F5EFE6", border: "1px solid #D4C5A9" }}
+              >
+                {course.badge && (
+                  <span
+                    className="absolute top-5 right-5 px-3 py-1 rounded-full text-xs font-semibold"
+                    style={{ backgroundColor: "#2D4A3E", color: "#F5EFE6" }}
+                  >
+                    {course.badge}
+                  </span>
+                )}
+
+                <div className="flex flex-col sm:flex-row justify-between items-start mb-4 gap-4 pr-24 sm:pr-0">
+                  <h3 className="text-xl sm:text-2xl font-serif font-bold" style={{ color: "#2D4A3E" }}>
+                    {course.title}
+                  </h3>
+                  <div className="text-left sm:text-right flex-shrink-0">
+                    <p className="text-xs mb-1" style={{ color: "#8B6914" }}>Duration: {course.duration}</p>
                     {course.originalPrice && (
-                      <span className="text-base sm:text-lg line-through text-muted-foreground">{course.originalPrice}</span>
+                      <span className="text-sm line-through mr-2" style={{ color: "#9C8570" }}>
+                        {course.originalPrice}
+                      </span>
                     )}
-                    <span className="text-xl sm:text-2xl font-bold text-primary">{course.offerPrice}</span>
+                    <span className="text-2xl font-serif font-bold" style={{ color: "#2D4A3E" }}>
+                      {course.offerPrice}
+                    </span>
                   </div>
                 </div>
+
+                <p className="text-sm sm:text-base leading-relaxed text-justify mb-6" style={{ color: "#6B5744" }}>
+                  {course.description}
+                </p>
+
+                <div className="grid sm:grid-cols-2 gap-6 mb-8">
+                  <div>
+                    <h4 className="font-semibold text-sm mb-3" style={{ color: "#2D4A3E" }}>What You'll Learn:</h4>
+                    <ul className="space-y-1.5">
+                      {course.whatYouLearn?.map((item) => (
+                        <li key={item} className="flex items-start gap-2 text-xs" style={{ color: "#4A3728" }}>
+                          <span className="mt-1 w-1.5 h-1.5 rounded-full flex-shrink-0" style={{ backgroundColor: "#8B6914" }} />
+                          {item}
+                        </li>
+                      ))}
+                    </ul>
+                  </div>
+                  <div>
+                    <h4 className="font-semibold text-sm mb-3" style={{ color: "#2D4A3E" }}>Projects:</h4>
+                    <ul className="space-y-1.5">
+                      {course.projects?.map((project) => (
+                        <li key={project} className="flex items-start gap-2 text-xs" style={{ color: "#4A3728" }}>
+                          <span className="mt-1 w-1.5 h-1.5 rounded-full flex-shrink-0" style={{ backgroundColor: "#2D4A3E" }} />
+                          {project}
+                        </li>
+                      ))}
+                    </ul>
+                  </div>
+                </div>
+
+                <Link
+                  href={`/courses/${course.id}`}
+                  className="inline-block px-6 py-3 rounded-full font-semibold text-sm tracking-wide transition-opacity hover:opacity-85"
+                  style={{ backgroundColor: "#2D4A3E", color: "#F5EFE6" }}
+                >
+                  View Details & Enrol ✦
+                </Link>
               </div>
+            ))}
+          </div>
+        </div>
 
-              <p className="text-muted-foreground mb-6 leading-relaxed text-justify">{course.description}</p>
+        {/* SPECIALISATION */}
+        <div className="mb-16">
+          <CategoryLabel text="Specialisation Courses" />
+          <SectionHeading text="Focused Learning Paths" />
+          <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
+            {specialisationCourses.map((course) => (
+              <div
+                key={course.id}
+                className="rounded-2xl p-6 shadow-sm flex flex-col"
+                style={{ backgroundColor: "#F5EFE6", border: "1px solid #D4C5A9" }}
+              >
+                <div className="mb-4">
+                  <h3 className="font-serif font-bold text-lg mb-1" style={{ color: "#2D4A3E" }}>
+                    {course.title}
+                  </h3>
+                  <p className="text-xs mb-1" style={{ color: "#8B6914" }}>Duration: {course.duration}</p>
+                  <div className="flex items-center gap-2 mt-1">
+                    {course.originalPrice && (
+                      <span className="text-xs line-through" style={{ color: "#9C8570" }}>
+                        {course.originalPrice}
+                      </span>
+                    )}
+                    <span className="text-xl font-serif font-bold" style={{ color: "#2D4A3E" }}>
+                      {course.offerPrice}
+                    </span>
+                  </div>
+                </div>
 
-              <div className="grid sm:grid-cols-2 gap-4 sm:gap-6 mb-6">
-                <div>
-                  <h4 className="font-semibold mb-2 text-sm sm:text-base">What You'll Learn:</h4>
+                <p className="text-xs leading-relaxed mb-4 text-justify" style={{ color: "#6B5744" }}>
+                  {course.description}
+                </p>
+
+                <div className="mb-4">
+                  <h4 className="font-semibold text-xs mb-2" style={{ color: "#2D4A3E" }}>What You'll Learn:</h4>
                   <ul className="space-y-1">
-                    {course.whatYouLearn?.map((item, i) => (
-                      <li key={i} className="text-xs sm:text-sm text-muted-foreground">• {item}</li>
+                    {course.whatYouLearn?.map((item) => (
+                      <li key={item} className="flex items-start gap-2 text-xs" style={{ color: "#4A3728" }}>
+                        <span className="mt-1 w-1.5 h-1.5 rounded-full flex-shrink-0" style={{ backgroundColor: "#8B6914" }} />
+                        {item}
+                      </li>
                     ))}
                   </ul>
                 </div>
-                <div>
-                  <h4 className="font-semibold mb-2 text-sm sm:text-base">Projects:</h4>
+
+                <div className="mb-6">
+                  <h4 className="font-semibold text-xs mb-2" style={{ color: "#2D4A3E" }}>Projects:</h4>
                   <ul className="space-y-1">
-                    {course.projects?.map((project, i) => (
-                      <li key={i} className="text-xs sm:text-sm text-muted-foreground">• {project}</li>
+                    {course.projects?.map((project) => (
+                      <li key={project} className="flex items-start gap-2 text-xs" style={{ color: "#4A3728" }}>
+                        <span className="mt-1 w-1.5 h-1.5 rounded-full flex-shrink-0" style={{ backgroundColor: "#2D4A3E" }} />
+                        {project}
+                      </li>
                     ))}
                   </ul>
                 </div>
-              </div>
 
-              <Link
-                href={`/courses/${course.id}`}
-                className="inline-block bg-primary text-primary-foreground px-4 sm:px-6 py-2 sm:py-3 rounded-lg hover:opacity-90 transition font-medium text-sm sm:text-base w-full sm:w-auto text-center"
-              >
-                View Details & Enroll
-              </Link>
-            </div>
-          ))}
+                <Link
+                  href={`/courses/${course.id}`}
+                  className="mt-auto block text-center py-2.5 rounded-full text-xs font-semibold tracking-wide transition-opacity hover:opacity-85"
+                  style={{ backgroundColor: "#2D4A3E", color: "#F5EFE6" }}
+                >
+                  View Details & Enrol
+                </Link>
+              </div>
+            ))}
+          </div>
         </div>
-      </div>
 
-      {/* SPECIALISATION COURSES */}
-      <div className="mb-12 sm:mb-16">
-        <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold mb-6 sm:mb-8 text-center">SPECIALISATION COURSES</h2>
-        <div className="grid gap-6 sm:gap-8">
-          {specialisationCourses.map((course) => (
-            <div
-              key={course.id}
-              className="bg-card border border-border rounded-2xl p-4 sm:p-6 hover:shadow-lg transition"
-            >
-              <h3 className="text-lg sm:text-xl font-semibold mb-2">{course.title}</h3>
-              <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-4 gap-2">
-                <p className="text-sm text-muted-foreground">Duration: {course.duration}</p>
-                <div className="flex items-center gap-2 w-full sm:w-auto justify-between sm:justify-end">
-                  {course.originalPrice && (
-                    <span className="text-sm sm:text-base line-through text-muted-foreground">{course.originalPrice}</span>
-                  )}
-                  <span className="text-lg sm:text-lg font-bold text-primary">{course.offerPrice}</span>
-                </div>
-              </div>
-
-              <p className="text-sm text-muted-foreground mb-4 leading-relaxed text-justify">{course.description}</p>
-
-              <div className="mb-4">
-                <h4 className="font-semibold mb-2 text-sm">What You'll Learn:</h4>
-                <ul className="space-y-1">
-                  {course.whatYouLearn?.map((item, i) => (
-                    <li key={i} className="text-xs text-muted-foreground">• {item}</li>
-                  ))}
-                </ul>
-              </div>
-
-              <div className="mb-6">
-                <h4 className="font-semibold mb-2 text-sm">Projects:</h4>
-                <ul className="space-y-1">
-                  {course.projects?.map((project, i) => (
-                    <li key={i} className="text-xs text-muted-foreground">• {project}</li>
-                  ))}
-                </ul>
-              </div>
-
-              <Link
-                href={`/courses/${course.id}`}
-                className="w-full bg-primary text-primary-foreground py-2 rounded-lg hover:opacity-90 transition text-center block text-sm sm:text-base"
-              >
-                View Details & Enroll
-              </Link>
-            </div>
-          ))}
-        </div>
-      </div>
-
-      {/* PERSONALISED ONE-ON-ONE CLASSES */}
-      <div className="mb-12 sm:mb-16">
-        <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold mb-6 sm:mb-8 text-center">PERSONALISED ONE-ON-ONE CLASSES</h2>
-        <div className="grid gap-6 sm:gap-8">
+        {/* ONE-ON-ONE */}
+        <div className="mb-16">
+          <CategoryLabel text="Personalised Mentorship" />
+          <SectionHeading text="One-on-One Classes" />
           {mentorshipCourses.map((course) => (
             <div
               key={course.id}
-              className="bg-card border border-border rounded-2xl p-4 sm:p-6 lg:p-8 hover:shadow-lg transition"
+              className="rounded-2xl p-6 sm:p-8 lg:p-10 shadow-sm"
+              style={{ backgroundColor: "#F5EFE6", border: "1px solid #D4C5A9" }}
             >
               <div className="flex flex-col sm:flex-row justify-between items-start mb-4 gap-4">
-                <div className="w-full sm:w-auto">
-                  <h3 className="text-xl sm:text-2xl font-semibold mb-2">{course.title}</h3>
-                  <p className="text-sm text-muted-foreground">Duration: {course.duration}</p>
+                <div>
+                  <h3 className="text-xl sm:text-2xl font-serif font-bold mb-1" style={{ color: "#2D4A3E" }}>
+                    {course.title}
+                  </h3>
+                  <p className="text-xs" style={{ color: "#8B6914" }}>Schedule: Fully Flexible</p>
                 </div>
-                <span className="text-xl sm:text-2xl font-bold text-primary">{course.offerPrice}</span>
+                <span className="text-xl font-serif font-bold" style={{ color: "#2D4A3E" }}>
+                  {course.offerPrice}
+                </span>
               </div>
 
-              <p className="text-muted-foreground mb-6 leading-relaxed text-justify">{course.description}</p>
+              <p className="text-sm sm:text-base leading-relaxed text-justify mb-6" style={{ color: "#6B5744" }}>
+                {course.description}
+              </p>
 
-              <div className="mb-6">
-                <h4 className="font-semibold mb-2">What's included:</h4>
-                <ul className="space-y-1">
-                  {course.whatsIncluded?.map((item, i) => (
-                    <li key={i} className="text-sm text-muted-foreground">• {item}</li>
+              <div className="mb-8">
+                <h4 className="font-semibold text-sm mb-3" style={{ color: "#2D4A3E" }}>What's Included:</h4>
+                <ul className="space-y-2">
+                  {course.whatsIncluded?.map((item) => (
+                    <li key={item} className="flex items-start gap-2 text-sm" style={{ color: "#4A3728" }}>
+                      <span className="mt-1 w-1.5 h-1.5 rounded-full flex-shrink-0" style={{ backgroundColor: "#8B6914" }} />
+                      {item}
+                    </li>
                   ))}
                 </ul>
               </div>
 
-              <Link
-                href={`/courses/${course.id}`}
-                className="inline-block bg-primary text-primary-foreground px-4 sm:px-6 py-2 sm:py-3 rounded-lg hover:opacity-90 transition font-medium text-sm sm:text-base w-full sm:w-auto text-center"
+              <a
+                href="mailto:aryasree.zyphraa@gmail.com"
+                className="inline-block px-6 py-3 rounded-full font-semibold text-sm tracking-wide transition-opacity hover:opacity-85"
+                style={{ backgroundColor: "#2D4A3E", color: "#F5EFE6" }}
               >
-                View Details & Enroll
-              </Link>
+                Contact Us to Enquire ✦
+              </a>
             </div>
           ))}
         </div>
-      </div>
 
-      {/* COURSE SUMMARY */}
-      <div className="bg-card border border-border rounded-2xl p-4 sm:p-6 lg:p-8">
-        <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold mb-6 text-center">COURSE SUMMARY</h2>
-        <div className="overflow-x-auto">
-          <table className="w-full text-xs sm:text-sm">
-            <thead>
-              <tr className="border-b border-border">
-                <th className="text-left py-2 px-1 sm:px-2">Course</th>
-                <th className="text-left py-2 px-1 sm:px-2">Duration</th>
-                <th className="text-left py-2 px-1 sm:px-2">Original Price</th>
-                <th className="text-left py-2 px-1 sm:px-2">Offer Price</th>
-              </tr>
-            </thead>
-            <tbody>
-              {coursesData.map((course) => (
-                <tr key={course.id} className="border-b border-border/50">
-                  <td className="py-2 sm:py-3 px-1 sm:px-2 font-medium text-xs sm:text-sm">{course.title}</td>
-                  <td className="py-2 sm:py-3 px-1 sm:px-2 text-xs sm:text-sm">{course.duration}</td>
-                  <td className="py-2 sm:py-3 px-1 sm:px-2 text-xs sm:text-sm">{course.originalPrice || "—"}</td>
-                  <td className="py-2 sm:py-3 px-1 sm:px-2 font-bold text-primary text-xs sm:text-sm">{course.offerPrice}</td>
+        {/* COURSE SUMMARY TABLE */}
+        <div
+          className="rounded-2xl p-6 sm:p-8 shadow-sm"
+          style={{ backgroundColor: "#F5EFE6", border: "1px solid #D4C5A9" }}
+        >
+          <p className="text-xs tracking-[0.2em] uppercase font-semibold mb-2 text-center" style={{ color: "#8B6914" }}>
+            ✦ Quick Overview
+          </p>
+          <h2 className="text-2xl sm:text-3xl font-serif font-bold mb-6 text-center" style={{ color: "#2D4A3E" }}>
+            Course Summary
+          </h2>
+          <div className="overflow-x-auto">
+            <table className="w-full text-xs sm:text-sm">
+              <thead>
+                <tr style={{ borderBottom: "2px solid #D4C5A9" }}>
+                  {["Course", "Duration", "Original Price", "Offer Price"].map((h) => (
+                    <th key={h} className="text-left py-3 px-2 font-semibold" style={{ color: "#2D4A3E" }}>
+                      {h}
+                    </th>
+                  ))}
                 </tr>
-              ))}
-            </tbody>
-          </table>
+              </thead>
+              <tbody>
+                {coursesData.map((course, i) => (
+                  <tr
+                    key={course.id}
+                    style={{ borderBottom: "1px solid #E8DCC8", backgroundColor: i % 2 === 0 ? "transparent" : "#EDE5D4" }}
+                  >
+                    <td className="py-3 px-2 font-medium" style={{ color: "#4A3728" }}>{course.title}</td>
+                    <td className="py-3 px-2" style={{ color: "#6B5744" }}>{course.duration}</td>
+                    <td className="py-3 px-2 line-through" style={{ color: "#9C8570" }}>{course.originalPrice || "—"}</td>
+                    <td className="py-3 px-2 font-bold font-serif" style={{ color: "#2D4A3E" }}>{course.offerPrice}</td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+          <p className="text-xs mt-5 text-center leading-relaxed" style={{ color: "#9C8570" }}>
+            Zyphraa Online Learning Platform · All courses include hands-on projects.
+            For enrolment enquiries contact{" "}
+            <a href="mailto:aryasree.zyphraa@gmail.com" className="underline">aryasree.zyphraa@gmail.com</a>
+          </p>
         </div>
-        <p className="text-xs sm:text-sm text-muted-foreground mt-4 text-center leading-relaxed text-justify">
-          Zyphra Online Learning Platform · All courses include hands-on projects and practical learning support.
-          For enrolment and one-on-one class enquiries, please reach out through our official channels.
-        </p>
+
       </div>
     </section>
   );

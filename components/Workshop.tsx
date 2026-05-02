@@ -1,238 +1,247 @@
 import React from "react";
 
+const workshopDays = [
+  {
+    day: 1,
+    title: "Full Stack Development Basics",
+    description: "Explore how frontend and backend work together to build real applications.",
+    points: [
+      "Frontend & backend overview and how they communicate",
+      "Build a small working feature from scratch with live guidance",
+      "Live API integration demonstration",
+    ],
+  },
+  {
+    day: 2,
+    title: "Introduction to Manual Testing",
+    description: "Learn how professional developers ensure software quality before shipping.",
+    points: [
+      "What is software testing and why it matters",
+      "Real-world examples and structured test case writing",
+      "Understanding software flow and professional bug reporting",
+    ],
+  },
+  {
+    day: 3,
+    title: "DevOps & Deployment",
+    description: "Take your mini-project live and understand how real apps go to production.",
+    points: [
+      "Introduction to DevOps principles and culture",
+      "Deploy your mini-project to the cloud",
+      "How real production applications are taken live",
+    ],
+  },
+];
+
+const whoCanJoin = ["Students", "Freshers", "Anyone Curious About IT", "Beginners & Career Switchers"];
+
 const Workshop = () => {
   return (
     <section
       id="workshop"
-      className="py-12 sm:py-16 lg:py-20 bg-gradient-to-br from-primary/5 via-background to-accent/5"
+      className="py-16 sm:py-20"
+      style={{ backgroundColor: "#F5EFE6" }}
     >
       <div className="max-w-6xl mx-auto px-4 sm:px-6">
-        {/* Hero Section */}
-        <div className="text-center mb-12 sm:mb-16">
-          <div className="inline-flex items-center gap-2 bg-primary/10 text-primary px-3 sm:px-4 py-2 rounded-full text-xs sm:text-sm font-medium mb-4 sm:mb-6">
-            <span className="w-2 h-2 bg-primary rounded-full animate-pulse"></span>
-            Limited Time Offer
-          </div>
 
-          <h2 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold mb-4 sm:mb-6 bg-gradient-to-r from-primary to-accent bg-clip-text text-transparent">
+        {/* Header */}
+        <div className="text-center mb-14">
+          <p
+            className="text-xs tracking-[0.25em] uppercase font-semibold mb-3"
+            style={{ color: "#8B6914" }}
+          >
+            ✦ Happening at the End of May!
+          </p>
+          <h2
+            className="text-4xl sm:text-5xl md:text-6xl font-serif font-bold mb-4 leading-tight"
+            style={{ color: "#2D4A3E" }}
+          >
             3-Day Live Workshop
           </h2>
-
-          <p className="text-base sm:text-lg text-muted-foreground max-w-3xl mx-auto mb-6 sm:mb-8 leading-relaxed text-justify px-4">
-            Kickstart your tech career with hands-on exposure to Manual Testing, Full Stack Development,
-            and DevOps. Build real projects in just 3 days and discover your perfect tech specialization.
+          <p className="text-base sm:text-lg max-w-2xl mx-auto leading-relaxed" style={{ color: "#6B5744" }}>
+            A hands-on workshop to kickstart your IT journey. Discover which specialisation suits
+            you best before enrolling in a full programme.
           </p>
 
-          {/* Key Stats */}
-          <div className="flex flex-wrap justify-center gap-4 sm:gap-6 lg:gap-8 mb-8 sm:mb-12">
-            <div className="text-center min-w-[80px]">
-              <div className="text-2xl sm:text-3xl font-bold text-primary">3</div>
-              <div className="text-xs sm:text-sm text-muted-foreground">Days</div>
-            </div>
-            <div className="text-center min-w-[80px]">
-              <div className="text-2xl sm:text-3xl font-bold text-primary">6</div>
-              <div className="text-xs sm:text-sm text-muted-foreground">Hours</div>
-            </div>
-            <div className="text-center min-w-[80px]">
-              <div className="text-2xl sm:text-3xl font-bold text-primary">20</div>
-              <div className="text-xs sm:text-sm text-muted-foreground">Students Max</div>
-            </div>
-            <div className="text-center min-w-[80px]">
-              <div className="text-2xl sm:text-3xl font-bold text-primary">100%</div>
-              <div className="text-xs sm:text-sm text-muted-foreground">Online</div>
-            </div>
+          {/* Stats */}
+          <div className="flex flex-wrap justify-center gap-8 mt-10">
+            {[
+              { value: "3", label: "Days" },
+              { value: "6", label: "Hours" },
+              { value: "20", label: "Students Max" },
+              { value: "100%", label: "Online" },
+            ].map(({ value, label }) => (
+              <div key={label} className="text-center">
+                <div className="text-3xl sm:text-4xl font-serif font-bold" style={{ color: "#2D4A3E" }}>
+                  {value}
+                </div>
+                <div className="text-xs mt-1 tracking-widest uppercase" style={{ color: "#8B6914" }}>
+                  {label}
+                </div>
+              </div>
+            ))}
           </div>
         </div>
 
-        {/* Main Content Grid */}
-        <div className="grid lg:grid-cols-2 gap-8 sm:gap-12 mb-12 sm:mb-16">
-          {/* Left Column - Workshop Details */}
-          <div className="space-y-6 sm:space-y-8">
-            {/* Price Card */}
-            <div className="bg-card border border-border rounded-2xl p-4 sm:p-6 lg:p-8 shadow-lg">
-              <div className="text-center mb-4 sm:mb-6">
-                <div className="text-3xl sm:text-4xl lg:text-5xl font-bold text-primary mb-2">₹999</div>
-                <div className="text-sm sm:text-base text-muted-foreground">One-time payment</div>
-              </div>
+        {/* Main Grid */}
+        <div className="grid lg:grid-cols-2 gap-10 mb-14">
 
-              <div className="space-y-3 sm:space-y-4">
-                <div className="flex items-center gap-3">
-                  <div className="w-8 h-8 bg-primary/10 rounded-lg flex items-center justify-center flex-shrink-0">
-                    <span className="text-primary text-xs sm:text-sm font-bold">3D</span>
+          {/* Left — Schedule */}
+          <div
+            className="rounded-2xl p-6 sm:p-8 shadow-sm"
+            style={{ backgroundColor: "#EDE5D4", border: "1px solid #D4C5A9" }}
+          >
+            <h3 className="text-xl font-serif font-bold mb-6" style={{ color: "#2D4A3E" }}>
+              What You'll Learn
+            </h3>
+            <div className="space-y-7">
+              {workshopDays.map(({ day, title, description, points }) => (
+                <div key={day} className="flex gap-4">
+                  <div
+                    className="flex-shrink-0 w-10 h-10 rounded-full flex items-center justify-center font-serif font-bold text-base"
+                    style={{ backgroundColor: "#2D4A3E", color: "#F5EFE6" }}
+                  >
+                    {day}
                   </div>
                   <div>
-                    <div className="font-medium text-sm sm:text-base">Duration</div>
-                    <div className="text-xs sm:text-sm text-muted-foreground">3 Days (2 Hours/Day)</div>
+                    <p className="text-xs tracking-widest uppercase font-semibold mb-1" style={{ color: "#8B6914" }}>
+                      Day {day}
+                    </p>
+                    <h4 className="font-semibold text-base mb-1" style={{ color: "#2D4A3E" }}>
+                      {title}
+                    </h4>
+                    <p className="text-sm mb-2" style={{ color: "#6B5744" }}>{description}</p>
+                    <ul className="space-y-1">
+                      {points.map((pt) => (
+                        <li key={pt} className="flex items-start gap-2 text-xs" style={{ color: "#4A3728" }}>
+                          <span className="mt-1 w-1.5 h-1.5 rounded-full flex-shrink-0" style={{ backgroundColor: "#8B6914" }} />
+                          {pt}
+                        </li>
+                      ))}
+                    </ul>
                   </div>
                 </div>
-
-                <div className="flex items-center gap-3">
-                  <div className="w-8 h-8 bg-primary/10 rounded-lg flex items-center justify-center flex-shrink-0">
-                    <span className="text-primary text-xs sm:text-sm font-bold">ON</span>
-                  </div>
-                  <div>
-                    <div className="font-medium text-sm sm:text-base">Format</div>
-                    <div className="text-xs sm:text-sm text-muted-foreground">Live Online Sessions</div>
-                  </div>
-                </div>
-
-                <div className="flex items-center gap-3">
-                  <div className="w-8 h-8 bg-primary/10 rounded-lg flex items-center justify-center flex-shrink-0">
-                    <span className="text-primary text-xs sm:text-sm font-bold">BG</span>
-                  </div>
-                  <div>
-                    <div className="font-medium text-sm sm:text-base">Level</div>
-                    <div className="text-xs sm:text-sm text-muted-foreground">Beginners Welcome</div>
-                  </div>
-                </div>
-              </div>
-            </div>
-
-            {/* Features */}
-            <div className="bg-card border border-border rounded-2xl p-4 sm:p-6 lg:p-8">
-              <h3 className="text-xl sm:text-2xl font-bold mb-4 sm:mb-6">What You'll Get</h3>
-              <div className="grid gap-3 sm:gap-4">
-                {[
-                  { title: "Live Instructor Sessions", desc: "Interactive online classes with expert guidance" },
-                  { title: "Hands-on Projects", desc: "Build real mini-projects from scratch" },
-                  { title: "DevOps Deployment", desc: "Learn to deploy applications online" },
-                  { title: "Q&A Support", desc: "Get your questions answered in real-time" },
-                  { title: "Resource Access", desc: "Downloadable materials and code samples" }
-                ].map((feature, i) => (
-                  <div key={i} className="flex items-start gap-3 sm:gap-4 p-3 sm:p-4 rounded-lg hover:bg-accent/50 transition">
-                    <div className="w-6 h-6 sm:w-8 sm:h-8 bg-primary/10 rounded-lg flex items-center justify-center flex-shrink-0">
-                      <span className="text-primary text-xs sm:text-sm font-bold">{i + 1}</span>
-                    </div>
-                    <div className="min-w-0">
-                      <div className="font-semibold text-sm sm:text-base">{feature.title}</div>
-                      <div className="text-xs sm:text-sm text-muted-foreground">{feature.desc}</div>
-                    </div>
-                  </div>
-                ))}
-              </div>
+              ))}
             </div>
           </div>
 
-          {/* Right Column - Workshop Schedule */}
-          <div className="space-y-6 sm:space-y-8">
-            <div className="bg-card border border-border rounded-2xl p-4 sm:p-6 lg:p-8">
-              <h3 className="text-xl sm:text-2xl font-bold mb-4 sm:mb-6">Workshop Schedule</h3>
+          {/* Right — Price & Details */}
+          <div className="space-y-6">
 
-              <div className="space-y-4 sm:space-y-6">
-                {/* Day 1 */}
-                <div className="relative">
-                  <div className="flex items-start gap-3 sm:gap-4">
-                    <div className="flex-shrink-0 w-10 h-10 sm:w-12 sm:h-12 bg-primary text-primary-foreground rounded-full flex items-center justify-center font-bold text-sm sm:text-base">
-                      1
-                    </div>
-                    <div className="flex-1 min-w-0">
-                      <h4 className="text-base sm:text-lg font-semibold mb-2">Day 1: Manual Testing Fundamentals</h4>
-                      <p className="text-muted-foreground mb-3 text-sm sm:text-base leading-relaxed text-justify">Learn the basics of software testing and quality assurance.</p>
-                      <div className="space-y-2 text-xs sm:text-sm">
-                        <div className="flex items-center gap-2">
-                          <span className="w-1.5 h-1.5 bg-primary rounded-full flex-shrink-0"></span>
-                          <span>What is software testing and why it matters</span>
-                        </div>
-                        <div className="flex items-center gap-2">
-                          <span className="w-1.5 h-1.5 bg-primary rounded-full flex-shrink-0"></span>
-                          <span>Real-world testing examples and test case writing</span>
-                        </div>
-                        <div className="flex items-center gap-2">
-                          <span className="w-1.5 h-1.5 bg-primary rounded-full flex-shrink-0"></span>
-                          <span>Understanding software flow and bug reporting</span>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                </div>
+            {/* Price Card */}
+            <div
+              className="rounded-2xl p-6 sm:p-8 text-center shadow-sm"
+              style={{ backgroundColor: "#2D4A3E", color: "#F5EFE6" }}
+            >
+              <p className="text-xs tracking-widest uppercase mb-2" style={{ color: "#C4A96A" }}>
+                Invest in Your Future ✦
+              </p>
+              <div className="text-5xl sm:text-6xl font-serif font-bold mb-1">₹999</div>
+              <p className="text-sm opacity-75 mb-4">One-time · Limited seats only</p>
+              <p
+                className="text-sm italic font-medium"
+                style={{ color: "#C4A96A" }}
+              >
+                Don't miss out!
+              </p>
+            </div>
 
-                {/* Day 2 */}
-                <div className="relative">
-                  <div className="flex items-start gap-3 sm:gap-4">
-                    <div className="flex-shrink-0 w-10 h-10 sm:w-12 sm:h-12 bg-primary text-primary-foreground rounded-full flex items-center justify-center font-bold text-sm sm:text-base">
-                      2
-                    </div>
-                    <div className="flex-1 min-w-0">
-                      <h4 className="text-base sm:text-lg font-semibold mb-2">Day 2: Full Stack Development Basics</h4>
-                      <p className="text-muted-foreground mb-3 text-sm sm:text-base leading-relaxed text-justify">Explore how frontend and backend work together.</p>
-                      <div className="space-y-2 text-xs sm:text-sm">
-                        <div className="flex items-center gap-2">
-                          <span className="w-1.5 h-1.5 bg-primary rounded-full flex-shrink-0"></span>
-                          <span>Frontend + Backend overview and integration</span>
-                        </div>
-                        <div className="flex items-center gap-2">
-                          <span className="w-1.5 h-1.5 bg-primary rounded-full flex-shrink-0"></span>
-                          <span>Build a working feature from scratch</span>
-                        </div>
-                        <div className="flex items-center gap-2">
-                          <span className="w-1.5 h-1.5 bg-primary rounded-full flex-shrink-0"></span>
-                          <span>Live API integration demonstration</span>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-
-                {/* Day 3 */}
-                <div className="relative">
-                  <div className="flex items-start gap-3 sm:gap-4">
-                    <div className="flex-shrink-0 w-10 h-10 sm:w-12 sm:h-12 bg-primary text-primary-foreground rounded-full flex items-center justify-center font-bold text-sm sm:text-base">
-                      3
-                    </div>
-                    <div className="flex-1 min-w-0">
-                      <h4 className="text-base sm:text-lg font-semibold mb-2">Day 3: DevOps & Deployment</h4>
-                      <p className="text-muted-foreground mb-3 text-sm sm:text-base leading-relaxed text-justify">Learn to deploy and manage applications in production.</p>
-                      <div className="space-y-2 text-xs sm:text-sm">
-                        <div className="flex items-center gap-2">
-                          <span className="w-1.5 h-1.5 bg-primary rounded-full flex-shrink-0"></span>
-                          <span>DevOps principles and best practices</span>
-                        </div>
-                        <div className="flex items-center gap-2">
-                          <span className="w-1.5 h-1.5 bg-primary rounded-full flex-shrink-0"></span>
-                          <span>Deploy your mini-project to the cloud</span>
-                        </div>
-                        <div className="flex items-center gap-2">
-                          <span className="w-1.5 h-1.5 bg-primary rounded-full flex-shrink-0"></span>
-                          <span>How real production applications go live</span>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
+            {/* What you get */}
+            <div
+              className="rounded-2xl p-6 sm:p-8 shadow-sm"
+              style={{ backgroundColor: "#EDE5D4", border: "1px solid #D4C5A9" }}
+            >
+              <h3 className="font-serif font-bold text-lg mb-4" style={{ color: "#2D4A3E" }}>
+                What You'll Get
+              </h3>
+              <ul className="space-y-3">
+                {[
+                  "Live instructor-led online sessions",
+                  "Hands-on mini-project built from scratch",
+                  "Cloud deployment on Day 3",
+                  "Q&A and doubt-clearing in real-time",
+                  "Downloadable resources & code samples",
+                ].map((item, i) => (
+                  <li key={i} className="flex items-start gap-3 text-sm" style={{ color: "#4A3728" }}>
+                    <span
+                      className="flex-shrink-0 w-5 h-5 rounded-full flex items-center justify-center text-xs font-bold"
+                      style={{ backgroundColor: "#2D4A3E", color: "#F5EFE6" }}
+                    >
+                      {i + 1}
+                    </span>
+                    {item}
+                  </li>
+                ))}
+              </ul>
             </div>
 
             {/* Important Notes */}
-            <div className="bg-amber-50 dark:bg-amber-950/20 border border-amber-200 dark:border-amber-800 rounded-2xl p-4 sm:p-6">
-              <h4 className="font-semibold text-amber-800 dark:text-amber-200 mb-3 text-sm sm:text-base">Important Notes</h4>
-              <ul className="space-y-2 text-xs sm:text-sm text-amber-700 dark:text-amber-300">
-                <li>• Live participation is required — no recordings available</li>
+            <div
+              className="rounded-2xl p-5 text-sm"
+              style={{ backgroundColor: "#FDF6E3", border: "1px solid #E8D5A3", color: "#7A5C2E" }}
+            >
+              <p className="font-semibold mb-2">📌 Important Notes</p>
+              <ul className="space-y-1 text-xs leading-relaxed">
+                <li>• Live participation required — no recordings available</li>
                 <li>• Bring your own laptop with internet connection</li>
-                <li>• Basic computer skills recommended</li>
-                <li>• Sessions will be conducted via Zoom</li>
+                <li>• No prior experience needed — just curiosity!</li>
+                <li>• Sessions conducted via Zoom</li>
               </ul>
             </div>
           </div>
         </div>
 
-        {/* CTA Section */}
-        <div className="text-center">
-          <div className="bg-gradient-to-r from-primary to-accent rounded-2xl p-6 sm:p-8 text-primary-foreground">
-            <h3 className="text-xl sm:text-2xl lg:text-3xl font-bold mb-4">Ready to Start Your Tech Journey?</h3>
-            <p className="text-sm sm:text-base lg:text-lg mb-6 sm:mb-8 opacity-90 leading-relaxed text-justify max-w-2xl mx-auto px-4">
-              Join 20 fellow beginners in this intensive 3-day workshop and discover which tech path suits you best.
-            </p>
-
-            <div className="flex flex-col sm:flex-row gap-4 justify-center items-center">
-              <button className="bg-white text-primary px-6 sm:px-8 py-3 sm:py-4 rounded-lg font-bold hover:bg-gray-50 transition shadow-lg text-sm sm:text-base w-full sm:w-auto">
-                Register Now - ₹999
-              </button>
-              <div className="text-xs sm:text-sm opacity-75">
-                Limited to 20 students • First come, first served
+        {/* Who Can Join */}
+        <div
+          className="rounded-2xl p-6 sm:p-8 mb-10 text-center"
+          style={{ backgroundColor: "#EDE5D4", border: "1px solid #D4C5A9" }}
+        >
+          <h3 className="font-serif font-bold text-xl mb-6" style={{ color: "#2D4A3E" }}>
+            Who Can Join?
+          </h3>
+          <div className="flex flex-wrap justify-center gap-4 mb-4">
+            {whoCanJoin.map((who) => (
+              <div
+                key={who}
+                className="px-5 py-2 rounded-full text-sm font-medium"
+                style={{ backgroundColor: "#F5EFE6", border: "1px solid #D4C5A9", color: "#4A3728" }}
+              >
+                {who}
               </div>
-            </div>
+            ))}
+          </div>
+          <p className="text-xs italic" style={{ color: "#8B6914" }}>
+            ♡ No prior experience needed. Just curiosity & the will to learn!
+          </p>
+        </div>
+
+        {/* CTA Banner */}
+        <div
+          className="rounded-2xl p-8 sm:p-12 text-center"
+          style={{ backgroundColor: "#2D4A3E" }}
+        >
+          <h3 className="text-2xl sm:text-3xl font-serif font-bold mb-3" style={{ color: "#F5EFE6" }}>
+            Ready to Start Your Tech Journey?
+          </h3>
+          <p className="text-sm sm:text-base mb-8 max-w-xl mx-auto leading-relaxed" style={{ color: "#C4A96A" }}>
+            Secure your spot today and take the first step toward your dream career. ♡
+          </p>
+          <div className="flex flex-col sm:flex-row gap-4 justify-center items-center">
+            <a
+              href="https://forms.gle/AdaaT56F6GMVCEUu9"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="px-8 py-4 rounded-full font-bold text-sm tracking-wide transition-opacity hover:opacity-85 shadow-lg"
+              style={{ backgroundColor: "#F5EFE6", color: "#2D4A3E" }}
+            >
+              Register Now — ₹999 ✦
+            </a>
+            <p className="text-xs" style={{ color: "#C4A96A" }}>
+              Limited to 20 students · First come, first served
+            </p>
           </div>
         </div>
+
       </div>
     </section>
   );
