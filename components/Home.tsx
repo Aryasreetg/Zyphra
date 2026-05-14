@@ -4,7 +4,7 @@ const Home = () => {
   return (
     <section
       id="home"
-      className="min-h-screen flex flex-col justify-center items-center text-center px-4 sm:px-6 py-20"
+      className="min-h-screen flex flex-col justify-center items-center text-center px-4 sm:px-6 py-16 sm:py-20"
       style={{ backgroundColor: "#F5EFE6" }}
     >
       {/* Decorative tag */}
@@ -80,20 +80,17 @@ const Home = () => {
         Limited seats &nbsp;•&nbsp; Live sessions &nbsp;•&nbsp; Real projects
       </p>
 
-      {/* Bottom tags */}
-      <div className="flex flex-wrap justify-center gap-6 mt-12">
+      {/* Bottom tags - Icons removed for cleaner design */}
+      <div className="flex flex-wrap justify-center gap-4 sm:gap-6 mt-8 sm:mt-12 px-4">
         {[
-          { icon: "📖", label: "Hands-On Learning" },
-          { icon: "🌐", label: "Real-World Exposure" },
-          { icon: "📈", label: "Career Growth" },
-          { icon: "🎯", label: "Build Confidence" },
-        ].map(({ icon, label }) => (
-          <div key={label} className="flex flex-col items-center gap-1">
-            <span className="text-xl">{icon}</span>
-            <span className="text-[10px] tracking-widest uppercase font-medium" style={{ color: "#8B6914" }}>
-              {label}
-            </span>
-          </div>
+          { label: "Hands-On Learning" },
+          { label: "Real-World Exposure" },
+          { label: "Career Growth" },
+          { label: "Build Confidence" },
+        ].map(({ label }) => (
+          <span key={label} className="text-[10px] tracking-widest uppercase font-medium" style={{ color: "#8B6914" }}>
+            {label}
+          </span>
         ))}
       </div>
     </section>

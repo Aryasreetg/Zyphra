@@ -39,13 +39,13 @@ const Workshop = () => {
   return (
     <section
       id="workshop"
-      className="py-16 sm:py-20"
+      className="py-12 sm:py-16 md:py-20"
       style={{ backgroundColor: "#F5EFE6" }}
     >
       <div className="max-w-6xl mx-auto px-4 sm:px-6">
 
         {/* Header */}
-        <div className="text-center mb-14">
+        <div className="text-center mb-10 sm:mb-12">
           <p
             className="text-xs tracking-[0.25em] uppercase font-semibold mb-3"
             style={{ color: "#8B6914" }}
@@ -84,7 +84,7 @@ const Workshop = () => {
         </div>
 
         {/* Main Grid */}
-        <div className="grid lg:grid-cols-2 gap-10 mb-14">
+        <div className="grid lg:grid-cols-2 gap-8 sm:gap-10 mb-10 sm:mb-14">
 
           {/* Left — Schedule */}
           <div
@@ -193,7 +193,7 @@ const Workshop = () => {
 
         {/* Who Can Join */}
         <div
-          className="rounded-2xl p-6 sm:p-8 mb-10 text-center"
+          className="rounded-2xl p-6 sm:p-8 mb-8 sm:mb-10 text-center"
           style={{ backgroundColor: "#EDE5D4", border: "1px solid #D4C5A9" }}
         >
           <h3 className="font-serif font-bold text-xl mb-6" style={{ color: "#2D4A3E" }}>

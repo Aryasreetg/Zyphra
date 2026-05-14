@@ -4,7 +4,7 @@ const About = () => {
   return (
     <section
       id="about"
-      className="py-16 sm:py-20"
+      className="py-12 sm:py-16 md:py-20"
       style={{ backgroundColor: "#EDE5D4" }}
     >
       <div className="max-w-4xl mx-auto px-4 sm:px-6">

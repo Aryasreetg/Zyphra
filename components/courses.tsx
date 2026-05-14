@@ -125,13 +125,13 @@ const Courses = () => {
   return (
     <section
       id="courses"
-      className="py-16 sm:py-20"
+      className="py-12 sm:py-16 md:py-20"
       style={{ backgroundColor: "#EDE5D4" }}
     >
       <div className="max-w-6xl mx-auto px-4 sm:px-6">
 
         {/* Header */}
-        <div className="text-center mb-14">
+        <div className="text-center mb-10 sm:mb-12">
           <p className="text-xs tracking-[0.25em] uppercase font-semibold mb-3" style={{ color: "#8B6914" }}>
             ✦ Course Catalogue 2026
           </p>
@@ -145,7 +145,7 @@ const Courses = () => {
         </div>
 
         {/* FLAGSHIP */}
-        <div className="mb-16">
+        <div className="mb-12 sm:mb-16">
           <CategoryLabel text="Flagship Programme" />
           <SectionHeading text="Full Stack Developer Program" />
           <div className="grid gap-8">
@@ -223,7 +223,7 @@ const Courses = () => {
         </div>
 
         {/* SPECIALISATION */}
-        <div className="mb-16">
+        <div className="mb-12 sm:mb-16">
           <CategoryLabel text="Specialisation Courses" />
           <SectionHeading text="Focused Learning Paths" />
           <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
@@ -291,7 +291,7 @@ const Courses = () => {
         </div>
 
         {/* ONE-ON-ONE */}
-        <div className="mb-16">
+        <div className="mb-12 sm:mb-16">
           <CategoryLabel text="Personalised Mentorship" />
           <SectionHeading text="One-on-One Classes" />
           {mentorshipCourses.map((course) => (

@@ -5,7 +5,7 @@ import Workshop from "@/components/Workshop";
 
 export default function Page() {
   return (
-    <main className="flex flex-col gap-16">
+    <main className="flex flex-col gap-0">
       <Home />
       <About />
       <Courses />
