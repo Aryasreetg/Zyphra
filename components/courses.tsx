@@ -164,8 +164,8 @@ const Courses = () => {
                   </span>
                 )}
 
-                <div className="flex flex-col sm:flex-row justify-between items-start mb-4 gap-4 pr-24 sm:pr-0">
-                  <h3 className="text-xl sm:text-2xl font-serif font-bold" style={{ color: "#2D4A3E" }}>
+                <div className="flex flex-col sm:flex-row justify-between items-start mb-4 gap-4">
+                  <h3 className="text-xl sm:text-2xl font-serif font-bold pr-20 sm:pr-0" style={{ color: "#2D4A3E" }}>
                     {course.title}
                   </h3>
                   <div className="text-left sm:text-right flex-shrink-0">
