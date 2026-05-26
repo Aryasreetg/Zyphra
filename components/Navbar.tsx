@@ -22,10 +22,10 @@ const Navbar = () => {
 
         {/* Desktop Links */}
         <nav className="hidden md:flex items-center gap-7 text-sm font-medium tracking-wide">
-          {["home", "about", "courses", "workshop", "contact"].map((link) => (
+          {["home", "about", "courses", "workshop", "campus", "contact"].map((link) => (
             <a
               key={link}
-              href={`#${link}`}
+              href={link === "campus" ? "/campus" : `#${link}`}
               className="capitalize transition-colors duration-200"
               style={{ color: "#4A3728" }}
               onMouseEnter={(e) => (e.currentTarget.style.color = "#2D4A3E")}
@@ -76,10 +76,10 @@ const Navbar = () => {
         style={{ borderColor: "#D4C5A9", backgroundColor: "#F5EFE6" }}
       >
         <nav className="px-6 py-5 space-y-4">
-          {["home", "about", "courses", "workshop", "contact"].map((link) => (
+          {["home", "about", "courses", "workshop", "campus", "contact"].map((link) => (
             <a
               key={link}
-              href={`#${link}`}
+              href={link === "campus" ? "/campus" : `#${link}`}
               className="block py-1 capitalize text-sm font-medium transition-colors duration-200"
               style={{ color: "#4A3728" }}
               onClick={() => setIsMenuOpen(false)}
