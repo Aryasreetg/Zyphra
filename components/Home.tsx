@@ -50,7 +50,7 @@ const Home = () => {
       {/* Buttons */}
       <div className="flex flex-col sm:flex-row gap-4 justify-center w-full max-w-sm">
         <a
-          href="https://forms.gle/AdaaT56F6GMVCEUu9"
+          href="https://forms.gle/WBvxgVHSrCuZspqVA"
           target="_blank"
           rel="noopener noreferrer"
           className="px-7 py-3.5 rounded-full font-semibold text-sm tracking-wide transition-opacity hover:opacity-85 shadow-md"

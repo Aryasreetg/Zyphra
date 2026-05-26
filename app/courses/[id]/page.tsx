@@ -45,6 +45,28 @@ const coursesData = [
     projects: ["Portfolio Website", "Dashboard UI", "Responsive Web Application"],
   },
   {
+    id: "software-testing",
+    title: "Software Testing Fundamentals",
+    duration: "2 Weeks",
+    originalPrice: "₹8,999",
+    offerPrice: "₹3,999",
+    category: "specialisation",
+    description:
+      "Master the fundamentals of software testing, manual QA, and quality assurance workflows for real applications.",
+    whatYouLearn: [
+      "Software testing lifecycle and QA best practices",
+      "Manual test case design and execution",
+      "Bug reporting and defect tracking",
+      "Introduction to automation testing strategies",
+      "Regression testing and quality metrics",
+    ],
+    projects: [
+      "Real application test plan",
+      "Bug report triage and tracking",
+      "Regression checklist for release readiness",
+    ],
+  },
+  {
     id: "backend-spring-boot",
     title: "Backend Development with Spring Boot",
     duration: "1.5 Months",
@@ -166,7 +188,7 @@ const C = {
 function Dot({ color = C.gold }: { color?: string }) {
   return (
     <span
-      className="mt-1.5 w-1.5 h-1.5 rounded-full flex-shrink-0"
+      className="mt-1.5 w-1.5 h-1.5 rounded-full shrink-0"
       style={{ backgroundColor: color, display: "inline-block" }}
     />
   );
@@ -239,6 +261,13 @@ export default async function CoursePage({ params }: CoursePageProps) {
   if (!course) notFound();
 
   const isContact = course.offerPrice === "Contact Us";
+  const enrolLink = isContact
+    ? "mailto:aryasree.zyphraa@gmail.com"
+    : {
+        "frontend-mastery": "https://forms.gle/3eACANepzSr72HSm9",
+        "software-testing": "https://forms.gle/3mn6icFrWE5HgvEy7",
+        "3-day-workshop": "https://forms.gle/WBvxgVHSrCuZspqVA",
+      }[course.id] ?? "https://forms.gle/AdaaT56F6GMVCEUu9";
 
   return (
     <div className="min-h-screen" style={{ backgroundColor: C.parchment }}>
@@ -304,7 +333,7 @@ export default async function CoursePage({ params }: CoursePageProps) {
             </div>
 
             <a
-              href={isContact ? "mailto:aryasree.zyphraa@gmail.com" : "https://forms.gle/AdaaT56F6GMVCEUu9"}
+              href={enrolLink}
               target={isContact ? undefined : "_blank"}
               rel={isContact ? undefined : "noopener noreferrer"}
               className="enrol-btn px-7 py-3.5 rounded-full font-semibold text-sm tracking-wide transition-opacity hover:opacity-85 shadow-lg"
@@ -339,7 +368,7 @@ export default async function CoursePage({ params }: CoursePageProps) {
                   style={{ backgroundColor: C.parchment, border: `1px solid ${C.border}` }}
                 >
                   <span
-                    className="flex-shrink-0 w-6 h-6 rounded-full flex items-center justify-center text-xs font-bold font-serif"
+                    className="shrink-0 w-6 h-6 rounded-full flex items-center justify-center text-xs font-bold font-serif"
                     style={{ backgroundColor: C.green, color: C.cream }}
                   >
                     {i + 1}
@@ -359,7 +388,7 @@ export default async function CoursePage({ params }: CoursePageProps) {
               {(course.schedule as { day: string; title: string; topics: string[] }[]).map(({ day, title, topics }, i) => (
                 <div key={day} className="flex gap-4">
                   <div
-                    className="flex-shrink-0 w-10 h-10 rounded-full flex items-center justify-center font-serif font-bold"
+                    className="shrink-0 w-10 h-10 rounded-full flex items-center justify-center font-serif font-bold"
                     style={{ backgroundColor: C.green, color: C.cream }}
                   >
                     {i + 1}
@@ -479,7 +508,7 @@ export default async function CoursePage({ params }: CoursePageProps) {
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center items-center">
             <a
-              href={isContact ? "mailto:aryasree.zyphraa@gmail.com" : "https://forms.gle/AdaaT56F6GMVCEUu9"}
+              href={enrolLink}
               target={isContact ? undefined : "_blank"}
               rel={isContact ? undefined : "noopener noreferrer"}
               className="px-8 py-3.5 rounded-full font-bold text-sm tracking-wide transition-opacity hover:opacity-85 shadow-lg"

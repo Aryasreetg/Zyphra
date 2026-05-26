@@ -44,6 +44,28 @@ const coursesData = [
     projects: ["Portfolio Website", "Dashboard UI", "Responsive Web Application"],
   },
   {
+    id: "software-testing",
+    title: "Software Testing Fundamentals",
+    duration: "2 Weeks",
+    originalPrice: "₹8,999",
+    offerPrice: "₹3,999",
+    category: "specialisation",
+    description:
+      "Master the fundamentals of software testing, manual QA, and quality assurance workflows for real applications.",
+    whatYouLearn: [
+      "Software testing lifecycle and QA best practices",
+      "Manual test case design and execution",
+      "Bug reporting and defect tracking",
+      "Introduction to automation testing strategies",
+      "Regression testing and quality metrics",
+    ],
+    projects: [
+      "Real application test plan",
+      "Bug report triage and tracking",
+      "Regression checklist for release readiness",
+    ],
+  },
+  {
     id: "backend-spring-boot",
     title: "Backend Development with Spring Boot",
     duration: "1.5 Months",

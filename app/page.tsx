@@ -9,7 +9,7 @@ export default function Page() {
       <Home />
       <About />
       <Courses />
-      <Workshop />
+      {/* <Workshop /> */}
     </main>
   );
 }

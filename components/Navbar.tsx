@@ -38,7 +38,7 @@ const Navbar = () => {
 
         {/* Desktop CTA */}
         <a
-          href="https://forms.gle/AdaaT56F6GMVCEUu9"
+          href="https://forms.gle/WBvxgVHSrCuZspqVA"
           target="_blank"
           rel="noopener noreferrer"
           className="hidden md:inline-block px-5 py-2 rounded-full text-sm font-semibold tracking-wide transition-opacity duration-200 hover:opacity-85"
@@ -88,7 +88,7 @@ const Navbar = () => {
             </a>
           ))}
           <a
-            href="https://forms.gle/AdaaT56F6GMVCEUu9"
+            href="https://forms.gle/WBvxgVHSrCuZspqVA"
             target="_blank"
             rel="noopener noreferrer"
             className="block w-full text-center px-4 py-2.5 rounded-full text-sm font-semibold mt-4 transition-opacity hover:opacity-85"

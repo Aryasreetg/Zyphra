@@ -228,7 +228,7 @@ const Workshop = () => {
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center items-center">
             <a
-              href="https://forms.gle/AdaaT56F6GMVCEUu9"
+              href="https://forms.gle/WBvxgVHSrCuZspqVA"
               target="_blank"
               rel="noopener noreferrer"
               className="px-8 py-4 rounded-full font-bold text-sm tracking-wide transition-opacity hover:opacity-85 shadow-lg"
