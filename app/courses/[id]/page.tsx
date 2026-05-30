@@ -30,7 +30,7 @@ const coursesData = [
     id: "frontend-mastery",
     title: "Frontend Mastery",
     duration: "1.5 Months",
-    originalPrice: "15,000",
+    originalPrice: "₹12,000",
     offerPrice: "₹8,000",
     category: "specialisation",
     description:
