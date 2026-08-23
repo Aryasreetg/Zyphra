@@ -1,4 +1,5 @@
 import Link from "next/link";
+import Reveal from "@/components/Reveal";
 
 const workshops = [
   {
@@ -194,6 +195,7 @@ export default function CampusPage() {
   return (
     <main className="bg-[#F5EFE6] text-[#4A3728]">
       <section className="py-16 px-4 sm:px-6 lg:px-8">
+        <Reveal>
         <div className="max-w-6xl mx-auto grid gap-10 lg:grid-cols-[1.2fr_0.8fr] items-center">
           <div>
             <p className="text-xs uppercase tracking-[0.3em] mb-4" style={{ color: "#8B6914" }}>
@@ -221,7 +223,7 @@ export default function CampusPage() {
               </Link>
             </div>
           </div>
-          <div className="rounded-[32px] border border-[#D4C5A9] bg-[#EDE5D4] p-8 shadow-sm">
+          <div className="hover-lift rounded-[32px] border border-[#D4C5A9] bg-[#EDE5D4] p-8 shadow-sm">
             <h2 className="font-serif text-2xl font-bold mb-4" style={{ color: "#2D4A3E" }}>
               Zyphraa for Institutions
             </h2>
@@ -244,9 +246,11 @@ export default function CampusPage() {
             </ul>
           </div>
         </div>
+        </Reveal>
       </section>
 
       <section className="py-16 px-4 sm:px-6 lg:px-8 border-t border-[#D4C5A9]">
+        <Reveal>
         <div className="max-w-6xl mx-auto grid gap-10 lg:grid-cols-[0.9fr_0.95fr] items-start">
           <div>
             <SectionTitle>About the Mentor</SectionTitle>
@@ -263,7 +267,7 @@ export default function CampusPage() {
               Students write real code, build working projects, and leave with something they can show employers.
             </p>
           </div>
-          <div className="rounded-[32px] border border-[#D4C5A9] bg-[#F5EFE6] p-8 shadow-sm">
+          <div className="hover-lift rounded-[32px] border border-[#D4C5A9] bg-[#F5EFE6] p-8 shadow-sm">
             <div className="mb-6">
               <h3 className="text-2xl font-serif font-bold mb-2" style={{ color: "#2D4A3E" }}>
                 Aryasree TG
@@ -297,14 +301,16 @@ export default function CampusPage() {
             </div>
           </div>
         </div>
+        </Reveal>
       </section>
 
       <section className="py-16 px-4 sm:px-6 lg:px-8">
+        <Reveal>
         <div className="max-w-6xl mx-auto">
           <SectionTitle>Workshops</SectionTitle>
           <div className="space-y-14">
             {workshops.map((workshop) => (
-              <div key={workshop.title} className="rounded-[32px] border border-[#D4C5A9] bg-[#EDE5D4] p-8 shadow-sm">
+              <div key={workshop.title} className="hover-lift rounded-[32px] border border-[#D4C5A9] bg-[#EDE5D4] p-8 shadow-sm">
                 <div className="flex flex-col gap-4 lg:flex-row lg:items-start lg:justify-between">
                   <div>
                     <Badge text={workshop.title} />
@@ -379,16 +385,18 @@ export default function CampusPage() {
             ))}
           </div>
         </div>
+        </Reveal>
       </section>
 
       <section className="py-16 px-4 sm:px-6 lg:px-8 border-t border-[#D4C5A9]">
+        <Reveal>
         <div className="max-w-6xl mx-auto">
           <SectionTitle>Full Campus Bootcamp — 5 Days</SectionTitle>
           <p className="text-sm leading-relaxed mb-8" style={{ color: "#6B5744" }}>
             The complete campus tech event. The 5-Day Full Campus Bootcamp combines all six workshop themes into one cohesive, intensive programme — giving students a 360° view of the modern tech industry in a single week.
           </p>
           <div className="grid gap-6 lg:grid-cols-[0.8fr_0.9fr]">
-            <div className="rounded-[32px] border border-[#D4C5A9] bg-[#EDE5D4] p-8 shadow-sm">
+            <div className="hover-lift rounded-[32px] border border-[#D4C5A9] bg-[#EDE5D4] p-8 shadow-sm">
               <div className="space-y-4 text-sm text-[#4A3728]">
                 {[
                   { day: "Day 1", focus: "Website Development — HTML, CSS, JavaScript, live mini project" },
@@ -405,7 +413,7 @@ export default function CampusPage() {
               </div>
             </div>
 
-            <div className="rounded-[32px] border border-[#D4C5A9] bg-[#F5EFE6] p-8 shadow-sm">
+            <div className="hover-lift rounded-[32px] border border-[#D4C5A9] bg-[#F5EFE6] p-8 shadow-sm">
               <h3 className="text-2xl font-serif font-bold mb-4" style={{ color: "#2D4A3E" }}>
                 Pricing (3 hrs/day)
               </h3>
@@ -425,9 +433,11 @@ export default function CampusPage() {
             </div>
           </div>
         </div>
+        </Reveal>
       </section>
 
       <section className="py-16 px-4 sm:px-6 lg:px-8">
+        <Reveal>
         <div className="max-w-6xl mx-auto">
           <SectionTitle>Why Zyphraa</SectionTitle>
           <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
@@ -439,9 +449,11 @@ export default function CampusPage() {
             ))}
           </div>
         </div>
+        </Reveal>
       </section>
 
       <section className="py-16 px-4 sm:px-6 lg:px-8 border-t border-[#D4C5A9]">
+        <Reveal>
         <div className="max-w-6xl mx-auto grid gap-8 lg:grid-cols-[0.9fr_0.7fr] items-start">
           <div>
             <SectionTitle>Group Discount Structure</SectionTitle>
@@ -455,7 +467,7 @@ export default function CampusPage() {
             </div>
           </div>
 
-          <div className="rounded-[32px] border border-[#D4C5A9] bg-[#EDE5D4] p-8 shadow-sm">
+          <div className="hover-lift rounded-[32px] border border-[#D4C5A9] bg-[#EDE5D4] p-8 shadow-sm">
             <h3 className="text-2xl font-serif font-bold mb-4" style={{ color: "#2D4A3E" }}>
               Book a Workshop
             </h3>
@@ -471,15 +483,18 @@ export default function CampusPage() {
             </div>
           </div>
         </div>
+        </Reveal>
       </section>
 
       <section className="py-16 px-4 sm:px-6 lg:px-8 bg-[#2D4A3E] text-[#F5EFE6]">
+        <Reveal>
         <div className="max-w-6xl mx-auto rounded-[32px] border border-[#4A3728] bg-[#2D4A3E]/90 p-10 text-center">
           <h2 className="text-3xl font-serif font-bold mb-4">Zyphraa · Learn. Build. Grow.</h2>
           <p className="max-w-3xl mx-auto text-sm leading-relaxed">
             All workshops include a hands-on project and a certificate of completion. Connect with Zyphraa today to bring practical tech learning to your campus.
           </p>
         </div>
+        </Reveal>
       </section>
     </main>
   );

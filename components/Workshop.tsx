@@ -1,4 +1,5 @@
 import React from "react";
+import Reveal from "./Reveal";
 
 const workshopDays = [
   {
@@ -45,6 +46,7 @@ const Workshop = () => {
       <div className="max-w-6xl mx-auto px-4 sm:px-6">
 
         {/* Header */}
+        <Reveal>
         <div className="text-center mb-10 sm:mb-12">
           <p
             className="text-xs tracking-[0.25em] uppercase font-semibold mb-3"
@@ -82,13 +84,15 @@ const Workshop = () => {
             ))}
           </div>
         </div>
+        </Reveal>
 
         {/* Main Grid */}
         <div className="grid lg:grid-cols-2 gap-8 sm:gap-10 mb-10 sm:mb-14">
 
           {/* Left — Schedule */}
+          <Reveal>
           <div
-            className="rounded-2xl p-6 sm:p-8 shadow-sm"
+            className="hover-lift rounded-2xl p-6 sm:p-8 shadow-sm h-full"
             style={{ backgroundColor: "#EDE5D4", border: "1px solid #D4C5A9" }}
           >
             <h3 className="text-xl font-serif font-bold mb-6" style={{ color: "#2D4A3E" }}>
@@ -124,13 +128,15 @@ const Workshop = () => {
               ))}
             </div>
           </div>
+          </Reveal>
 
           {/* Right — Price & Details */}
           <div className="space-y-6">
 
             {/* Price Card */}
+            <Reveal delay={100}>
             <div
-              className="rounded-2xl p-6 sm:p-8 text-center shadow-sm"
+              className="hover-lift rounded-2xl p-6 sm:p-8 text-center shadow-sm"
               style={{ backgroundColor: "#2D4A3E", color: "#F5EFE6" }}
             >
               <p className="text-xs tracking-widest uppercase mb-2" style={{ color: "#C4A96A" }}>
@@ -145,10 +151,12 @@ const Workshop = () => {
                 Don't miss out!
               </p>
             </div>
+            </Reveal>
 
             {/* What you get */}
+            <Reveal delay={180}>
             <div
-              className="rounded-2xl p-6 sm:p-8 shadow-sm"
+              className="hover-lift rounded-2xl p-6 sm:p-8 shadow-sm"
               style={{ backgroundColor: "#EDE5D4", border: "1px solid #D4C5A9" }}
             >
               <h3 className="font-serif font-bold text-lg mb-4" style={{ color: "#2D4A3E" }}>
@@ -161,6 +169,7 @@ const Workshop = () => {
                   "Cloud deployment on Day 3",
                   "Q&A and doubt-clearing in real-time",
                   "Downloadable resources & code samples",
+                  "Access to mock interview practice after graduating",
                 ].map((item, i) => (
                   <li key={i} className="flex items-start gap-3 text-sm" style={{ color: "#4A3728" }}>
                     <span
@@ -174,8 +183,10 @@ const Workshop = () => {
                 ))}
               </ul>
             </div>
+            </Reveal>
 
             {/* Important Notes */}
+            <Reveal delay={260}>
             <div
               className="rounded-2xl p-5 text-sm"
               style={{ backgroundColor: "#FDF6E3", border: "1px solid #E8D5A3", color: "#7A5C2E" }}
@@ -188,10 +199,12 @@ const Workshop = () => {
                 <li>• Sessions conducted via Zoom</li>
               </ul>
             </div>
+            </Reveal>
           </div>
         </div>
 
         {/* Who Can Join */}
+        <Reveal>
         <div
           className="rounded-2xl p-6 sm:p-8 mb-8 sm:mb-10 text-center"
           style={{ backgroundColor: "#EDE5D4", border: "1px solid #D4C5A9" }}
@@ -214,8 +227,10 @@ const Workshop = () => {
             ♡ No prior experience needed. Just curiosity & the will to learn!
           </p>
         </div>
+        </Reveal>
 
         {/* CTA Banner */}
+        <Reveal>
         <div
           className="rounded-2xl p-8 sm:p-12 text-center"
           style={{ backgroundColor: "#2D4A3E" }}
@@ -231,7 +246,7 @@ const Workshop = () => {
               href="https://forms.gle/WBvxgVHSrCuZspqVA"
               target="_blank"
               rel="noopener noreferrer"
-              className="px-8 py-4 rounded-full font-bold text-sm tracking-wide transition-opacity hover:opacity-85 shadow-lg"
+              className="px-8 py-4 rounded-full font-bold text-sm tracking-wide transition-all hover:opacity-85 hover:-translate-y-0.5 shadow-lg"
               style={{ backgroundColor: "#F5EFE6", color: "#2D4A3E" }}
             >
               Register Now — ₹999 ✦
@@ -241,6 +256,7 @@ const Workshop = () => {
             </p>
           </div>
         </div>
+        </Reveal>
 
       </div>
     </section>

@@ -1,6 +1,10 @@
 import React from "react";
+import { coursesData } from "@/config/courses";
+import Reveal from "./Reveal";
 
 const About = () => {
+  const purchasableCourseCount = coursesData.filter((c) => c.category !== "mentorship").length;
+
   return (
     <section
       id="about"
@@ -9,6 +13,7 @@ const About = () => {
     >
       <div className="max-w-4xl mx-auto px-4 sm:px-6">
         {/* Section Label */}
+        <Reveal>
         <p
           className="text-center text-xs tracking-[0.25em] uppercase font-semibold mb-3"
           style={{ color: "#8B6914" }}
@@ -22,10 +27,12 @@ const About = () => {
         >
           About Me
         </h2>
+        </Reveal>
 
         {/* Card */}
+        <Reveal delay={100}>
         <div
-          className="rounded-2xl p-6 sm:p-10 shadow-sm"
+          className="hover-lift rounded-2xl p-6 sm:p-10 shadow-sm"
           style={{ backgroundColor: "#F5EFE6", border: "1px solid #D4C5A9" }}
         >
           {/* Name badge */}
@@ -95,6 +102,18 @@ const About = () => {
               If you're looking to break into tech, transition careers, or level
               up your development skills — you're in exactly the right place. ♡
             </p>
+
+            <p
+              className="text-base sm:text-lg leading-relaxed text-justify"
+              style={{ color: "#4A3728" }}
+            >
+              Beyond the curriculum, every learner also gets access to{" "}
+              <span className="font-semibold" style={{ color: "#2D4A3E" }}>
+                mock interview practice sessions
+              </span>{" "}
+              — because being able to explain your work under pressure is just as
+              important as being able to build it.
+            </p>
           </div>
 
           {/* Divider */}
@@ -104,7 +123,7 @@ const About = () => {
           <div className="grid grid-cols-3 gap-4 text-center">
             {[
               { value: "3+", label: "Years Experience" },
-              { value: "5", label: "Courses Available" },
+              { value: `${purchasableCourseCount}`, label: "Courses Available" },
               { value: "100%", label: "Project-Based" },
             ].map(({ value, label }) => (
               <div key={label}>
@@ -150,6 +169,7 @@ const About = () => {
             </a>
           </div>
         </div>
+        </Reveal>
       </div>
     </section>
   );

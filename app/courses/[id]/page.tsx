@@ -1,171 +1,8 @@
 import React from "react";
 import Link from "next/link";
 import { notFound } from "next/navigation";
-
-const coursesData = [
-  {
-    id: "full-stack-developer-program",
-    title: "Full Stack Developer Program",
-    duration: "3 Months",
-    originalPrice: "₹25,000",
-    offerPrice: "₹18,000",
-    category: "flagship",
-    badge: "Most Popular",
-    description:
-      "Become a job-ready full stack developer by building real-world applications using modern technologies. This programme focuses on practical learning, industry-level projects, and end-to-end deployment — perfectly aligned with current hiring requirements.",
-    whatYouLearn: [
-      "Frontend: Next.js, React, Tailwind CSS",
-      "Backend: Spring Boot / Django",
-      "Database: MongoDB / MySQL",
-      "Authentication & REST APIs (JWT)",
-      "DevOps Basics: Docker, CI/CD pipelines",
-    ],
-    projects: [
-      "Full Stack Web Application",
-      "Authentication System",
-      "Deployment with DevOps tools",
-    ],
-  },
-  {
-    id: "frontend-mastery",
-    title: "Frontend Mastery",
-    duration: "1.5 Months",
-    originalPrice: "₹12,000",
-    offerPrice: "₹8,000",
-    category: "specialisation",
-    description:
-      "Master modern frontend development by building responsive, high-performance web applications. Gain hands-on experience with industry-standard tools and best practices in UI/UX.",
-    whatYouLearn: [
-      "React fundamentals & component architecture",
-      "Next.js with App Router",
-      "Tailwind CSS for responsive design",
-      "TypeScript basics",
-      "UI/UX best practices",
-    ],
-    projects: ["Portfolio Website", "Dashboard UI", "Responsive Web Application"],
-  },
-  {
-    id: "software-testing",
-    title: "Software Testing Fundamentals",
-    duration: "2 Weeks",
-    originalPrice: "₹8,999",
-    offerPrice: "₹3,999",
-    category: "specialisation",
-    description:
-      "Master the fundamentals of software testing, manual QA, and quality assurance workflows for real applications.",
-    whatYouLearn: [
-      "Software testing lifecycle and QA best practices",
-      "Manual test case design and execution",
-      "Bug reporting and defect tracking",
-      "Introduction to automation testing strategies",
-      "Regression testing and quality metrics",
-    ],
-    projects: [
-      "Real application test plan",
-      "Bug report triage and tracking",
-      "Regression checklist for release readiness",
-    ],
-  },
-  {
-    id: "backend-spring-boot",
-    title: "Backend Development with Spring Boot",
-    duration: "1.5 Months",
-    originalPrice: "₹12,000",
-    offerPrice: "₹8,000",
-    category: "specialisation",
-    description:
-      "Learn to build scalable, secure backend systems with real-world REST APIs and authentication. Aligned with Aryasree's professional expertise in Spring Boot and microservices.",
-    whatYouLearn: [
-      "Spring Boot fundamentals",
-      "REST API development & best practices",
-      "JWT Authentication & security",
-      "Microservices architecture basics",
-      "Database integration: PostgreSQL / MySQL",
-    ],
-    projects: [
-      "REST API System",
-      "Authentication & Authorisation Service",
-      "Mini Microservices Application",
-    ],
-  },
-  {
-    id: "git-version-control",
-    title: "Git & Version Control",
-    duration: "15 Days",
-    originalPrice: null,
-    offerPrice: "₹1,499",
-    category: "specialisation",
-    description:
-      "A concise, practical course covering everything you need to confidently use Git in professional projects — from basic commands to branching strategies and CI/CD integration.",
-    whatYouLearn: [
-      "Git fundamentals: init, commit, push, pull",
-      "Branching strategies (Git Flow)",
-      "Merge, rebase, and conflict resolution",
-      "Working with GitHub / GitLab",
-      "Integrating Git with CI/CD pipelines",
-    ],
-    projects: [
-      "Team collaboration project using Git",
-      "Setting up a GitLab CI/CD pipeline",
-    ],
-  },
-  {
-    id: "3-day-workshop",
-    title: "3-Day Live Workshop",
-    duration: "3 Days (2 Hours / Day)",
-    originalPrice: null,
-    offerPrice: "₹999",
-    category: "workshop",
-    description:
-      "Kickstart your tech journey with this beginner-friendly live workshop. In just 3 days, you will get hands-on exposure to Full Stack Development, Manual Testing, and DevOps by building a real mini-project — the fastest way to discover which specialisation suits you best before enrolling in a full programme.",
-    schedule: [
-      {
-        day: "Day 1",
-        title: "Full Stack Development Basics",
-        topics: [
-          "Frontend & backend overview and how they communicate",
-          "Build a small working feature from scratch",
-          "Live API integration demonstration",
-        ],
-      },
-      {
-        day: "Day 2",
-        title: "Introduction to Manual Testing",
-        topics: [
-          "What is software testing and why it matters",
-          "Real-world testing examples and test case writing",
-          "Understanding software flow and bug reporting",
-        ],
-      },
-      {
-        day: "Day 3",
-        title: "DevOps & Deployment",
-        topics: [
-          "Introduction to DevOps principles",
-          "Deploy your mini-project to the cloud",
-          "How real production applications go live",
-        ],
-      },
-    ],
-  },
-  {
-    id: "one-on-one-classes",
-    title: "Personalised One-on-One Classes",
-    duration: "Flexible",
-    originalPrice: null,
-    offerPrice: "Contact Us",
-    category: "mentorship",
-    description:
-      "For learners who prefer a tailored experience, Zyphraa offers personalised one-on-one mentorship sessions. Fully customised to your current skill level, learning pace, and goals — whether you are a complete beginner or a working professional upskilling in a specific area.",
-    whatsIncluded: [
-      "Fully customised curriculum based on your goals",
-      "Flexible scheduling at your convenience",
-      "Direct mentorship from an experienced Java Spring Boot developer & project lead",
-      "Code reviews, doubt-clearing, and project guidance",
-      "Available for any topic: Full Stack, Backend, Frontend, Git, DevOps basics",
-    ],
-  },
-];
+import { coursesData, getEnrolLink } from "@/config/courses";
+import Reveal from "@/components/Reveal";
 
 // ── Colour tokens (matching the rest of the site) ──────────────────────────
 const C = {
@@ -203,7 +40,7 @@ function Card({
 }) {
   return (
     <div
-      className={`rounded-2xl p-6 sm:p-8 shadow-sm ${className}`}
+      className={`hover-lift rounded-2xl p-6 sm:p-8 shadow-sm ${className}`}
       style={{ backgroundColor: C.cream, border: `1px solid ${C.border}` }}
     >
       {children}
@@ -261,13 +98,7 @@ export default async function CoursePage({ params }: CoursePageProps) {
   if (!course) notFound();
 
   const isContact = course.offerPrice === "Contact Us";
-  const enrolLink = isContact
-    ? "mailto:aryasree.zyphraa@gmail.com"
-    : {
-        "frontend-mastery": "https://forms.gle/3eACANepzSr72HSm9",
-        "software-testing": "https://forms.gle/3mn6icFrWE5HgvEy7",
-        "3-day-workshop": "https://forms.gle/WBvxgVHSrCuZspqVA",
-      }[course.id] ?? "https://forms.gle/AdaaT56F6GMVCEUu9";
+  const enrolLink = getEnrolLink(course);
 
   return (
     <div className="min-h-screen" style={{ backgroundColor: C.parchment }}>
@@ -305,6 +136,14 @@ export default async function CoursePage({ params }: CoursePageProps) {
             <span className="text-xs tracking-widest uppercase" style={{ color: C.goldLight }}>
               ✦ {course.duration}
             </span>
+            {"batchInfo" in course && course.batchInfo && (
+              <span
+                className="px-3 py-1 rounded-full text-xs font-semibold"
+                style={{ backgroundColor: "rgba(245,239,230,0.12)", color: C.cream, border: `1px solid rgba(245,239,230,0.3)` }}
+              >
+                {course.batchInfo}
+              </span>
+            )}
           </div>
 
           {/* Title */}
@@ -350,14 +189,17 @@ export default async function CoursePage({ params }: CoursePageProps) {
 
         {/* What You'll Learn */}
         {"whatYouLearn" in course && course.whatYouLearn && (
+          <Reveal>
           <Card>
             <SectionTitle>What You'll Learn</SectionTitle>
             <BulletList items={course.whatYouLearn as string[]} />
           </Card>
+          </Reveal>
         )}
 
         {/* Projects */}
         {"projects" in course && course.projects && (
+          <Reveal delay={80}>
           <Card>
             <SectionTitle>Projects You'll Build</SectionTitle>
             <div className="grid sm:grid-cols-2 gap-3">
@@ -378,10 +220,12 @@ export default async function CoursePage({ params }: CoursePageProps) {
               ))}
             </div>
           </Card>
+          </Reveal>
         )}
 
         {/* Workshop Schedule */}
         {"schedule" in course && course.schedule && (
+          <Reveal>
           <Card>
             <SectionTitle>Workshop Schedule</SectionTitle>
             <div className="space-y-6">
@@ -411,17 +255,21 @@ export default async function CoursePage({ params }: CoursePageProps) {
               ))}
             </div>
           </Card>
+          </Reveal>
         )}
 
         {/* What's Included (mentorship) */}
         {"whatsIncluded" in course && course.whatsIncluded && (
+          <Reveal>
           <Card>
             <SectionTitle>What's Included</SectionTitle>
             <BulletList items={course.whatsIncluded as string[]} />
           </Card>
+          </Reveal>
         )}
 
         {/* Two-col: Format + Who Should Enrol */}
+        <Reveal>
         <div className="grid sm:grid-cols-2 gap-6">
           <Card>
             <SectionTitle>Course Format</SectionTitle>
@@ -447,18 +295,21 @@ export default async function CoursePage({ params }: CoursePageProps) {
             />
           </Card>
         </div>
+        </Reveal>
 
         {/* Learner Support */}
+        <Reveal>
         <Card>
           <SectionTitle>Learner Support</SectionTitle>
           <p className="text-sm mb-4 leading-relaxed" style={{ color: C.brownMid }}>
-            Zyphraa offers personalised support and mentor guidance throughout every programme.
+            Zyphraa offers personalised support and mentor guidance throughout every programme,
+            including live mock interview practice before you start applying.
           </p>
           <div className="grid sm:grid-cols-3 gap-4">
             {[
               { icon: "💬", label: "Doubt Sessions", desc: "Online Q&A and code review" },
               { icon: "📋", label: "Project Feedback", desc: "Guided feedback from mentors" },
-              { icon: "📚", label: "Resource Access", desc: "Course materials & code samples" },
+              { icon: "🎤", label: "Mock Interviews", desc: "Live practice with real feedback" },
             ].map(({ icon, label, desc }) => (
               <div
                 key={label}
@@ -472,6 +323,7 @@ export default async function CoursePage({ params }: CoursePageProps) {
             ))}
           </div>
         </Card>
+        </Reveal>
 
         {/* Important notes (workshop only) */}
         {course.category === "workshop" && (

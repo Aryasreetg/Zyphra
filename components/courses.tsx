@@ -1,131 +1,7 @@
 import React from "react";
 import Link from "next/link";
-
-const coursesData = [
-  {
-    id: "full-stack-developer-program",
-    title: "Full Stack Developer Program",
-    duration: "3 Months",
-    originalPrice: "₹25,000",
-    offerPrice: "₹18,000",
-    category: "flagship",
-    badge: "Most Popular",
-    description:
-      "Become a job-ready full stack developer by building real-world applications using modern technologies. This programme focuses on practical learning, industry-level projects, and end-to-end deployment — perfectly aligned with current hiring requirements.",
-    whatYouLearn: [
-      "Frontend: Next.js, React, Tailwind CSS",
-      "Backend: Spring Boot / Django / Node.js",
-      "Database: MongoDB / MySQL",
-      "Authentication & REST APIs (JWT)",
-      "DevOps Basics: Docker, CI/CD pipelines",
-    ],
-    projects: [
-      "Full Stack Web Application",
-      "Authentication System",
-      "Deployment with DevOps tools",
-    ],
-  },
-  {
-    id: "frontend-mastery",
-    title: "Frontend Mastery",
-    duration: "1.5 Months",
-    originalPrice: "₹12,000",
-    offerPrice: "₹8,000",
-    category: "specialisation",
-    description:
-      "Master modern frontend development by building responsive, high-performance web applications. Gain hands-on experience with industry-standard tools and best practices in UI/UX.",
-    whatYouLearn: [
-      "React fundamentals & component architecture",
-      "Next.js with App Router",
-      "Tailwind CSS for responsive design",
-      "TypeScript basics",
-      "UI/UX best practices",
-    ],
-    projects: ["Portfolio Website", "Dashboard UI", "Responsive Web Application"],
-  },
-  {
-    id: "software-testing",
-    title: "Software Testing Fundamentals",
-    duration: "2 Weeks",
-    originalPrice: "₹8,999",
-    offerPrice: "₹3,999",
-    category: "specialisation",
-    description:
-      "Master the fundamentals of software testing, manual QA, and quality assurance workflows for real applications.",
-    whatYouLearn: [
-      "Software testing lifecycle and QA best practices",
-      "Manual test case design and execution",
-      "Bug reporting and defect tracking",
-      "Introduction to automation testing strategies",
-      "Regression testing and quality metrics",
-    ],
-    projects: [
-      "Real application test plan",
-      "Bug report triage and tracking",
-      "Regression checklist for release readiness",
-    ],
-  },
-  {
-    id: "backend-spring-boot",
-    title: "Backend Development with Spring Boot",
-    duration: "1.5 Months",
-    originalPrice: "₹12,000",
-    offerPrice: "₹8,000",
-    category: "specialisation",
-    description:
-      "Learn to build scalable, secure backend systems with real-world REST APIs and authentication. Aligned with Aryasree's professional expertise in Spring Boot and microservices.",
-    whatYouLearn: [
-      "Spring Boot fundamentals",
-      "REST API development & best practices",
-      "JWT Authentication & security",
-      "Microservices architecture basics",
-      "Database integration: PostgreSQL / MySQL",
-    ],
-    projects: [
-      "REST API System",
-      "Authentication & Authorisation Service",
-      "Mini Microservices Application",
-    ],
-  },
-  {
-    id: "git-version-control",
-    title: "Git & Version Control",
-    duration: "7 Days",
-    originalPrice: null,
-    offerPrice: "₹1,499",
-    category: "specialisation",
-    description:
-      "A concise, practical course covering everything you need to confidently use Git in professional projects — from basic commands to branching strategies and CI/CD integration.",
-    whatYouLearn: [
-      "Git fundamentals: init, commit, push, pull",
-      "Branching strategies (Git Flow)",
-      "Merge, rebase, and conflict resolution",
-      "Working with GitHub / GitLab",
-      "Integrating Git with CI/CD pipelines",
-    ],
-    projects: [
-      "Team collaboration project using Git",
-      "Setting up a GitLab CI/CD pipeline",
-    ],
-  },
-  {
-    id: "one-on-one-classes",
-    title: "Personalised One-on-One Classes",
-    duration: "Flexible",
-    originalPrice: null,
-    offerPrice: "Contact Us",
-    category: "mentorship",
-    description:
-      "For learners who prefer a fully tailored experience, Zyphraa offers personalised one-on-one mentorship sessions. Completely customised to your skill level, pace, and goals — whether you're a complete beginner or a working professional.",
-    whatsIncluded: [
-      "Fully customised curriculum based on your goals",
-      "Flexible scheduling — mornings, evenings, or weekends",
-      "Direct mentorship from an experienced Java Spring Boot developer & project lead",
-      "Code reviews, doubt-clearing, and end-to-end project guidance",
-      "Available for: Full Stack, Backend, Frontend, Git, DevOps basics",
-    ],
-  },
-];
+import { coursesData } from "@/config/courses";
+import Reveal from "./Reveal";
 
 const CategoryLabel = ({ text }: { text: string }) => (
   <p className="text-xs tracking-[0.2em] uppercase font-semibold mb-3 text-center" style={{ color: "#8B6914" }}>
@@ -141,6 +17,7 @@ const SectionHeading = ({ text }: { text: string }) => (
 
 const Courses = () => {
   const flagshipCourses = coursesData.filter((c) => c.category === "flagship");
+  const foundationCourses = coursesData.filter((c) => c.category === "foundation");
   const specialisationCourses = coursesData.filter((c) => c.category === "specialisation");
   const mentorshipCourses = coursesData.filter((c) => c.category === "mentorship");
 
@@ -153,6 +30,7 @@ const Courses = () => {
       <div className="max-w-6xl mx-auto px-4 sm:px-6">
 
         {/* Header */}
+        <Reveal>
         <div className="text-center mb-10 sm:mb-12">
           <p className="text-xs tracking-[0.25em] uppercase font-semibold mb-3" style={{ color: "#8B6914" }}>
             ✦ Course Catalogue 2026
@@ -162,19 +40,23 @@ const Courses = () => {
           </h1>
           <p className="text-base sm:text-lg max-w-3xl mx-auto leading-relaxed" style={{ color: "#6B5744" }}>
             Industry-aligned programmes built around real-world projects, hands-on implementation,
-            and job-ready skills. All courses include practical projects and personalised support.
+            and job-ready skills. All courses include practical projects, personalised support,
+            and live mock interview practice.
           </p>
         </div>
+        </Reveal>
 
         {/* FLAGSHIP */}
         <div className="mb-12 sm:mb-16">
-          <CategoryLabel text="Flagship Programme" />
-          <SectionHeading text="Full Stack Developer Program" />
+          <Reveal>
+            <CategoryLabel text="Flagship Programme" />
+            <SectionHeading text="Full Stack Developer Program" />
+          </Reveal>
           <div className="grid gap-8">
-            {flagshipCourses.map((course) => (
+            {flagshipCourses.map((course, i) => (
+              <Reveal key={course.id} delay={i * 100}>
               <div
-                key={course.id}
-                className="rounded-2xl p-6 sm:p-8 lg:p-10 shadow-sm relative overflow-hidden"
+                className="hover-lift rounded-2xl p-6 sm:p-8 lg:p-10 shadow-sm relative overflow-hidden"
                 style={{ backgroundColor: "#F5EFE6", border: "1px solid #D4C5A9" }}
               >
                 {course.badge && (
@@ -234,25 +116,118 @@ const Courses = () => {
 
                 <Link
                   href={`/courses/${course.id}`}
-                  className="inline-block px-6 py-3 rounded-full font-semibold text-sm tracking-wide transition-opacity hover:opacity-85"
+                  className="inline-block px-6 py-3 rounded-full font-semibold text-sm tracking-wide transition-all hover:opacity-85 hover:-translate-y-0.5"
                   style={{ backgroundColor: "#2D4A3E", color: "#F5EFE6" }}
                 >
                   View Details & Enrol ✦
                 </Link>
               </div>
+              </Reveal>
+            ))}
+          </div>
+        </div>
+
+        {/* FOUNDATION */}
+        <div className="mb-12 sm:mb-16">
+          <Reveal>
+            <CategoryLabel text="Foundation Programmes" />
+            <SectionHeading text="Start Your Specialisation From Zero" />
+          </Reveal>
+          <div className="grid gap-8">
+            {foundationCourses.map((course, i) => (
+              <Reveal key={course.id} delay={i * 100}>
+              <div
+                className="hover-lift rounded-2xl p-6 sm:p-8 lg:p-10 shadow-sm relative overflow-hidden"
+                style={{ backgroundColor: "#F5EFE6", border: "1px solid #D4C5A9" }}
+              >
+                {course.badge && (
+                  <span
+                    className="absolute top-5 right-5 px-3 py-1 rounded-full text-xs font-semibold"
+                    style={{ backgroundColor: "#8B6914", color: "#F5EFE6" }}
+                  >
+                    {course.badge}
+                  </span>
+                )}
+
+                <div className="flex flex-col sm:flex-row justify-between items-start mb-4 gap-4">
+                  <h3 className="text-xl sm:text-2xl font-serif font-bold pr-28 sm:pr-0" style={{ color: "#2D4A3E" }}>
+                    {course.title}
+                  </h3>
+                  <div className="text-left sm:text-right flex-shrink-0">
+                    <p className="text-xs mb-1" style={{ color: "#8B6914" }}>Duration: {course.duration}</p>
+                    {course.originalPrice && (
+                      <span className="text-sm line-through mr-2" style={{ color: "#9C8570" }}>
+                        {course.originalPrice}
+                      </span>
+                    )}
+                    <span className="text-2xl font-serif font-bold" style={{ color: "#2D4A3E" }}>
+                      {course.offerPrice}
+                    </span>
+                  </div>
+                </div>
+
+                {course.batchInfo && (
+                  <p
+                    className="inline-block text-xs font-semibold px-3 py-1 rounded-full mb-4"
+                    style={{ backgroundColor: "#EDE5D4", color: "#8B6914", border: "1px solid #D4C5A9" }}
+                  >
+                    ✦ {course.batchInfo}
+                  </p>
+                )}
+
+                <p className="text-sm sm:text-base leading-relaxed text-justify mb-6" style={{ color: "#6B5744" }}>
+                  {course.description}
+                </p>
+
+                <div className="grid sm:grid-cols-2 gap-6 mb-8">
+                  <div>
+                    <h4 className="font-semibold text-sm mb-3" style={{ color: "#2D4A3E" }}>What You'll Learn:</h4>
+                    <ul className="space-y-1.5">
+                      {course.whatYouLearn?.map((item) => (
+                        <li key={item} className="flex items-start gap-2 text-xs" style={{ color: "#4A3728" }}>
+                          <span className="mt-1 w-1.5 h-1.5 rounded-full flex-shrink-0" style={{ backgroundColor: "#8B6914" }} />
+                          {item}
+                        </li>
+                      ))}
+                    </ul>
+                  </div>
+                  <div>
+                    <h4 className="font-semibold text-sm mb-3" style={{ color: "#2D4A3E" }}>Projects:</h4>
+                    <ul className="space-y-1.5">
+                      {course.projects?.map((project) => (
+                        <li key={project} className="flex items-start gap-2 text-xs" style={{ color: "#4A3728" }}>
+                          <span className="mt-1 w-1.5 h-1.5 rounded-full flex-shrink-0" style={{ backgroundColor: "#2D4A3E" }} />
+                          {project}
+                        </li>
+                      ))}
+                    </ul>
+                  </div>
+                </div>
+
+                <Link
+                  href={`/courses/${course.id}`}
+                  className="inline-block px-6 py-3 rounded-full font-semibold text-sm tracking-wide transition-all hover:opacity-85 hover:-translate-y-0.5"
+                  style={{ backgroundColor: "#2D4A3E", color: "#F5EFE6" }}
+                >
+                  View Details & Enrol ✦
+                </Link>
+              </div>
+              </Reveal>
             ))}
           </div>
         </div>
 
         {/* SPECIALISATION */}
         <div className="mb-12 sm:mb-16">
-          <CategoryLabel text="Specialisation Courses" />
-          <SectionHeading text="Focused Learning Paths" />
+          <Reveal>
+            <CategoryLabel text="Specialisation Courses" />
+            <SectionHeading text="Focused Learning Paths" />
+          </Reveal>
           <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
-            {specialisationCourses.map((course) => (
+            {specialisationCourses.map((course, i) => (
+              <Reveal key={course.id} delay={i * 80}>
               <div
-                key={course.id}
-                className="rounded-2xl p-6 shadow-sm flex flex-col"
+                className="hover-lift rounded-2xl p-6 shadow-sm flex flex-col h-full"
                 style={{ backgroundColor: "#F5EFE6", border: "1px solid #D4C5A9" }}
               >
                 <div className="mb-4">
@@ -302,24 +277,27 @@ const Courses = () => {
 
                 <Link
                   href={`/courses/${course.id}`}
-                  className="mt-auto block text-center py-2.5 rounded-full text-xs font-semibold tracking-wide transition-opacity hover:opacity-85"
+                  className="mt-auto block text-center py-2.5 rounded-full text-xs font-semibold tracking-wide transition-all hover:opacity-85 hover:-translate-y-0.5"
                   style={{ backgroundColor: "#2D4A3E", color: "#F5EFE6" }}
                 >
                   View Details & Enrol
                 </Link>
               </div>
+              </Reveal>
             ))}
           </div>
         </div>
 
         {/* ONE-ON-ONE */}
         <div className="mb-12 sm:mb-16">
-          <CategoryLabel text="Personalised Mentorship" />
-          <SectionHeading text="One-on-One Classes" />
+          <Reveal>
+            <CategoryLabel text="Personalised Mentorship" />
+            <SectionHeading text="One-on-One Classes" />
+          </Reveal>
           {mentorshipCourses.map((course) => (
+            <Reveal key={course.id}>
             <div
-              key={course.id}
-              className="rounded-2xl p-6 sm:p-8 lg:p-10 shadow-sm"
+              className="hover-lift rounded-2xl p-6 sm:p-8 lg:p-10 shadow-sm"
               style={{ backgroundColor: "#F5EFE6", border: "1px solid #D4C5A9" }}
             >
               <div className="flex flex-col sm:flex-row justify-between items-start mb-4 gap-4">
@@ -352,16 +330,18 @@ const Courses = () => {
 
               <a
                 href="mailto:aryasree.zyphraa@gmail.com"
-                className="inline-block px-6 py-3 rounded-full font-semibold text-sm tracking-wide transition-opacity hover:opacity-85"
+                className="inline-block px-6 py-3 rounded-full font-semibold text-sm tracking-wide transition-all hover:opacity-85 hover:-translate-y-0.5"
                 style={{ backgroundColor: "#2D4A3E", color: "#F5EFE6" }}
               >
                 Contact Us to Enquire ✦
               </a>
             </div>
+            </Reveal>
           ))}
         </div>
 
         {/* COURSE SUMMARY TABLE */}
+        <Reveal>
         <div
           className="rounded-2xl p-6 sm:p-8 shadow-sm"
           style={{ backgroundColor: "#F5EFE6", border: "1px solid #D4C5A9" }}
@@ -384,7 +364,7 @@ const Courses = () => {
                 </tr>
               </thead>
               <tbody>
-                {coursesData.map((course, i) => (
+                {coursesData.filter((c) => c.category !== "workshop").map((course, i) => (
                   <tr
                     key={course.id}
                     style={{ borderBottom: "1px solid #E8DCC8", backgroundColor: i % 2 === 0 ? "transparent" : "#EDE5D4" }}
@@ -399,11 +379,12 @@ const Courses = () => {
             </table>
           </div>
           <p className="text-xs mt-5 text-center leading-relaxed" style={{ color: "#9C8570" }}>
-            Zyphraa Online Learning Platform · All courses include hands-on projects.
+            Zyphraa Online Learning Platform · All courses include hands-on projects and mock interview practice.
             For enrolment enquiries contact{" "}
             <a href="mailto:aryasree.zyphraa@gmail.com" className="underline">aryasree.zyphraa@gmail.com</a>
           </p>
         </div>
+        </Reveal>
 
       </div>
     </section>
