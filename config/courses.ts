@@ -146,8 +146,8 @@ export const coursesData: Course[] = [
     id: "backend-spring-boot",
     title: "Backend Development with Spring Boot",
     duration: "1.5 Months",
-    originalPrice: "₹45,000",
-    offerPrice: "₹39,999",
+    originalPrice: "₹20,000",
+    offerPrice: "₹15,000",
     category: "specialisation",
     description:
       "Learn to build scalable, secure backend systems with real-world REST APIs and authentication. Aligned with Aryasree's professional expertise in Spring Boot and microservices.",
