@@ -21,8 +21,14 @@ const milestones = [
     stat: "1",
     label: "Frontend Developer — Placed",
     detail:
-      "A Frontend Mastery graduate is now placed in a frontend developer role, and has enrolled in the Python & AI/ML Foundation batch to keep growing.",
+      "A Frontend Mastery graduate is now placed in a frontend developer-Intern role.",
   },
+  {
+    icon: "💻",
+    stat: "1",
+    label: "AI-ML",
+    detail: "A workshop candidate has enrolled in the Python & AI/ML Foundation batch to keep growing"
+  }
 ];
 
 const Achievements = () => {
