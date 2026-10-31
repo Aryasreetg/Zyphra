@@ -190,7 +190,7 @@ export const coursesData: Course[] = [
     title: "3-Day Live Workshop",
     duration: "3 Days (2 Hours / Day)",
     originalPrice: null,
-    offerPrice: "2999",
+    offerPrice: "₹2,999",
     category: "workshop",
     description:
       "Kickstart your tech journey with this beginner-friendly live workshop. In just 3 days, you will get hands-on exposure to Full Stack Development, Manual Testing, and DevOps by building a real mini-project — the fastest way to discover which specialisation suits you best before enrolling in a full programme.",
@@ -254,6 +254,20 @@ export const courseEnrolLinks: Record<string, string> = {
 export const defaultEnrolLink = "https://forms.gle/AdaaT56F6GMVCEUu9";
 
 export function getEnrolLink(course: Pick<Course, "id" | "offerPrice">) {
-  if (course.offerPrice === "Contact Us") return "mailto:aryasree.zyphraa@gmail.com";
+  if (course.offerPrice === "Contact Us") return `/?course=${course.id}#contact`;
   return courseEnrolLinks[course.id] ?? defaultEnrolLink;
+}
+
+// Options for the "Interested in" dropdown on the contact form. Also used by
+// the admin panel to show a readable name for each enquiry's topic.
+export const enquiryTopics: { value: string; label: string }[] = [
+  ...coursesData.map((c) => ({ value: c.id, label: c.title })),
+  { value: "mock-interview", label: "Mock Interview Practice" },
+  { value: "campus-workshop", label: "Campus / College Workshop" },
+  { value: "general", label: "General Question" },
+];
+
+export function topicLabel(value: string | null | undefined) {
+  if (!value) return "—";
+  return enquiryTopics.find((t) => t.value === value)?.label ?? value;
 }

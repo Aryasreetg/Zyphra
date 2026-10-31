@@ -1,5 +1,9 @@
 import React from "react";
 import Reveal from "./Reveal";
+import { coursesData } from "@/config/courses";
+
+// Price comes from config/courses.ts so it always matches the rest of the site
+const workshopPrice = coursesData.find((c) => c.id === "3-day-workshop")?.offerPrice ?? "";
 
 const workshopDays = [
   {
@@ -142,7 +146,7 @@ const Workshop = () => {
               <p className="text-xs tracking-widest uppercase mb-2" style={{ color: "#C4A96A" }}>
                 Invest in Your Future ✦
               </p>
-              <div className="text-5xl sm:text-6xl font-serif font-bold mb-1">₹999</div>
+              <div className="text-5xl sm:text-6xl font-serif font-bold mb-1">{workshopPrice}</div>
               <p className="text-sm opacity-75 mb-4">One-time · Limited seats only</p>
               <p
                 className="text-sm italic font-medium"
@@ -249,7 +253,7 @@ const Workshop = () => {
               className="px-8 py-4 rounded-full font-bold text-sm tracking-wide transition-all hover:opacity-85 hover:-translate-y-0.5 shadow-lg"
               style={{ backgroundColor: "#F5EFE6", color: "#2D4A3E" }}
             >
-              Register Now — ₹999 ✦
+              Register Now — {workshopPrice} ✦
             </a>
             <p className="text-xs" style={{ color: "#C4A96A" }}>
               Limited to 20 students · First come, first served

@@ -368,6 +368,15 @@ export default async function CoursePage({ params }: CoursePageProps) {
             >
               {isContact ? "Contact Us ✦" : "Enrol Now — " + course.offerPrice + " ✦"}
             </a>
+            {!isContact && (
+              <Link
+                href={`/?course=${course.id}#contact`}
+                className="view-all-btn px-8 py-3.5 rounded-full font-semibold text-sm tracking-wide transition-colors"
+                style={{ border: `1.5px solid rgba(245,239,230,0.4)`, color: C.cream }}
+              >
+                Ask a Question
+              </Link>
+            )}
             <Link
               href="/#courses"
               className="view-all-btn px-8 py-3.5 rounded-full font-semibold text-sm tracking-wide transition-colors"
