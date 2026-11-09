@@ -106,8 +106,8 @@ export const coursesData: Course[] = [
     id: "frontend-mastery",
     title: "Frontend Mastery",
     duration: "1.5 Months",
-    originalPrice: "₹18,000",
-    offerPrice: "₹12,500",
+    originalPrice: "₹20,000",
+    offerPrice: "₹15,000",
     category: "specialisation",
     description:
       "Master modern frontend development by building responsive, high-performance web applications. Gain hands-on experience with industry-standard tools and best practices in UI/UX.",
