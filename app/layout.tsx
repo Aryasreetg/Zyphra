@@ -1,8 +1,23 @@
 import type { Metadata } from 'next';
 import './globals.css';
+import { Fraunces, Instrument_Sans } from 'next/font/google';
+
+// Display serif with real character (optical sizes + soft italics), paired with a crisp grotesk
+const display = Fraunces({
+  subsets: ['latin'],
+  variable: '--font-display',
+  axes: ['opsz', 'SOFT'],
+  style: ['normal', 'italic'],
+  display: 'swap',
+});
+const body = Instrument_Sans({
+  subsets: ['latin'],
+  variable: '--font-body',
+  display: 'swap',
+});
 
 export const metadata: Metadata = {
-  title: 'Zyphra | Build Real-World Skills, Ship Real Projects, Become Job-Ready',
+  title: 'Zyphraa — Mentor-led, project-first tech education',
   description:
     'Zyphra — where you build real-world skills, ship real projects, and become a job-ready developer ',
   keywords:
@@ -23,7 +38,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="en" className="scroll-smooth scroll-pt-20">
+    <html lang="en" className={`scroll-smooth scroll-pt-24 ${display.variable} ${body.variable}`}>
       <head>
         <meta charSet="utf-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1" />

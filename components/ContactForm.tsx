@@ -4,7 +4,6 @@ import React, { useActionState, useState } from "react";
 import { useSearchParams } from "next/navigation";
 import { submitEnquiry, type ContactState } from "@/app/actions/contact";
 import { coursesData, enquiryTopics as ENQUIRY_TOPICS } from "@/config/courses";
-import { GraduationCap } from "lucide-react";
 import { C } from "@/lib/theme";
 
 const initialState: ContactState = { status: "idle" };
@@ -40,12 +39,12 @@ const ContactForm = () => {
   if (state.status === "success" && dismissed !== state) {
     return (
       <div className="pop-in flex flex-col items-center justify-center text-center h-full py-10">
-        <div className="w-20 h-20 rounded-full flex items-center justify-center mb-5" style={{ backgroundColor: C.green }}>
+        <div className="w-16 h-16 rounded-full flex items-center justify-center mb-5" style={{ backgroundColor: C.primary }}>
           <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke={C.cream} strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
             <path className="draw-check" d="M5 12.5l4.5 4.5L19 7.5" />
           </svg>
         </div>
-        <h3 className="font-serif font-bold text-2xl mb-2" style={{ color: C.green }}>Message sent!</h3>
+        <h3 className="display text-[2rem] mb-2" style={{ color: C.primary }}>Message sent!</h3>
         <p className="text-sm max-w-sm" style={{ color: C.brownMid }}>{state.message}</p>
         <button
           type="button"
@@ -53,7 +52,7 @@ const ContactForm = () => {
             setDismissed(state);
           }}
           className="mt-4 text-sm font-semibold underline underline-offset-4"
-          style={{ color: C.gold }}
+          style={{ color: C.bronze }}
         >
           Send another message
         </button>
@@ -79,11 +78,8 @@ const ContactForm = () => {
       </div>
 
       {enrolCourse && (
-        <div className="pop-in flex items-center gap-3 rounded-xl px-4 py-3" style={{ backgroundColor: "#DDEFE3", border: "1px solid #B9DCC5" }}>
-          <span className="w-9 h-9 rounded-lg flex items-center justify-center flex-shrink-0" style={{ backgroundColor: C.green }}>
-            <GraduationCap className="w-5 h-5" style={{ color: C.cream }} />
-          </span>
-          <p className="text-sm mb-0" style={{ color: C.green }}>
+        <div className="pop-in px-5 py-4 border-l-2" style={{ backgroundColor: C.parchment, borderColor: C.bronze }}>
+          <p className="text-[15px] mb-0" style={{ color: C.primary }}>
             You&rsquo;re enrolling in <strong>{enrolCourse.title}</strong> — {enrolCourse.offerPrice}.
             <span className="block text-xs" style={{ color: C.brownMid }}>
               Fill in your details and we&rsquo;ll send batch dates and payment details within 24 hours.
@@ -94,14 +90,14 @@ const ContactForm = () => {
 
       <div className="grid sm:grid-cols-2 gap-4">
         <div>
-          <label htmlFor="name" className="block text-xs font-semibold mb-1.5 tracking-wide" style={{ color: C.green }}>
+          <label htmlFor="name" className="block text-[11px] font-semibold mb-2 tracking-[0.14em] uppercase" style={{ color: C.primary }}>
             Full name *
           </label>
           <input id="name" name="name" defaultValue={v.name} required autoComplete="name" placeholder="Your name" className="field" aria-invalid={Boolean(err.name)} />
           <FieldError msg={err.name} />
         </div>
         <div>
-          <label htmlFor="email" className="block text-xs font-semibold mb-1.5 tracking-wide" style={{ color: C.green }}>
+          <label htmlFor="email" className="block text-[11px] font-semibold mb-2 tracking-[0.14em] uppercase" style={{ color: C.primary }}>
             Email *
           </label>
           <input id="email" name="email" defaultValue={v.email} type="email" required autoComplete="email" placeholder="you@example.com" className="field" aria-invalid={Boolean(err.email)} />
@@ -111,14 +107,14 @@ const ContactForm = () => {
 
       <div className="grid sm:grid-cols-2 gap-4">
         <div>
-          <label htmlFor="phone" className="block text-xs font-semibold mb-1.5 tracking-wide" style={{ color: C.green }}>
+          <label htmlFor="phone" className="block text-[11px] font-semibold mb-2 tracking-[0.14em] uppercase" style={{ color: C.primary }}>
             Phone / WhatsApp
           </label>
           <input id="phone" name="phone" defaultValue={v.phone} type="tel" autoComplete="tel" placeholder="+91 98765 43210" className="field" aria-invalid={Boolean(err.phone)} />
           <FieldError msg={err.phone} />
         </div>
         <div>
-          <label htmlFor="course" className="block text-xs font-semibold mb-1.5 tracking-wide" style={{ color: C.green }}>
+          <label htmlFor="course" className="block text-[11px] font-semibold mb-2 tracking-[0.14em] uppercase" style={{ color: C.primary }}>
             Interested in
           </label>
           <select key={initialCourse} id="course" name="course" className="field" defaultValue={initialCourse}>
@@ -133,7 +129,7 @@ const ContactForm = () => {
       </div>
 
       <div>
-        <label htmlFor="message" className="flex justify-between text-xs font-semibold mb-1.5 tracking-wide" style={{ color: C.green }}>
+        <label htmlFor="message" className="flex justify-between text-[11px] font-semibold mb-2 tracking-[0.14em] uppercase" style={{ color: C.primary }}>
           <span>{enrolCourse ? "Message *" : "Your question *"}</span>
           <span className="font-normal" style={{ color: messageLen > 2000 ? C.red : C.brownLight }}>{messageLen}/2000</span>
         </label>
@@ -154,7 +150,7 @@ const ContactForm = () => {
       </div>
 
       {state.status === "error" && state.message && (
-        <div className="pop-in rounded-xl px-4 py-3 text-sm" style={{ backgroundColor: "#FBEAE5", color: C.red, border: "1px solid #F0C4B8" }}>
+        <div className="pop-in px-4 py-3 text-sm border-l-2" style={{ backgroundColor: "#FBEAE5", color: C.red, borderColor: C.red }}>
           {state.message}
         </div>
       )}
@@ -162,8 +158,7 @@ const ContactForm = () => {
       <button
         type="submit"
         disabled={pending}
-        className="btn-shine w-full sm:w-auto inline-flex items-center justify-center gap-2 px-8 py-3.5 rounded-full font-semibold text-sm tracking-wide hover:-translate-y-0.5 shadow-md disabled:opacity-70 disabled:cursor-wait"
-        style={{ backgroundColor: C.green, color: C.cream }}
+        className="btn-z btn-solid w-full sm:w-auto disabled:opacity-70 disabled:cursor-wait"
       >
         {pending ? (
           <>
@@ -171,7 +166,9 @@ const ContactForm = () => {
             Sending…
           </>
         ) : (
-          <>{enrolCourse ? "Send Enrolment Request ✦" : "Send Message ✦"}</>
+          <>
+            {enrolCourse ? "Send Enrolment Request" : "Send Message"} <span className="arr" aria-hidden>→</span>
+          </>
         )}
       </button>
       <p className="text-[11px] mb-0" style={{ color: C.brownLight }}>

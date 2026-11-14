@@ -48,7 +48,7 @@ const Workshop = () => {
     <section
       id="workshop"
       className="py-12 sm:py-16 md:py-20"
-      style={{ backgroundColor: "#F5EFE6" }}
+      style={{ backgroundColor: "#F8F3EA" }}
     >
       <div className="max-w-6xl mx-auto px-4 sm:px-6">
 
@@ -57,17 +57,17 @@ const Workshop = () => {
         <div className="text-center mb-10 sm:mb-12">
           <p
             className="text-xs tracking-[0.25em] uppercase font-semibold mb-3"
-            style={{ color: "#8B6914" }}
+            style={{ color: "#86592B" }}
           >
             ✦ Happening at the End of May!
           </p>
           <h2
             className="text-4xl sm:text-5xl md:text-6xl font-serif font-bold mb-4 leading-tight"
-            style={{ color: "#2D4A3E" }}
+            style={{ color: "#1B2A41" }}
           >
             3-Day Live Workshop
           </h2>
-          <p className="text-base sm:text-lg max-w-2xl mx-auto leading-relaxed" style={{ color: "#6B5744" }}>
+          <p className="text-base sm:text-lg max-w-2xl mx-auto leading-relaxed" style={{ color: "#5C5047" }}>
             A hands-on workshop to kickstart your IT journey. Discover which specialisation suits
             you best before enrolling in a full programme.
           </p>
@@ -81,10 +81,10 @@ const Workshop = () => {
               { value: "100%", label: "Online" },
             ].map(({ value, label }) => (
               <div key={label} className="text-center">
-                <div className="text-3xl sm:text-4xl font-serif font-bold" style={{ color: "#2D4A3E" }}>
+                <div className="text-3xl sm:text-4xl font-serif font-bold" style={{ color: "#1B2A41" }}>
                   {value}
                 </div>
-                <div className="text-xs mt-1 tracking-widest uppercase" style={{ color: "#8B6914" }}>
+                <div className="text-xs mt-1 tracking-widest uppercase" style={{ color: "#86592B" }}>
                   {label}
                 </div>
               </div>
@@ -100,9 +100,9 @@ const Workshop = () => {
           <Reveal>
           <div
             className="hover-lift rounded-2xl p-6 sm:p-8 shadow-sm h-full"
-            style={{ backgroundColor: "#EDE5D4", border: "1px solid #D4C5A9" }}
+            style={{ backgroundColor: "#EFE6D6", border: "1px solid #D6C9B1" }}
           >
-            <h3 className="text-xl font-serif font-bold mb-6" style={{ color: "#2D4A3E" }}>
+            <h3 className="text-xl font-serif font-bold mb-6" style={{ color: "#1B2A41" }}>
               What You'll Learn
             </h3>
             <div className="space-y-7">
@@ -110,22 +110,22 @@ const Workshop = () => {
                 <div key={day} className="flex gap-4">
                   <div
                     className="flex-shrink-0 w-10 h-10 rounded-full flex items-center justify-center font-serif font-bold text-base"
-                    style={{ backgroundColor: "#2D4A3E", color: "#F5EFE6" }}
+                    style={{ backgroundColor: "#1B2A41", color: "#F8F3EA" }}
                   >
                     {day}
                   </div>
                   <div>
-                    <p className="text-xs tracking-widest uppercase font-semibold mb-1" style={{ color: "#8B6914" }}>
+                    <p className="text-xs tracking-widest uppercase font-semibold mb-1" style={{ color: "#86592B" }}>
                       Day {day}
                     </p>
-                    <h4 className="font-semibold text-base mb-1" style={{ color: "#2D4A3E" }}>
+                    <h4 className="font-semibold text-base mb-1" style={{ color: "#1B2A41" }}>
                       {title}
                     </h4>
-                    <p className="text-sm mb-2" style={{ color: "#6B5744" }}>{description}</p>
+                    <p className="text-sm mb-2" style={{ color: "#5C5047" }}>{description}</p>
                     <ul className="space-y-1">
                       {points.map((pt) => (
-                        <li key={pt} className="flex items-start gap-2 text-xs" style={{ color: "#4A3728" }}>
-                          <span className="mt-1 w-1.5 h-1.5 rounded-full flex-shrink-0" style={{ backgroundColor: "#8B6914" }} />
+                        <li key={pt} className="flex items-start gap-2 text-xs" style={{ color: "#3A322B" }}>
+                          <span className="mt-1 w-1.5 h-1.5 rounded-full flex-shrink-0" style={{ backgroundColor: "#86592B" }} />
                           {pt}
                         </li>
                       ))}
@@ -144,16 +144,16 @@ const Workshop = () => {
             <Reveal delay={100}>
             <div
               className="hover-lift rounded-2xl p-6 sm:p-8 text-center shadow-sm"
-              style={{ backgroundColor: "#2D4A3E", color: "#F5EFE6" }}
+              style={{ backgroundColor: "#1B2A41", color: "#F8F3EA" }}
             >
-              <p className="text-xs tracking-widest uppercase mb-2" style={{ color: "#C4A96A" }}>
+              <p className="text-xs tracking-widest uppercase mb-2" style={{ color: "#D2A877" }}>
                 Invest in Your Future ✦
               </p>
               <div className="text-5xl sm:text-6xl font-serif font-bold mb-1">{workshopPrice}</div>
               <p className="text-sm opacity-75 mb-4">One-time · Limited seats only</p>
               <p
                 className="text-sm italic font-medium"
-                style={{ color: "#C4A96A" }}
+                style={{ color: "#D2A877" }}
               >
                 Don't miss out!
               </p>
@@ -164,9 +164,9 @@ const Workshop = () => {
             <Reveal delay={180}>
             <div
               className="hover-lift rounded-2xl p-6 sm:p-8 shadow-sm"
-              style={{ backgroundColor: "#EDE5D4", border: "1px solid #D4C5A9" }}
+              style={{ backgroundColor: "#EFE6D6", border: "1px solid #D6C9B1" }}
             >
-              <h3 className="font-serif font-bold text-lg mb-4" style={{ color: "#2D4A3E" }}>
+              <h3 className="font-serif font-bold text-lg mb-4" style={{ color: "#1B2A41" }}>
                 What You'll Get
               </h3>
               <ul className="space-y-3">
@@ -178,10 +178,10 @@ const Workshop = () => {
                   "Downloadable resources & code samples",
                   "Access to mock interview practice after graduating",
                 ].map((item, i) => (
-                  <li key={i} className="flex items-start gap-3 text-sm" style={{ color: "#4A3728" }}>
+                  <li key={i} className="flex items-start gap-3 text-sm" style={{ color: "#3A322B" }}>
                     <span
                       className="flex-shrink-0 w-5 h-5 rounded-full flex items-center justify-center text-xs font-bold"
-                      style={{ backgroundColor: "#2D4A3E", color: "#F5EFE6" }}
+                      style={{ backgroundColor: "#1B2A41", color: "#F8F3EA" }}
                     >
                       {i + 1}
                     </span>
@@ -214,9 +214,9 @@ const Workshop = () => {
         <Reveal>
         <div
           className="rounded-2xl p-6 sm:p-8 mb-8 sm:mb-10 text-center"
-          style={{ backgroundColor: "#EDE5D4", border: "1px solid #D4C5A9" }}
+          style={{ backgroundColor: "#EFE6D6", border: "1px solid #D6C9B1" }}
         >
-          <h3 className="font-serif font-bold text-xl mb-6" style={{ color: "#2D4A3E" }}>
+          <h3 className="font-serif font-bold text-xl mb-6" style={{ color: "#1B2A41" }}>
             Who Can Join?
           </h3>
           <div className="flex flex-wrap justify-center gap-4 mb-4">
@@ -224,13 +224,13 @@ const Workshop = () => {
               <div
                 key={who}
                 className="px-5 py-2 rounded-full text-sm font-medium"
-                style={{ backgroundColor: "#F5EFE6", border: "1px solid #D4C5A9", color: "#4A3728" }}
+                style={{ backgroundColor: "#F8F3EA", border: "1px solid #D6C9B1", color: "#3A322B" }}
               >
                 {who}
               </div>
             ))}
           </div>
-          <p className="text-xs italic" style={{ color: "#8B6914" }}>
+          <p className="text-xs italic" style={{ color: "#86592B" }}>
             ♡ No prior experience needed. Just curiosity & the will to learn!
           </p>
         </div>
@@ -240,23 +240,23 @@ const Workshop = () => {
         <Reveal>
         <div
           className="rounded-2xl p-8 sm:p-12 text-center"
-          style={{ backgroundColor: "#2D4A3E" }}
+          style={{ backgroundColor: "#1B2A41" }}
         >
-          <h3 className="text-2xl sm:text-3xl font-serif font-bold mb-3" style={{ color: "#F5EFE6" }}>
+          <h3 className="text-2xl sm:text-3xl font-serif font-bold mb-3" style={{ color: "#F8F3EA" }}>
             Ready to Start Your Tech Journey?
           </h3>
-          <p className="text-sm sm:text-base mb-8 max-w-xl mx-auto leading-relaxed" style={{ color: "#C4A96A" }}>
+          <p className="text-sm sm:text-base mb-8 max-w-xl mx-auto leading-relaxed" style={{ color: "#D2A877" }}>
             Secure your spot today and take the first step toward your dream career. ♡
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center items-center">
             <Link
               href={workshopEnrolLink}
               className="px-8 py-4 rounded-full font-bold text-sm tracking-wide transition-all hover:opacity-85 hover:-translate-y-0.5 shadow-lg"
-              style={{ backgroundColor: "#F5EFE6", color: "#2D4A3E" }}
+              style={{ backgroundColor: "#F8F3EA", color: "#1B2A41" }}
             >
               Register Now — {workshopPrice} ✦
             </Link>
-            <p className="text-xs" style={{ color: "#C4A96A" }}>
+            <p className="text-xs" style={{ color: "#D2A877" }}>
               Limited to 20 students · First come, first served
             </p>
           </div>

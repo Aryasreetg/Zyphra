@@ -2,95 +2,84 @@ import React from "react";
 import Link from "next/link";
 import { coursesData } from "@/config/courses";
 import { C } from "@/lib/theme";
-import { Mail, Instagram, Linkedin, Send } from "lucide-react";
-import SectionBg from "./SectionBg";
+
+const EXPLORE = [
+  ["About", "/#about"],
+  ["Courses", "/#courses"],
+  ["How it works", "/#journey"],
+  ["FAQ", "/#faq"],
+  ["Contact", "/#contact"],
+  ["Campus workshops", "/campus"],
+];
 
 const Footer = () => {
   const year = new Date().getFullYear();
   const featured = coursesData.filter((c) => c.category !== "workshop" && c.category !== "mentorship").slice(0, 5);
+  const linkStyle = { color: "rgba(248,243,234,0.78)" };
 
   return (
-    <footer className="relative overflow-hidden" style={{ backgroundColor: C.greenDark, color: C.cream }}>
-      <SectionBg pattern="dotsLight" opacity={1} fade="bottom" />
-      <div className="relative max-w-6xl mx-auto px-4 sm:px-6 py-12 sm:py-14 grid gap-10 sm:grid-cols-2 lg:grid-cols-4">
-        <div className="lg:col-span-1">
-          <p className="text-2xl font-serif font-bold mb-1" style={{ color: C.cream }}>Zyphraa</p>
-          <p className="text-[10px] tracking-[0.2em] uppercase mb-4" style={{ color: C.goldLight }}>A Space for Skills & Growth</p>
-          <p className="text-sm leading-relaxed" style={{ color: "rgba(245,239,230,0.7)" }}>
-            Practical, project-first tech education that takes you from learning code to shipping real
-            products — and landing the job.
-          </p>
-        </div>
+    <footer style={{ backgroundColor: C.primaryDark, color: C.cream }}>
+      <div className="wrap pt-20 pb-10">
+        <div className="grid gap-12 md:grid-cols-12 pb-16 border-b rule-light">
+          <div className="md:col-span-5">
+            <p className="display text-[2.2rem] leading-tight mb-5" style={{ color: C.cream }}>
+              Learn it. Build it. <em style={{ color: C.bronzeLight }}>Ship it.</em>
+            </p>
+            <p className="text-[15px] leading-relaxed max-w-sm mb-8" style={{ color: "rgba(248,243,234,0.7)" }}>
+              Practical, project-first tech education that takes you from learning code to shipping real products —
+              and landing the job.
+            </p>
+            <Link href="/#contact" className="btn-z btn-cream">
+              Send a query <span className="arr" aria-hidden>→</span>
+            </Link>
+          </div>
 
-        <div>
-          <p className="text-xs tracking-widest uppercase font-semibold mb-4" style={{ color: C.goldLight }}>Explore</p>
-          <ul className="space-y-2 text-sm">
-            {[
-              ["About", "/#about"],
-              ["Courses", "/#courses"],
-              ["How It Works", "/#journey"],
-              ["FAQ", "/#faq"],
-              ["Campus Workshops", "/campus"],
-              ["Contact", "/#contact"],
-            ].map(([label, href]) => (
-              <li key={href} className="mb-0">
-                <Link href={href} className="hover:underline underline-offset-4" style={{ color: "rgba(245,239,230,0.8)" }}>
-                  {label}
-                </Link>
+          <nav className="md:col-span-2 md:col-start-7" aria-label="Explore">
+            <p className="text-[11px] tracking-[0.18em] uppercase font-semibold mb-5" style={{ color: C.bronzeLight }}>Explore</p>
+            <ul className="space-y-3 text-[14.5px] mb-0">
+              {EXPLORE.map(([label, href]) => (
+                <li key={href} className="mb-0">
+                  <Link href={href} className="ulink font-normal" style={linkStyle}>{label}</Link>
+                </li>
+              ))}
+            </ul>
+          </nav>
+
+          <nav className="md:col-span-2" aria-label="Popular courses">
+            <p className="text-[11px] tracking-[0.18em] uppercase font-semibold mb-5" style={{ color: C.bronzeLight }}>Courses</p>
+            <ul className="space-y-3 text-[14.5px] mb-0">
+              {featured.map((c) => (
+                <li key={c.id} className="mb-0">
+                  <Link href={`/courses/${c.id}`} className="ulink font-normal" style={linkStyle}>{c.title}</Link>
+                </li>
+              ))}
+            </ul>
+          </nav>
+
+          <div className="md:col-span-2">
+            <p className="text-[11px] tracking-[0.18em] uppercase font-semibold mb-5" style={{ color: C.bronzeLight }}>Contact</p>
+            <ul className="space-y-3 text-[14.5px] mb-0">
+              <li className="mb-0">
+                <a href="mailto:aryasree.zyphraa@gmail.com" className="ulink font-normal break-all" style={linkStyle}>Email us</a>
               </li>
-            ))}
-          </ul>
-        </div>
-
-        <div>
-          <p className="text-xs tracking-widest uppercase font-semibold mb-4" style={{ color: C.goldLight }}>Popular Courses</p>
-          <ul className="space-y-2 text-sm">
-            {featured.map((c) => (
-              <li key={c.id} className="mb-0">
-                <Link href={`/courses/${c.id}`} className="hover:underline underline-offset-4" style={{ color: "rgba(245,239,230,0.8)" }}>
-                  {c.title}
-                </Link>
+              <li className="mb-0">
+                <a href="https://www.instagram.com/zyphraa.arya" target="_blank" rel="noopener noreferrer" className="ulink font-normal" style={linkStyle}>Instagram ↗</a>
               </li>
-            ))}
-          </ul>
+              <li className="mb-0">
+                <a href="https://linkedin.com/in/aryasree-tg-027461201" target="_blank" rel="noopener noreferrer" className="ulink font-normal" style={linkStyle}>LinkedIn ↗</a>
+              </li>
+            </ul>
+          </div>
         </div>
 
-        <div>
-          <p className="text-xs tracking-widest uppercase font-semibold mb-4" style={{ color: C.goldLight }}>Get In Touch</p>
-          <ul className="space-y-2 text-sm">
-            <li className="mb-0">
-              <a href="mailto:aryasree.zyphraa@gmail.com" className="inline-flex items-center gap-2 hover:underline underline-offset-4 break-all" style={{ color: "rgba(245,239,230,0.8)" }}>
-                <Mail className="w-4 h-4 flex-shrink-0" style={{ color: C.goldLight }} />
-                aryasree.zyphraa@gmail.com
-              </a>
-            </li>
-            <li className="mb-0">
-              <a href="https://www.instagram.com/zyphraa.arya" target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-2 hover:underline underline-offset-4" style={{ color: "rgba(245,239,230,0.8)" }}>
-                <Instagram className="w-4 h-4" style={{ color: C.goldLight }} />
-                Instagram ↗
-              </a>
-            </li>
-            <li className="mb-0">
-              <a href="https://linkedin.com/in/aryasree-tg-027461201" target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-2 hover:underline underline-offset-4" style={{ color: "rgba(245,239,230,0.8)" }}>
-                <Linkedin className="w-4 h-4" style={{ color: C.goldLight }} />
-                LinkedIn ↗
-              </a>
-            </li>
-          </ul>
-          <Link
-            href="/#contact"
-            className="btn-shine inline-flex items-center gap-2 mt-5 px-5 py-2.5 rounded-full text-sm font-semibold hover:-translate-y-0.5"
-            style={{ backgroundColor: C.cream, color: C.green }}
-          >
-            <Send className="w-4 h-4" />
-            Send a Query
-          </Link>
+        {/* Wordmark */}
+        {/* Decorative wordmark, drawn with CSS so it isn't read as text */}
+        <div aria-hidden className="footer-wordmark display select-none mt-10 mb-6" />
+
+        <div className="flex flex-col sm:flex-row justify-between gap-3 text-[12.5px]" style={{ color: "rgba(248,243,234,0.55)" }}>
+          <p className="mb-0" style={{ color: "rgba(248,243,234,0.62)" }}>© {year} Zyphraa · A space for skills &amp; growth</p>
+          <p className="mb-0" style={{ color: "rgba(248,243,234,0.62)" }}>Built with care for future developers.</p>
         </div>
-      </div>
-      <div className="border-t" style={{ borderColor: "rgba(245,239,230,0.12)" }}>
-        <p className="relative max-w-6xl mx-auto px-4 sm:px-6 py-5 text-xs text-center mb-0" style={{ color: "rgba(245,239,230,0.55)" }}>
-          © {year} Zyphraa. Built with ♡ for future developers.
-        </p>
       </div>
     </footer>
   );

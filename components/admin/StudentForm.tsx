@@ -17,7 +17,7 @@ const STATUS_OPTIONS = [
 function Field({ label, error, children, hint }: { label: string; error?: string; hint?: string; children: React.ReactNode }) {
   return (
     <div>
-      <label className="block text-xs font-semibold mb-1.5" style={{ color: C.green }}>
+      <label className="block text-xs font-semibold mb-1.5" style={{ color: C.primary }}>
         {label}
         {children}
       </label>
@@ -97,7 +97,7 @@ export default function StudentForm({ student }: { student?: Student }) {
 
       {/* Fees */}
       <div className="rounded-2xl p-5" style={{ backgroundColor: C.cream, border: `1px solid ${C.border}` }}>
-        <p className="text-[10px] tracking-[0.2em] uppercase font-semibold mb-3" style={{ color: C.gold }}>Fees (₹)</p>
+        <p className="text-[10px] tracking-[0.2em] uppercase font-semibold mb-3" style={{ color: C.bronze }}>Fees (₹)</p>
         <div className="grid sm:grid-cols-2 gap-4 mb-4">
           <Field label="Total fee" error={err.fee_total}>
             <input name="fee_total" type="number" min={0} step={1} value={feeTotal} onChange={(e) => setFeeTotal(e.target.value)} className="field mt-1.5 font-normal" />
@@ -111,7 +111,7 @@ export default function StudentForm({ student }: { student?: Student }) {
           <span>Balance: ₹{Math.max(0, total - paid).toLocaleString("en-IN")}</span>
         </div>
         <div className="h-2.5 rounded-full overflow-hidden" style={{ backgroundColor: C.sand }}>
-          <div className="h-full rounded-full" style={{ width: `${pct}%`, backgroundColor: pct >= 100 ? "#2D6A4F" : C.gold, transition: "width 400ms ease" }} />
+          <div className="h-full rounded-full" style={{ width: `${pct}%`, backgroundColor: pct >= 100 ? C.primary : C.bronze, transition: "width 400ms ease" }} />
         </div>
       </div>
 
@@ -123,7 +123,7 @@ export default function StudentForm({ student }: { student?: Student }) {
         <p className="pop-in text-sm rounded-xl px-4 py-3 mb-0" style={{ backgroundColor: "#FBEAE5", color: C.red }}>{state.error}</p>
       )}
       {state.saved && (
-        <p className="pop-in text-sm rounded-xl px-4 py-3 mb-0" style={{ backgroundColor: "#DDEFE3", color: "#2D6A4F" }}>✓ Changes saved</p>
+        <p className="pop-in text-sm rounded-xl px-4 py-3 mb-0" style={{ backgroundColor: "#E4E9F1", color: "#1B2A41" }}>✓ Changes saved</p>
       )}
 
       <div className="flex flex-wrap gap-3">
@@ -131,11 +131,11 @@ export default function StudentForm({ student }: { student?: Student }) {
           type="submit"
           disabled={pending}
           className="btn-shine px-6 py-3 rounded-full text-sm font-semibold hover:-translate-y-0.5 disabled:opacity-60"
-          style={{ backgroundColor: C.green, color: C.cream }}
+          style={{ backgroundColor: C.primary, color: C.cream }}
         >
           {pending ? "Saving…" : student ? "Save changes" : "Add student"}
         </button>
-        <Link href="/admin/students" className="px-6 py-3 rounded-full text-sm font-semibold" style={{ border: `1.5px solid ${C.green}`, color: C.green }}>
+        <Link href="/admin/students" className="px-6 py-3 rounded-full text-sm font-semibold" style={{ border: `1.5px solid ${C.primary}`, color: C.primary }}>
           {student ? "Back to list" : "Cancel"}
         </Link>
       </div>

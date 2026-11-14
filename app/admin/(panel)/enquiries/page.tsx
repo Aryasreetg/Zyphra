@@ -67,9 +67,9 @@ export default async function EnquiriesPage({ searchParams }: { searchParams: Se
                 href={tabHref(s)}
                 className="px-3.5 py-1.5 rounded-full text-xs font-semibold"
                 style={{
-                  backgroundColor: active ? C.green : "#FFFDF9",
+                  backgroundColor: active ? C.primary : "#FFFDF8",
                   color: active ? C.cream : C.brown,
-                  border: `1px solid ${active ? C.green : C.border}`,
+                  border: `1px solid ${active ? C.primary : C.border}`,
                 }}
               >
                 {s ? STATUS_STYLES[s].label : "All"} <span className="opacity-70">({countFor(s)})</span>
@@ -80,7 +80,7 @@ export default async function EnquiriesPage({ searchParams }: { searchParams: Se
         <form className="flex gap-2" action="/admin/enquiries">
           {status && <input type="hidden" name="status" value={status} />}
           <input name="q" defaultValue={q ?? ""} placeholder="Search name, email, phone, message…" className="field py-2 text-sm lg:w-72" />
-          <button className="px-4 rounded-full text-sm font-semibold" style={{ backgroundColor: C.green, color: C.cream }}>Search</button>
+          <button className="px-4 rounded-full text-sm font-semibold" style={{ backgroundColor: C.primary, color: C.cream }}>Search</button>
         </form>
       </div>
 
@@ -96,16 +96,16 @@ export default async function EnquiriesPage({ searchParams }: { searchParams: Se
           {rows.map((e) => {
             const wa = whatsappLink(e.phone);
             return (
-              <Panel key={e.id} className="p-5 sm:p-6" style={e.status === "new" ? { borderLeft: `4px solid ${C.gold}` } : undefined}>
+              <Panel key={e.id} className="p-5 sm:p-6" style={e.status === "new" ? { borderLeft: `4px solid ${C.bronze}` } : undefined}>
                 <div className="flex flex-col md:flex-row md:items-start justify-between gap-4 mb-3">
                   <div className="min-w-0">
                     <div className="flex flex-wrap items-center gap-2 mb-1">
-                      <h3 className="font-serif font-bold text-lg mb-0" style={{ color: C.green }}>{e.name}</h3>
+                      <h3 className="font-serif font-bold text-lg mb-0" style={{ color: C.primary }}>{e.name}</h3>
                       <StatusBadge status={e.status} />
                     </div>
                     <p className="text-xs mb-0" style={{ color: C.brownLight }}>
                       #{e.id} · {formatDate(e.created_at, true)} · Interested in{" "}
-                      <span className="font-semibold" style={{ color: C.gold }}>{topicLabel(e.course_interest)}</span>
+                      <span className="font-semibold" style={{ color: C.bronze }}>{topicLabel(e.course_interest)}</span>
                     </p>
                   </div>
                   <form key={e.status} action={updateEnquiryStatus} className="flex items-center gap-2 flex-shrink-0">
@@ -121,16 +121,16 @@ export default async function EnquiriesPage({ searchParams }: { searchParams: Se
                 </div>
 
                 <div className="flex flex-wrap gap-2 mb-4 text-xs">
-                  <a href={`mailto:${e.email}?subject=${encodeURIComponent("Re: Your Zyphraa enquiry")}`} className="px-3 py-1.5 rounded-full hover:underline" style={{ backgroundColor: C.parchment, color: C.green }}>
+                  <a href={`mailto:${e.email}?subject=${encodeURIComponent("Re: Your Zyphraa enquiry")}`} className="px-3 py-1.5 rounded-full hover:underline" style={{ backgroundColor: C.parchment, color: C.primary }}>
                     ✉️ {e.email}
                   </a>
                   {e.phone && (
-                    <a href={`tel:${e.phone}`} className="px-3 py-1.5 rounded-full hover:underline" style={{ backgroundColor: C.parchment, color: C.green }}>
+                    <a href={`tel:${e.phone}`} className="px-3 py-1.5 rounded-full hover:underline" style={{ backgroundColor: C.parchment, color: C.primary }}>
                       📞 {e.phone}
                     </a>
                   )}
                   {wa && (
-                    <a href={wa} target="_blank" rel="noopener noreferrer" className="px-3 py-1.5 rounded-full hover:underline" style={{ backgroundColor: "#DDEFE3", color: "#2D6A4F" }}>
+                    <a href={wa} target="_blank" rel="noopener noreferrer" className="px-3 py-1.5 rounded-full hover:underline" style={{ backgroundColor: "#E4E9F1", color: "#1B2A41" }}>
                       💬 WhatsApp
                     </a>
                   )}
@@ -141,13 +141,13 @@ export default async function EnquiriesPage({ searchParams }: { searchParams: Se
                 </p>
 
                 <details className="group mb-4">
-                  <summary className="cursor-pointer text-xs font-semibold select-none" style={{ color: C.gold }}>
+                  <summary className="cursor-pointer text-xs font-semibold select-none" style={{ color: C.bronze }}>
                     {e.admin_notes ? "📝 Notes (click to edit)" : "📝 Add private notes"}
                   </summary>
                   <form action={saveEnquiryNotes} className="mt-3 space-y-2">
                     <input type="hidden" name="id" value={e.id} />
                     <textarea name="notes" rows={3} defaultValue={e.admin_notes ?? ""} placeholder="e.g. Called on 2 Nov, will join next batch…" className="field text-sm" />
-                    <PendingSubmit className="px-4 py-1.5 rounded-full text-xs font-semibold" style={{ backgroundColor: C.green, color: C.cream }}>
+                    <PendingSubmit className="px-4 py-1.5 rounded-full text-xs font-semibold" style={{ backgroundColor: C.primary, color: C.cream }}>
                       Save notes
                     </PendingSubmit>
                   </form>
@@ -160,7 +160,7 @@ export default async function EnquiriesPage({ searchParams }: { searchParams: Se
                   {e.status !== "converted" && (
                     <form action={convertEnquiryToStudent}>
                       <input type="hidden" name="id" value={e.id} />
-                      <PendingSubmit pendingText="Creating…" className="px-4 py-2 rounded-full text-xs font-semibold hover:-translate-y-0.5" style={{ backgroundColor: C.green, color: C.cream }}>
+                      <PendingSubmit pendingText="Creating…" className="px-4 py-2 rounded-full text-xs font-semibold hover:-translate-y-0.5" style={{ backgroundColor: C.primary, color: C.cream }}>
                         🎓 Convert to student
                       </PendingSubmit>
                     </form>

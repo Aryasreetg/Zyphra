@@ -27,11 +27,11 @@ const ScrollExtras = () => {
     <>
       <div
         aria-hidden
-        className="fixed top-0 left-0 h-[3px] z-[60] origin-left"
+        className="fixed top-0 left-0 h-[2px] z-[60] origin-left"
         style={{
           width: "100%",
           transform: `scaleX(${progress})`,
-          background: `linear-gradient(90deg, ${C.green}, ${C.goldLight})`,
+          background: `linear-gradient(90deg, ${C.primary}, ${C.bronzeLight})`,
           transition: "none",
         }}
       />
@@ -39,9 +39,9 @@ const ScrollExtras = () => {
         type="button"
         aria-label="Back to top"
         onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}
-        className="fixed bottom-6 right-6 z-50 w-12 h-12 rounded-full shadow-lg flex items-center justify-center hover:-translate-y-1"
+        className="fixed bottom-6 right-6 z-50 w-11 h-11 rounded-[2px] shadow-md flex items-center justify-center"
         style={{
-          backgroundColor: C.green,
+          backgroundColor: C.primary,
           color: C.cream,
           opacity: showTop ? 1 : 0,
           pointerEvents: showTop ? "auto" : "none",

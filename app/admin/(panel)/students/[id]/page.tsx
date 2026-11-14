@@ -28,7 +28,7 @@ export default async function EditStudentPage({ params, searchParams }: Props) {
 
   return (
     <div className="pop-in">
-      <Link href="/admin/students" className="text-xs hover:underline" style={{ color: C.gold }}>← All students</Link>
+      <Link href="/admin/students" className="text-xs hover:underline" style={{ color: C.bronze }}>← All students</Link>
       <PageTitle
         title={student.name}
         subtitle={`Student #${student.id} · added ${formatDate(student.created_at)} · last updated ${formatDate(student.updated_at, true)}`}
@@ -36,7 +36,7 @@ export default async function EditStudentPage({ params, searchParams }: Props) {
       />
 
       {created && (
-        <div className="pop-in rounded-xl px-4 py-3 mb-6 text-sm" style={{ backgroundColor: "#DDEFE3", color: "#2D6A4F" }}>
+        <div className="pop-in rounded-xl px-4 py-3 mb-6 text-sm" style={{ backgroundColor: "#E4E9F1", color: "#1B2A41" }}>
           ✓ Student created. Fill in the batch and fee details below.
         </div>
       )}
@@ -48,17 +48,17 @@ export default async function EditStudentPage({ params, searchParams }: Props) {
 
         <div className="space-y-6">
           <Panel className="p-5">
-            <p className="text-[10px] tracking-[0.2em] uppercase font-semibold mb-3" style={{ color: C.gold }}>Quick contact</p>
+            <p className="text-[10px] tracking-[0.2em] uppercase font-semibold mb-3" style={{ color: C.bronze }}>Quick contact</p>
             <div className="flex flex-col gap-2 text-sm">
-              <a href={`mailto:${student.email}`} className="hover:underline" style={{ color: C.green }}>✉️ {student.email}</a>
-              {student.phone && <a href={`tel:${student.phone}`} className="hover:underline" style={{ color: C.green }}>📞 {student.phone}</a>}
-              {wa && <a href={wa} target="_blank" rel="noopener noreferrer" className="hover:underline" style={{ color: "#2D6A4F" }}>💬 WhatsApp</a>}
+              <a href={`mailto:${student.email}`} className="hover:underline" style={{ color: C.primary }}>✉️ {student.email}</a>
+              {student.phone && <a href={`tel:${student.phone}`} className="hover:underline" style={{ color: C.primary }}>📞 {student.phone}</a>}
+              {wa && <a href={wa} target="_blank" rel="noopener noreferrer" className="hover:underline" style={{ color: C.primary }}>💬 WhatsApp</a>}
             </div>
           </Panel>
 
           {enquiry && (
             <Panel className="p-5">
-              <p className="text-[10px] tracking-[0.2em] uppercase font-semibold mb-2" style={{ color: C.gold }}>Original enquiry</p>
+              <p className="text-[10px] tracking-[0.2em] uppercase font-semibold mb-2" style={{ color: C.bronze }}>Original enquiry</p>
               <p className="text-xs mb-2" style={{ color: C.brownLight }}>{formatDate(enquiry.created_at, true)}</p>
               <p className="text-sm whitespace-pre-wrap mb-0" style={{ color: C.brown }}>{enquiry.message}</p>
             </Panel>

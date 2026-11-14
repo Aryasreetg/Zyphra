@@ -1,74 +1,54 @@
 import React from "react";
 import Link from "next/link";
 import { notFound } from "next/navigation";
-import { coursesData, getEnrolLink } from "@/config/courses";
+import { coursesData, getEnrolLink, type Course } from "@/config/courses";
+import { C } from "@/lib/theme";
 import Reveal from "@/components/Reveal";
 
-// ── Colour tokens (matching the rest of the site) ──────────────────────────
-const C = {
-  cream: "#F5EFE6",
-  parchment: "#EDE5D4",
-  border: "#D4C5A9",
-  green: "#2D4A3E",
-  gold: "#8B6914",
-  goldLight: "#C4A96A",
-  brown: "#4A3728",
-  brownMid: "#6B5744",
-  brownLight: "#9C8570",
-  amber: "#FDF6E3",
-  amberBorder: "#E8D5A3",
-  amberText: "#7A5C2E",
+const CATEGORY_LABEL: Record<string, string> = {
+  flagship: "Flagship programme",
+  foundation: "Foundation programme",
+  specialisation: "Specialisation",
+  workshop: "Live workshop",
+  mentorship: "Personalised mentorship",
 };
 
-// ── Small reusable pieces ───────────────────────────────────────────────────
+// ── Small pieces ────────────────────────────────────────────────────────────
 
-function Dot({ color = C.gold }: { color?: string }) {
+function Section({ num, title, children }: { num: string; title: string; children: React.ReactNode }) {
   return (
-    <span
-      className="mt-1.5 w-1.5 h-1.5 rounded-full shrink-0"
-      style={{ backgroundColor: color, display: "inline-block" }}
-    />
+    <Reveal>
+      <section className="py-12 border-t rule">
+        <p className="label mb-4">
+          <span className="label-num">{num}</span> {title}
+        </p>
+        {children}
+      </section>
+    </Reveal>
   );
 }
 
-function Card({
-  children,
-  className = "",
-}: {
-  children: React.ReactNode;
-  className?: string;
-}) {
+function DashList({ items, cols = 1 }: { items: string[]; cols?: 1 | 2 }) {
   return (
-    <div
-      className={`hover-lift rounded-2xl p-6 sm:p-8 shadow-sm ${className}`}
-      style={{ backgroundColor: C.cream, border: `1px solid ${C.border}` }}
-    >
-      {children}
-    </div>
-  );
-}
-
-function SectionTitle({ children }: { children: React.ReactNode }) {
-  return (
-    <h2
-      className="font-serif text-xl sm:text-2xl font-bold mb-5"
-      style={{ color: C.green }}
-    >
-      {children}
-    </h2>
-  );
-}
-
-function BulletList({ items }: { items: string[] }) {
-  return (
-    <ul className="space-y-2.5">
+    <ul className={`mb-0 grid ${cols === 2 ? "sm:grid-cols-2 sm:gap-x-10" : ""}`}>
       {items.map((item) => (
-        <li key={item} className="flex items-start gap-2.5 text-sm" style={{ color: C.brown }}>
-          <Dot />
+        <li key={item} className="flex gap-3 py-3 text-[15.5px] leading-snug border-b rule mb-0" style={{ color: C.brown }}>
+          <span aria-hidden style={{ color: C.bronze }}>—</span>
           {item}
         </li>
       ))}
     </ul>
+  );
+}
+
+function PriceBlock({ course }: { course: Course }) {
+  return (
+    <div className="flex items-baseline gap-3 flex-wrap">
+      <span className="display text-[3rem] leading-none" style={{ color: C.primary }}>{course.offerPrice}</span>
+      {course.originalPrice && (
+        <span className="text-[15px] line-through" style={{ color: C.brownLight }}>{course.originalPrice}</span>
+      )}
+    </div>
   );
 }
 
@@ -99,297 +79,213 @@ export default async function CoursePage({ params }: CoursePageProps) {
 
   const isContact = course.offerPrice === "Contact Us";
   const enrolLink = getEnrolLink(course);
+  let n = 0;
+  const next = () => String(++n).padStart(2, "0");
 
   return (
-    <div className="min-h-screen" style={{ backgroundColor: C.parchment }}>
+    <div style={{ backgroundColor: C.cream }}>
+      {/* Breadcrumb */}
+      <nav aria-label="Breadcrumb" className="wrap pt-8 text-[13px] flex flex-wrap items-center gap-2" style={{ color: C.brownLight }}>
+        <Link href="/" className="ulink font-normal" style={{ color: C.primary }}>Home</Link>
+        <span aria-hidden>/</span>
+        <Link href="/#courses" className="ulink font-normal" style={{ color: C.primary }}>Courses</Link>
+        <span aria-hidden>/</span>
+        <span>{course.title}</span>
+      </nav>
 
-      {/* ── Breadcrumb bar ─────────────────────────────────────────────── */}
-      <div
-        className="border-b px-4 sm:px-6 py-3"
-        style={{ backgroundColor: C.cream, borderColor: C.border }}
-      >
-        <nav className="max-w-4xl mx-auto flex items-center gap-2 text-xs" style={{ color: C.brownLight }}>
-          <Link href="/" className="hover:underline transition-colors" style={{ color: C.green }}>
-            Home
-          </Link>
-          <span>/</span>
-          <Link href="/#courses" className="hover:underline transition-colors" style={{ color: C.green }}>
-            Courses
-          </Link>
-          <span>/</span>
-          <span style={{ color: C.brownLight }}>{course.title}</span>
-        </nav>
-      </div>
+      <div className="wrap pt-10 lg:pt-14 pb-20 grid lg:grid-cols-12 gap-12 lg:gap-16">
+        {/* ── Main column ─────────────────────────────────────────── */}
+        <div className="lg:col-span-8">
+          <header className="pb-12">
+            <p className="label mb-6">
+              {CATEGORY_LABEL[course.category] ?? course.category}
+              {course.badge && <span className="serif serif-italic normal-case tracking-normal font-normal text-[15px]">— {course.badge}</span>}
+            </p>
+            <h1 className="display text-[2.8rem] sm:text-[4rem] lg:text-[4.6rem] mb-8" style={{ color: C.primary }}>
+              {course.title}
+            </h1>
+            <p className="lede max-w-2xl mb-10">{course.description}</p>
 
-      {/* ── Hero header ────────────────────────────────────────────────── */}
-      <div style={{ backgroundColor: C.green }}>
-        <div className="max-w-4xl mx-auto px-4 sm:px-6 py-12 sm:py-16">
-
-          {/* Badge row */}
-          <div className="flex flex-wrap items-center gap-3 mb-5">
-            <span
-              className="px-3 py-1 rounded-full text-xs font-semibold tracking-widest uppercase"
-              style={{ backgroundColor: "rgba(196,169,106,0.2)", color: C.goldLight, border: `1px solid ${C.goldLight}` }}
-            >
-              {"badge" in course && course.badge ? String(course.badge) : course.category}
-            </span>
-            <span className="text-xs tracking-widest uppercase" style={{ color: C.goldLight }}>
-              ✦ {course.duration}
-            </span>
-            {"batchInfo" in course && course.batchInfo && (
-              <span
-                className="px-3 py-1 rounded-full text-xs font-semibold"
-                style={{ backgroundColor: "rgba(245,239,230,0.12)", color: C.cream, border: `1px solid rgba(245,239,230,0.3)` }}
-              >
-                {course.batchInfo}
-              </span>
-            )}
-          </div>
-
-          {/* Title */}
-          <h1
-            className="font-serif text-3xl sm:text-4xl md:text-5xl font-bold mb-4 leading-tight"
-            style={{ color: C.cream }}
-          >
-            {course.title}
-          </h1>
-
-          <p className="text-sm sm:text-base leading-relaxed mb-8 max-w-2xl" style={{ color: "rgba(245,239,230,0.75)" }}>
-            {course.description}
-          </p>
-
-          {/* Price + CTA row */}
-          <div className="flex flex-col sm:flex-row items-start sm:items-center gap-5">
-            <div>
-              {course.originalPrice && (
-                <span className="text-base line-through mr-2" style={{ color: C.goldLight }}>
-                  {course.originalPrice}
-                </span>
-              )}
-              <span className="text-4xl sm:text-5xl font-serif font-bold" style={{ color: C.cream }}>
-                {course.offerPrice}
-              </span>
-            </div>
-
-            <Link
-              href={enrolLink}
-              className="enrol-btn px-7 py-3.5 rounded-full font-semibold text-sm tracking-wide transition-opacity hover:opacity-85 shadow-lg"
-              style={{ backgroundColor: C.cream, color: C.green }}
-            >
-              {isContact ? "Contact Us to Enquire ✦" : "Enrol Now ✦"}
-            </Link>
-          </div>
-        </div>
-      </div>
-
-      {/* ── Body ───────────────────────────────────────────────────────── */}
-      <div className="max-w-4xl mx-auto px-4 sm:px-6 py-12 space-y-6">
-
-        {/* What You'll Learn */}
-        {"whatYouLearn" in course && course.whatYouLearn && (
-          <Reveal>
-          <Card>
-            <SectionTitle>What You'll Learn</SectionTitle>
-            <BulletList items={course.whatYouLearn as string[]} />
-          </Card>
-          </Reveal>
-        )}
-
-        {/* Projects */}
-        {"projects" in course && course.projects && (
-          <Reveal delay={80}>
-          <Card>
-            <SectionTitle>Projects You'll Build</SectionTitle>
-            <div className="grid sm:grid-cols-2 gap-3">
-              {(course.projects as string[]).map((project, i) => (
-                <div
-                  key={project}
-                  className="flex items-start gap-3 p-4 rounded-xl"
-                  style={{ backgroundColor: C.parchment, border: `1px solid ${C.border}` }}
-                >
-                  <span
-                    className="shrink-0 w-6 h-6 rounded-full flex items-center justify-center text-xs font-bold font-serif"
-                    style={{ backgroundColor: C.green, color: C.cream }}
-                  >
-                    {i + 1}
-                  </span>
-                  <span className="text-sm" style={{ color: C.brown }}>{project}</span>
-                </div>
-              ))}
-            </div>
-          </Card>
-          </Reveal>
-        )}
-
-        {/* Workshop Schedule */}
-        {"schedule" in course && course.schedule && (
-          <Reveal>
-          <Card>
-            <SectionTitle>Workshop Schedule</SectionTitle>
-            <div className="space-y-6">
-              {(course.schedule as { day: string; title: string; topics: string[] }[]).map(({ day, title, topics }, i) => (
-                <div key={day} className="flex gap-4">
-                  <div
-                    className="shrink-0 w-10 h-10 rounded-full flex items-center justify-center font-serif font-bold"
-                    style={{ backgroundColor: C.green, color: C.cream }}
-                  >
-                    {i + 1}
-                  </div>
-                  <div>
-                    <p className="text-xs tracking-widest uppercase font-semibold mb-0.5" style={{ color: C.gold }}>
-                      {day}
-                    </p>
-                    <h4 className="font-semibold mb-2" style={{ color: C.green }}>{title}</h4>
-                    <ul className="space-y-1.5">
-                      {topics.map((t) => (
-                        <li key={t} className="flex items-start gap-2 text-xs" style={{ color: C.brown }}>
-                          <Dot />
-                          {t}
-                        </li>
-                      ))}
-                    </ul>
-                  </div>
-                </div>
-              ))}
-            </div>
-          </Card>
-          </Reveal>
-        )}
-
-        {/* What's Included (mentorship) */}
-        {"whatsIncluded" in course && course.whatsIncluded && (
-          <Reveal>
-          <Card>
-            <SectionTitle>What's Included</SectionTitle>
-            <BulletList items={course.whatsIncluded as string[]} />
-          </Card>
-          </Reveal>
-        )}
-
-        {/* Two-col: Format + Who Should Enrol */}
-        <Reveal>
-        <div className="grid sm:grid-cols-2 gap-6">
-          <Card>
-            <SectionTitle>Course Format</SectionTitle>
-            <BulletList
-              items={[
-                "100% online with live interactive sessions",
-                "Hands-on real-world projects with mentor guidance",
-                "Downloadable resources and code samples",
-                "Weekly progress reviews and project feedback",
-              ]}
-            />
-          </Card>
-
-          <Card>
-            <SectionTitle>Who Should Enrol</SectionTitle>
-            <BulletList
-              items={[
-                "Beginners wanting structured online learning",
-                "Working professionals seeking flexible upskilling",
-                "Students preparing for technology careers",
-                "Career switchers breaking into tech",
-              ]}
-            />
-          </Card>
-        </div>
-        </Reveal>
-
-        {/* Learner Support */}
-        <Reveal>
-        <Card>
-          <SectionTitle>Learner Support</SectionTitle>
-          <p className="text-sm mb-4 leading-relaxed" style={{ color: C.brownMid }}>
-            Zyphraa offers personalised support and mentor guidance throughout every programme,
-            including live mock interview practice before you start applying.
-          </p>
-          <div className="grid sm:grid-cols-3 gap-4">
-            {[
-              { icon: "💬", label: "Doubt Sessions", desc: "Online Q&A and code review" },
-              { icon: "📋", label: "Project Feedback", desc: "Guided feedback from mentors" },
-              { icon: "🎤", label: "Mock Interviews", desc: "Live practice with real feedback" },
-            ].map(({ icon, label, desc }) => (
-              <div
-                key={label}
-                className="p-4 rounded-xl text-center"
-                style={{ backgroundColor: C.parchment, border: `1px solid ${C.border}` }}
-              >
-                <div className="text-2xl mb-2">{icon}</div>
-                <p className="font-semibold text-xs mb-1" style={{ color: C.green }}>{label}</p>
-                <p className="text-xs" style={{ color: C.brownLight }}>{desc}</p>
+            <dl className="grid grid-cols-2 sm:grid-cols-3 border-t rule">
+              <div className="py-4 pr-4">
+                <dt className="text-[11px] tracking-[0.16em] uppercase font-semibold mb-1" style={{ color: C.bronze }}>Duration</dt>
+                <dd className="serif text-lg mb-0" style={{ color: C.primary }}>{course.duration}</dd>
               </div>
-            ))}
-          </div>
-        </Card>
-        </Reveal>
+              <div className="py-4 pl-4 border-l rule">
+                <dt className="text-[11px] tracking-[0.16em] uppercase font-semibold mb-1" style={{ color: C.bronze }}>Format</dt>
+                <dd className="serif text-lg mb-0" style={{ color: C.primary }}>Live &amp; online</dd>
+              </div>
+              <div className="py-4 sm:pl-4 sm:border-l border-t sm:border-t-0 rule col-span-2 sm:col-span-1">
+                <dt className="text-[11px] tracking-[0.16em] uppercase font-semibold mb-1" style={{ color: C.bronze }}>Includes</dt>
+                <dd className="serif text-lg mb-0" style={{ color: C.primary }}>{course.category === "workshop" ? "Mini-project" : "Mock interviews"}</dd>
+              </div>
+            </dl>
+            {course.batchInfo && (
+              <p className="serif serif-italic text-[17px] mt-5 mb-0" style={{ color: C.bronze }}>{course.batchInfo}</p>
+            )}
+          </header>
 
-        {/* Important notes (workshop only) */}
-        {course.category === "workshop" && (
-          <div
-            className="rounded-2xl p-5 text-sm"
-            style={{ backgroundColor: C.amber, border: `1px solid ${C.amberBorder}`, color: C.amberText }}
-          >
-            <p className="font-semibold mb-2">📌 Important Notes</p>
-            <ul className="space-y-1 text-xs leading-relaxed">
-              <li>• Live participation required — no recordings available</li>
-              <li>• Bring your own laptop with internet connection</li>
-              <li>• No prior experience needed — just curiosity!</li>
-              <li>• Sessions conducted via Zoom</li>
-            </ul>
-          </div>
-        )}
+          {course.whatYouLearn && (
+            <Section num={next()} title="What you'll learn">
+              <DashList items={course.whatYouLearn} cols={2} />
+            </Section>
+          )}
 
-        {/* ── CTA banner ──────────────────────────────────────────────── */}
-        <div
-          className="rounded-2xl p-8 sm:p-12 text-center"
-          style={{ backgroundColor: C.green }}
-        >
-          <p className="text-xs tracking-widest uppercase font-semibold mb-3" style={{ color: C.goldLight }}>
-            ✦ Learn. Build. Grow.
-          </p>
-          <h2
-            className="font-serif text-2xl sm:text-3xl font-bold mb-3"
-            style={{ color: C.cream }}
-          >
-            Ready to Start Your Journey?
-          </h2>
-          <p className="text-sm mb-8 max-w-md mx-auto leading-relaxed" style={{ color: "rgba(245,239,230,0.75)" }}>
-            Secure your spot and take the first step toward your dream career. ♡
-          </p>
-          <div className="flex flex-col sm:flex-row gap-4 justify-center items-center">
-            <Link
-              href={enrolLink}
-              className="px-8 py-3.5 rounded-full font-bold text-sm tracking-wide transition-opacity hover:opacity-85 shadow-lg"
-              style={{ backgroundColor: C.cream, color: C.green }}
-            >
-              {isContact ? "Contact Us ✦" : "Enrol Now — " + course.offerPrice + " ✦"}
+          {course.projects && (
+            <Section num={next()} title="Projects you'll build">
+              <ol className="mb-0">
+                {course.projects.map((project, i) => (
+                  <li key={project} className="grid grid-cols-[3.5rem_1fr] items-baseline py-4 border-b rule mb-0">
+                    <span className="display serif-italic text-[2rem] leading-none" style={{ color: C.bronze }}>{String(i + 1).padStart(2, "0")}</span>
+                    <span className="display text-[1.5rem]" style={{ color: C.primary }}>{project}</span>
+                  </li>
+                ))}
+              </ol>
+            </Section>
+          )}
+
+          {course.schedule && (
+            <Section num={next()} title="Workshop schedule">
+              <div>
+                {course.schedule.map(({ day, title, topics }) => (
+                  <div key={day} className="grid sm:grid-cols-[8rem_1fr] gap-2 sm:gap-6 py-6 border-b rule">
+                    <p className="serif serif-italic text-[1.3rem] mb-0" style={{ color: C.bronze }}>{day}</p>
+                    <div>
+                      <h3 className="display text-[1.6rem] mb-3" style={{ color: C.primary }}>{title}</h3>
+                      <ul className="mb-0">
+                        {topics.map((t) => (
+                          <li key={t} className="flex gap-3 py-1 text-[15px] mb-0" style={{ color: C.brown }}>
+                            <span aria-hidden style={{ color: C.bronze }}>—</span>
+                            {t}
+                          </li>
+                        ))}
+                      </ul>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </Section>
+          )}
+
+          {course.whatsIncluded && (
+            <Section num={next()} title="What's included">
+              <DashList items={course.whatsIncluded} />
+            </Section>
+          )}
+
+          <Section num={next()} title="Format & who it's for">
+            <div className="grid sm:grid-cols-2 gap-10">
+              <div>
+                <h3 className="display text-[1.5rem] mb-3" style={{ color: C.primary }}>Course format</h3>
+                <DashList
+                  items={[
+                    "100% online with live interactive sessions",
+                    "Hands-on real-world projects with mentor guidance",
+                    "Downloadable resources and code samples",
+                    "Weekly progress reviews and project feedback",
+                  ]}
+                />
+              </div>
+              <div>
+                <h3 className="display text-[1.5rem] mb-3" style={{ color: C.primary }}>Who should enrol</h3>
+                <DashList
+                  items={[
+                    "Beginners wanting structured online learning",
+                    "Working professionals seeking flexible upskilling",
+                    "Students preparing for technology careers",
+                    "Career switchers breaking into tech",
+                  ]}
+                />
+              </div>
+            </div>
+          </Section>
+
+          <Section num={next()} title="Learner support">
+            <p className="text-[16px] leading-[1.75] mb-8 max-w-2xl" style={{ color: C.brown }}>
+              Zyphraa offers personalised support and mentor guidance throughout every programme, including live mock
+              interview practice before you start applying.
+            </p>
+            <div className="grid sm:grid-cols-3 border-t rule">
+              {[
+                { label: "Doubt sessions", desc: "Online Q&A and code review" },
+                { label: "Project feedback", desc: "Guided feedback from mentors" },
+                { label: "Mock interviews", desc: "Live practice with real feedback" },
+              ].map(({ label, desc }, i) => (
+                <div key={label} className={`py-5 ${i > 0 ? "sm:pl-6 sm:border-l border-t sm:border-t-0" : ""} sm:pr-6 rule`}>
+                  <p className="display text-[1.35rem] mb-1" style={{ color: C.primary }}>{label}</p>
+                  <p className="text-[14px] mb-0" style={{ color: C.brownMid }}>{desc}</p>
+                </div>
+              ))}
+            </div>
+          </Section>
+
+          {course.category === "workshop" && (
+            <Reveal>
+              <aside className="mt-4 p-6 border-l-2" style={{ backgroundColor: C.parchment, borderColor: C.bronze }}>
+                <p className="text-[11px] tracking-[0.16em] uppercase font-semibold mb-3" style={{ color: C.bronze }}>Important notes</p>
+                <ul className="mb-0 text-[15px] leading-relaxed" style={{ color: C.brown }}>
+                  <li className="mb-1">Live participation required — no recordings available</li>
+                  <li className="mb-1">Bring your own laptop with internet connection</li>
+                  <li className="mb-1">No prior experience needed — just curiosity!</li>
+                  <li className="mb-0">Sessions conducted via Zoom</li>
+                </ul>
+              </aside>
+            </Reveal>
+          )}
+        </div>
+
+        {/* ── Enrol card (sticky on desktop) ──────────────────────── */}
+        <aside className="lg:col-span-4 order-first lg:order-none">
+          <div className="lg:sticky lg:top-28 p-7 sm:p-8 shadow-[0_24px_60px_-30px_rgba(18,28,44,0.35)]" style={{ backgroundColor: "#FCF8F1", borderTop: `3px solid ${C.primary}` }}>
+            <p className="text-[11px] tracking-[0.16em] uppercase font-semibold mb-4" style={{ color: C.bronze }}>
+              {isContact ? "Pricing" : "Course fee"}
+            </p>
+            <PriceBlock course={course} />
+            <p className="text-[13.5px] mt-3 mb-7" style={{ color: C.brownMid }}>
+              {isContact ? "Tailored to your goals and schedule." : `${course.duration} · live online · projects included`}
+            </p>
+            <Link href={enrolLink} className="btn-z btn-solid w-full">
+              {isContact ? "Contact Us to Enquire" : "Enrol Now"} <span className="arr" aria-hidden>→</span>
             </Link>
             {!isContact && (
-              <Link
-                href={`/?course=${course.id}#contact`}
-                className="view-all-btn px-8 py-3.5 rounded-full font-semibold text-sm tracking-wide transition-colors"
-                style={{ border: `1.5px solid rgba(245,239,230,0.4)`, color: C.cream }}
-              >
-                Ask a Question
+              <Link href={`/?course=${course.id}#contact`} className="ulink on mt-5 text-[14px]" style={{ color: C.primary }}>
+                Ask a question first
               </Link>
             )}
-            <Link
-              href="/#courses"
-              className="view-all-btn px-8 py-3.5 rounded-full font-semibold text-sm tracking-wide transition-colors"
-              style={{ border: `1.5px solid rgba(245,239,230,0.4)`, color: C.cream }}
-            >
-              View All Courses
+            <ul className="mt-7 pt-6 border-t rule text-[13.5px] mb-0" style={{ color: C.brown }}>
+              {["Live, mentor-led sessions", "Real projects for your portfolio", "Mock interview practice"].map((t) => (
+                <li key={t} className="flex gap-2 py-1 mb-0">
+                  <span aria-hidden style={{ color: C.bronze }}>—</span>
+                  {t}
+                </li>
+              ))}
+            </ul>
+          </div>
+        </aside>
+      </div>
+
+      {/* ── Closing band ──────────────────────────────────────────── */}
+      <section style={{ backgroundColor: C.primary }}>
+        <div className="wrap py-20 grid lg:grid-cols-12 gap-10 items-end">
+          <div className="lg:col-span-7">
+            <p className="text-[12px] tracking-[0.18em] uppercase font-semibold mb-5" style={{ color: C.bronzeLight }}>Learn. Build. Grow.</p>
+            <h2 className="display text-[2.6rem] sm:text-[3.4rem]" style={{ color: C.cream }}>
+              Ready to start your <em style={{ color: C.bronzeLight }}>journey?</em>
+            </h2>
+            <p className="text-[16px] mt-5 mb-0 max-w-md" style={{ color: "rgba(248,243,234,0.75)" }}>
+              Secure your spot and take the first step toward your dream career.
+            </p>
+          </div>
+          <div className="lg:col-span-5 flex flex-col sm:flex-row lg:justify-end gap-4">
+            <Link href={enrolLink} className="btn-z btn-cream">
+              {isContact ? "Contact Us" : `Enrol Now — ${course.offerPrice}`} <span className="arr" aria-hidden>→</span>
+            </Link>
+            <Link href="/#courses" className="btn-z" style={{ color: C.cream, border: "1px solid rgba(248,243,234,0.35)" }}>
+              View all courses
             </Link>
           </div>
         </div>
-
-        {/* Inline hover style (no JS handlers needed) */}
-        <style>{`
-          .view-all-btn:hover { background-color: rgba(245,239,230,0.1); }
-          .enrol-btn:hover { opacity: 0.88; }
-        `}</style>
-
-      </div>
+      </section>
     </div>
   );
 }

@@ -10,16 +10,16 @@ export default function LoginForm() {
 
   return (
     <main className="relative overflow-hidden min-h-screen flex items-center justify-center px-4" style={{ backgroundColor: C.cream }}>
-      <div aria-hidden className="blob w-[400px] h-[400px] -top-24 -left-24" style={{ background: "#CFE0D2" }} />
+      <div aria-hidden className="blob w-[400px] h-[400px] -top-24 -left-24" style={{ background: "#D6DDE8" }} />
       <div aria-hidden className="blob w-[360px] h-[360px] -bottom-24 -right-24" style={{ background: "#EBD9AE", animationDelay: "-8s" }} />
 
-      <div className="pop-in relative w-full max-w-sm rounded-2xl p-8 shadow-lg" style={{ backgroundColor: "#FFFDF9", border: `1px solid ${C.border}` }}>
-        <p className="text-2xl font-serif font-bold mb-0" style={{ color: C.green }}>Zyphraa</p>
-        <p className="text-[10px] tracking-[0.2em] uppercase mb-6" style={{ color: C.gold }}>Admin Panel</p>
+      <div className="pop-in relative w-full max-w-sm rounded-2xl p-8 shadow-lg" style={{ backgroundColor: "#FFFDF8", border: `1px solid ${C.border}` }}>
+        <p className="text-2xl font-serif font-bold mb-0" style={{ color: C.primary }}>Zyphraa</p>
+        <p className="text-[10px] tracking-[0.2em] uppercase mb-6" style={{ color: C.bronze }}>Admin Panel</p>
 
         <form action={action} className="space-y-4">
           <div>
-            <label htmlFor="password" className="block text-xs font-semibold mb-1.5" style={{ color: C.green }}>
+            <label htmlFor="password" className="block text-xs font-semibold mb-1.5" style={{ color: C.primary }}>
               Password
             </label>
             <input id="password" name="password" type="password" required autoFocus autoComplete="current-password" className="field" />
@@ -33,7 +33,7 @@ export default function LoginForm() {
             type="submit"
             disabled={pending}
             className="btn-shine w-full py-3 rounded-full font-semibold text-sm disabled:opacity-70"
-            style={{ backgroundColor: C.green, color: C.cream }}
+            style={{ backgroundColor: C.primary, color: C.cream }}
           >
             {pending ? "Signing in…" : "Sign in"}
           </button>

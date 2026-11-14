@@ -55,3 +55,38 @@ Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/bui
 cp .env.example .env.local   # fill in DATABASE_URL and ADMIN_PASSWORD
 npm run dev                  # site: http://localhost:3000, admin: http://localhost:3000/admin
 ```
+
+## Brand palette
+
+Warm Ivory + Midnight Blue + Bronze, defined once in `lib/theme.ts` (and mirrored in `app/globals.css`).
+Every text colour meets WCAG AA contrast (4.5:1) — checked with axe-core on every page at desktop and mobile widths.
+
+| Token | Hex | Use |
+|---|---|---|
+| `cream` (ivory) | `#F8F3EA` | Main background |
+| `parchment` | `#EFE6D6` | Alternate sections |
+| `paper` | `#FCF8F1` | Cards, forms |
+| `primary` (midnight blue) | `#1B2A41` | Headings, buttons, dark sections |
+| `bronze` | `#86592B` | Labels, italic emphasis |
+| `bronzeLight` | `#D2A877` | Accents on midnight blue |
+
+## Photos
+
+All photos are from Unsplash (free under the [Unsplash licence](https://unsplash.com/license)), used as
+atmosphere only — never presented as Zyphraa students, staff or sessions. Each is used once, cropped to
+4:5 portrait or 3:2 landscape, with one shared warm grade (`img.photo` in `globals.css`).
+
+| File | Where | Photographer |
+|---|---|---|
+| `learner-outdoors.jpg` | Home hero | Sanket Mishra |
+| `coding-closeup.jpg` | Courses | Danial Igdery |
+| `mock-interview.jpg` | Mock interviews | Walls.io |
+| `team-coding.jpg` | How it works | Unsplash photo-1522071820081 |
+| `campus-collab.jpg` | Campus hero | Vitaly Gariev |
+| `campus-students.jpg` | Campus · why partner | Unsplash photo-1571260899304 |
+| `campus-lecture.jpg` | Campus · programs | Vitaly Gariev |
+
+- **Founder portrait:** add a real photo at `public/images/founder.jpg` (portrait, ~1200px tall) and redeploy —
+  the About and Campus mentor sections use it automatically.
+- For the most authentic result, replace stock photos with your own (same file names): a live class, a
+  student demo, a campus session.

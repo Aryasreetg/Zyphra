@@ -1,215 +1,136 @@
 import React from "react";
+import fs from "node:fs";
+import path from "node:path";
+import Image from "next/image";
 import { coursesData } from "@/config/courses";
+import { C } from "@/lib/theme";
 import Reveal from "./Reveal";
 import AnimatedCounter from "./AnimatedCounter";
-import SectionBg from "./SectionBg";
-import { Briefcase, BookOpen, Hammer, Instagram, Linkedin, Quote, Server, Code2, Brain, Users } from "lucide-react";
 
-const SKILLS = [
-  { Icon: Server, label: "Spring Boot & Microservices" },
-  { Icon: Code2, label: "Angular · Next.js · Django" },
-  { Icon: Brain, label: "Machine Learning" },
-  { Icon: Users, label: "Team Lead & Lecturer" },
+// Drop a real portrait at public/images/founder.jpg and it's used automatically.
+const hasFounderPhoto = fs.existsSync(path.join(process.cwd(), "public", "images", "founder.jpg"));
+
+const CREDENTIALS = [
+  { k: "Role", v: "Senior Software Developer · Team Lead" },
+  { k: "Stack", v: "Spring Boot, Angular, Next.js, Django, Machine Learning" },
+  { k: "Teaching", v: "Part-time lecturer and mentor" },
+  { k: "Focus", v: "Scalable backends, full-stack apps, microservices" },
 ];
 
 const About = () => {
   const purchasableCourseCount = coursesData.filter((c) => c.category !== "mentorship").length;
 
   return (
-    <section
-      id="about"
-      className="relative overflow-hidden py-12 sm:py-16 md:py-20"
-      style={{ backgroundColor: "#EDE5D4" }}
-    >
-      <SectionBg
-        pattern="waves"
-        opacity={0.7}
-        icons={[
-          { Icon: Quote, className: "top-24 left-[6%] w-24 h-24", rotate: -8 },
-          { Icon: BookOpen, className: "bottom-24 right-[6%] w-20 h-20", rotate: 10 },
-        ]}
-      />
-      <div className="relative max-w-4xl mx-auto px-4 sm:px-6">
-        {/* Section Label */}
+    <section id="about" className="relative" style={{ backgroundColor: C.parchment }}>
+      <div className="wrap py-20 lg:py-28">
         <Reveal>
-        <p
-          className="text-center text-xs tracking-[0.25em] uppercase font-semibold mb-3"
-          style={{ color: "#8B6914" }}
-        >
-          ✦ A Message from the Mentor
-        </p>
-
-        <h2
-          className="text-3xl sm:text-4xl md:text-5xl font-serif font-bold mb-10 text-center leading-tight"
-          style={{ color: "#2D4A3E" }}
-        >
-          About Me
-        </h2>
+          <p className="label mb-12 lg:mb-16">
+            <span className="label-num">01</span> A message from the mentor
+          </p>
         </Reveal>
 
-        {/* Card */}
-        <Reveal delay={100}>
-        <div
-          className="hover-lift spotlight rounded-2xl p-6 sm:p-10 shadow-sm"
-          style={{ backgroundColor: "#F5EFE6", border: "1px solid #D4C5A9" }}
-        >
-          {/* Name badge */}
-          <div className="flex items-center gap-3 mb-6">
-            <div
-              className="relative w-16 h-16 rounded-2xl flex items-center justify-center text-2xl font-serif font-bold shadow-md rotate-3"
-              style={{ background: "linear-gradient(135deg, #2D4A3E, #1F3A2F)", color: "#F5EFE6" }}
-            >
-              A
-              <span className="absolute -bottom-1.5 -right-1.5 w-6 h-6 rounded-full flex items-center justify-center -rotate-3" style={{ backgroundColor: "#C4A96A" }}>
-                <Briefcase className="w-3.5 h-3.5" style={{ color: "#1F3A2F" }} />
-              </span>
-            </div>
-            <div>
-              <p
-                className="font-semibold text-base"
-                style={{ color: "#2D4A3E" }}
-              >
-                Aryasree TG
-              </p>
-              <p className="text-xs" style={{ color: "#8B6914" }}>
-                Senior Software Developer · Team Lead · Mentor
-              </p>
-            </div>
-          </div>
+        <div className="grid lg:grid-cols-12 gap-12 lg:gap-16">
+          {/* Portrait / placard */}
+          <Reveal className="lg:col-span-4">
+            <figure className="lg:sticky lg:top-28 max-w-sm">
+              <div className="relative aspect-[4/5] overflow-hidden" style={{ backgroundColor: C.primary }}>
+                {hasFounderPhoto ? (
+                  <Image src="/images/founder.jpg" alt="Aryasree TG, founder of Zyphraa" fill sizes="(min-width: 1024px) 30vw, 100vw" className="photo object-cover" />
+                ) : (
+                  <div className="absolute inset-0 flex flex-col justify-between p-7">
+                    <span className="text-[11px] tracking-[0.2em] uppercase" style={{ color: C.bronzeLight }}>
+                      Founder &amp; mentor
+                    </span>
+                    <span className="display serif-italic text-[9rem] leading-none -mb-4" style={{ color: "rgba(248,243,234,0.92)" }}>
+                      A.
+                    </span>
+                    <span className="block h-px w-16" style={{ backgroundColor: C.bronzeLight }} />
+                  </div>
+                )}
+              </div>
+              <figcaption className="mt-5 flex items-baseline justify-between gap-4">
+                <span className="display text-2xl" style={{ color: C.primary }}>Aryasree TG</span>
+                <span className="text-[12px] tracking-wide" style={{ color: C.bronze }}>Founder, Zyphraa</span>
+              </figcaption>
+            </figure>
+          </Reveal>
 
-          {/* Skill chips */}
-          <div className="flex flex-wrap gap-2 mb-6">
-            {SKILLS.map(({ Icon, label }) => (
-              <span
-                key={label}
-                className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-medium hover:-translate-y-0.5"
-                style={{ backgroundColor: "#EDE5D4", color: "#2D4A3E", border: "1px solid #D4C5A9", transition: "translate 200ms ease" }}
-              >
-                <Icon className="w-3.5 h-3.5" style={{ color: "#8B6914" }} />
-                {label}
-              </span>
-            ))}
-          </div>
+          {/* Words */}
+          <div className="lg:col-span-8">
+            <Reveal>
+              <blockquote className="display text-[2rem] sm:text-[2.6rem] lg:text-[3.1rem] leading-[1.12] mb-12" style={{ color: C.primary }}>
+                <span aria-hidden className="serif" style={{ color: C.bronzeLight }}>&ldquo;</span>
+                Zyphraa was founded with one focused goal: to help you move from{" "}
+                <em style={{ color: C.bronze }}>just learning code</em> to actually building real projects and becoming
+                job-ready.
+                <span aria-hidden className="serif" style={{ color: C.bronzeLight }}>&rdquo;</span>
+              </blockquote>
+            </Reveal>
 
-          <div className="space-y-5">
-            <p
-              className="text-base sm:text-lg leading-relaxed text-justify"
-              style={{ color: "#4A3728" }}
-            >
-              Hi, I'm Arya — a developer and mentor behind{" "}
-              <span className="font-semibold" style={{ color: "#2D4A3E" }}>
-                Zyphraa
-              </span>
-              . I have 3+ years of hands-on experience working with modern
-              technologies including Spring Boot, Angular, Next.js, Django, and
-              Machine Learning.
-            </p>
+            <Reveal delay={100}>
+              <div className="grid md:grid-cols-2 gap-x-10 gap-y-5 text-[16px] leading-[1.75]" style={{ color: C.brown }}>
+                <p className="mb-0">
+                  <span className="serif text-[3.2rem] leading-[0.8] float-left mr-2 mt-1" style={{ color: C.primary }}>H</span>
+                  i, I&rsquo;m Arya — a developer and mentor behind <strong style={{ color: C.primary }}>Zyphraa</strong>. I
+                  have 3+ years of hands-on experience working with modern technologies including Spring Boot, Angular,
+                  Next.js, Django, and Machine Learning.
+                </p>
+                <p className="mb-0">
+                  I&rsquo;ve contributed to real-world projects spanning scalable backend systems, full-stack web
+                  applications, and microservices architectures. Alongside industry work, I&rsquo;ve served as a
+                  part-time lecturer — an experience that shaped how I teach and helped me break down complex concepts
+                  into clear, digestible explanations.
+                </p>
+                <p className="mb-0">
+                  We prioritise practical learning, hands-on coding, and industry-level thinking — not passive theory.
+                  If you&rsquo;re looking to break into tech, transition careers, or level up your development skills —
+                  you&rsquo;re in exactly the right place.
+                </p>
+                <p className="mb-0">
+                  Beyond the curriculum, every learner also gets access to{" "}
+                  <strong style={{ color: C.primary }}>mock interview practice sessions</strong> — because being able to
+                  explain your work under pressure is just as important as being able to build it.
+                </p>
+              </div>
+            </Reveal>
 
-            <p
-              className="text-base sm:text-lg leading-relaxed text-justify"
-              style={{ color: "#4A3728" }}
-            >
-              I've contributed to real-world projects spanning scalable backend
-              systems, full-stack web applications, and microservices
-              architectures. Alongside industry work, I've served as a part-time
-              lecturer — an experience that shaped how I teach and helped me
-              understand how to break down complex concepts into clear,
-              digestible explanations.
-            </p>
+            <Reveal delay={150}>
+              <dl className="mt-14 border-t rule">
+                {CREDENTIALS.map((c) => (
+                  <div key={c.k} className="grid grid-cols-[7rem_1fr] sm:grid-cols-[9rem_1fr] gap-4 py-4 border-b rule">
+                    <dt className="text-[11px] tracking-[0.18em] uppercase font-semibold pt-1" style={{ color: C.bronze }}>{c.k}</dt>
+                    <dd className="text-[15px]" style={{ color: C.brown }}>{c.v}</dd>
+                  </div>
+                ))}
+              </dl>
+            </Reveal>
 
-            <p
-              className="text-base sm:text-lg leading-relaxed text-justify"
-              style={{ color: "#4A3728" }}
-            >
-              Zyphraa was founded with one focused goal:{" "}
-              <span className="italic font-medium" style={{ color: "#2D4A3E" }}>
-                to help you move from just learning code to actually building
-                real projects and becoming job-ready.
-              </span>{" "}
-              We prioritise practical learning, hands-on coding, and
-              industry-level thinking — not passive theory.
-            </p>
-
-            <p
-              className="text-base sm:text-lg leading-relaxed"
-              style={{ color: "#4A3728" }}
-            >
-              If you're looking to break into tech, transition careers, or level
-              up your development skills — you're in exactly the right place. ♡
-            </p>
-
-            <p
-              className="text-base sm:text-lg leading-relaxed text-justify"
-              style={{ color: "#4A3728" }}
-            >
-              Beyond the curriculum, every learner also gets access to{" "}
-              <span className="font-semibold" style={{ color: "#2D4A3E" }}>
-                mock interview practice sessions
-              </span>{" "}
-              — because being able to explain your work under pressure is just as
-              important as being able to build it.
-            </p>
-          </div>
-
-          {/* Divider */}
-          <div className="my-8 border-t" style={{ borderColor: "#D4C5A9" }} />
-
-          {/* Stats row */}
-          <div className="grid grid-cols-3 gap-4 text-center">
-            {[
-              { value: 3, suffix: "+", label: "Years Experience", Icon: Briefcase },
-              { value: purchasableCourseCount, suffix: "", label: "Courses Available", Icon: BookOpen },
-              { value: 100, suffix: "%", label: "Project-Based", Icon: Hammer },
-            ].map(({ value, suffix, label, Icon }) => (
-              <div key={label} className="group rounded-xl py-3 hover:-translate-y-1" style={{ transition: "translate 250ms ease" }}>
-                <span className="icon-tile mx-auto mb-2 w-10 h-10 rounded-xl flex items-center justify-center" style={{ backgroundColor: "#EDE5D4" }}>
-                  <Icon className="w-5 h-5" style={{ color: "#8B6914" }} />
-                </span>
-                <AnimatedCounter
-                  value={value}
-                  suffix={suffix}
-                  className="block text-2xl sm:text-3xl font-serif font-bold"
-                  style={{ color: "#2D4A3E" }}
-                />
-                <div
-                  className="text-xs mt-1 tracking-wide"
-                  style={{ color: "#8B6914" }}
-                >
-                  {label}
+            <Reveal delay={200}>
+              <div className="mt-12 flex flex-col sm:flex-row sm:items-end justify-between gap-10">
+                <div className="flex gap-10 sm:gap-14">
+                  {[
+                    { value: 3, suffix: "+", label: "Years experience" },
+                    { value: purchasableCourseCount, suffix: "", label: "Courses available" },
+                    { value: 100, suffix: "%", label: "Project-based" },
+                  ].map((s) => (
+                    <div key={s.label}>
+                      <AnimatedCounter value={s.value} suffix={s.suffix} className="display block text-[2.6rem] leading-none" style={{ color: C.primary }} />
+                      <span className="block mt-2 text-[12px] tracking-wide" style={{ color: C.brownMid }}>{s.label}</span>
+                    </div>
+                  ))}
+                </div>
+                <div className="flex gap-6 text-[14px]">
+                  <a href="https://www.instagram.com/zyphraa.arya" target="_blank" rel="noopener noreferrer" className="ulink on" style={{ color: C.primary }}>
+                    Instagram ↗
+                  </a>
+                  <a href="https://linkedin.com/in/aryasree-tg-027461201" target="_blank" rel="noopener noreferrer" className="ulink on" style={{ color: C.primary }}>
+                    LinkedIn ↗
+                  </a>
                 </div>
               </div>
-            ))}
-          </div>
-
-          {/* Contact links */}
-          <div className="flex flex-col sm:flex-row gap-3 mt-8">
-            <a
-              href="https://www.instagram.com/zyphraa.arya"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="flex-1 inline-flex items-center justify-center gap-2 py-2.5 rounded-full text-sm font-medium tracking-wide transition-opacity hover:opacity-80"
-              style={{ backgroundColor: "#2D4A3E", color: "#F5EFE6" }}
-            >
-              <Instagram className="w-4 h-4" />
-              Instagram ↗
-            </a>
-            <a
-              href="https://linkedin.com/in/aryasree-tg-027461201"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="flex-1 inline-flex items-center justify-center gap-2 py-2.5 rounded-full text-sm font-medium tracking-wide transition-colors"
-              style={{
-                border: "1.5px solid #2D4A3E",
-                color: "#2D4A3E",
-                backgroundColor: "transparent",
-              }}
-            >
-              <Linkedin className="w-4 h-4" />
-              LinkedIn ↗
-            </a>
+            </Reveal>
           </div>
         </div>
-        </Reveal>
       </div>
     </section>
   );

@@ -2,197 +2,201 @@
 
 import React, { useMemo, useState } from "react";
 import Link from "next/link";
+import Image from "next/image";
 import { coursesData, type Course } from "@/config/courses";
 import { C } from "@/lib/theme";
 import Reveal from "./Reveal";
-import TiltCard from "./TiltCard";
-import SectionBg from "./SectionBg";
-import {
-  Layers, Brain, Coffee, Monitor, Bug, Server, GitBranch, Users, BookOpen, Star, Sprout, Target, UserRound,
-  CheckCircle2, Hammer, ArrowRight, MessageCircle, Clock, type LucideIcon,
-} from "lucide-react";
-
-// Icon shown on each course card
-const COURSE_ICONS: Record<string, LucideIcon> = {
-  "full-stack-developer-program": Layers,
-  "python-ai-ml-foundation": Brain,
-  "java-springboot-foundation": Coffee,
-  "frontend-mastery": Monitor,
-  "software-testing": Bug,
-  "backend-spring-boot": Server,
-  "git-version-control": GitBranch,
-  "one-on-one-classes": Users,
-};
+import codingImg from "@/public/images/coding-closeup.jpg";
 
 const TABS = [
-  { key: "all", label: "All Courses", Icon: BookOpen },
-  { key: "flagship", label: "Flagship", Icon: Star },
-  { key: "foundation", label: "Foundation", Icon: Sprout },
-  { key: "specialisation", label: "Specialisation", Icon: Target },
-  { key: "mentorship", label: "One-on-One", Icon: UserRound },
+  { key: "all", label: "All courses" },
+  { key: "flagship", label: "Flagship" },
+  { key: "foundation", label: "Foundation" },
+  { key: "specialisation", label: "Specialisation" },
+  { key: "mentorship", label: "One-on-One" },
 ] as const;
 
 type TabKey = (typeof TABS)[number]["key"];
 
 const CATEGORY_LABEL: Record<string, string> = {
-  flagship: "Flagship Programme",
-  foundation: "Foundation Programme",
+  flagship: "Flagship programme",
+  foundation: "Foundation programme",
   specialisation: "Specialisation",
-  mentorship: "Personalised Mentorship",
+  mentorship: "Personalised mentorship",
 };
 
 const listedCourses = coursesData.filter((c) => c.category !== "workshop");
 
-const Bullet = ({ color }: { color: string }) => (
-  <CheckCircle2 className="mt-0.5 w-3.5 h-3.5 flex-shrink-0" style={{ color }} />
-);
+/** Small list with en-dash markers and hairline separators */
+function DashList({ items, light = false }: { items?: string[]; light?: boolean }) {
+  if (!items?.length) return null;
+  return (
+    <ul className="mb-0">
+      {items.map((item) => (
+        <li
+          key={item}
+          className="flex gap-3 py-2.5 text-[14.5px] leading-snug border-b mb-0"
+          style={{ color: light ? "rgba(248,243,234,0.88)" : C.brown, borderColor: light ? "rgba(248,243,234,0.14)" : "rgba(58,50,43,0.12)" }}
+        >
+          <span aria-hidden style={{ color: light ? C.bronzeLight : C.bronze }}>—</span>
+          {item}
+        </li>
+      ))}
+    </ul>
+  );
+}
 
-function CourseCard({ course, wide }: { course: Course; wide: boolean }) {
-  const [open, setOpen] = useState(false);
-  const isMentorship = course.category === "mentorship";
-  const learnList = isMentorship ? course.whatsIncluded : course.whatYouLearn;
-  // On compact cards, show the first few bullets and let the visitor expand the rest
-  const visibleLearn = wide || open ? learnList : learnList?.slice(0, 3);
-  const hiddenCount = (learnList?.length ?? 0) - (visibleLearn?.length ?? 0);
-  const Icon = COURSE_ICONS[course.id] ?? BookOpen;
+function Price({ course, light = false, size = "lg" }: { course: Course; light?: boolean; size?: "lg" | "sm" }) {
+  return (
+    <div className="flex items-baseline gap-3">
+      <span className={`display ${size === "lg" ? "text-[2.4rem]" : "text-[1.5rem]"} leading-none`} style={{ color: light ? C.cream : C.primary }}>
+        {course.offerPrice}
+      </span>
+      {course.originalPrice && (
+        <span className="text-[14px] line-through" style={{ color: light ? "rgba(248,243,234,0.72)" : C.brownLight }}>
+          {course.originalPrice}
+        </span>
+      )}
+    </div>
+  );
+}
+
+/** Large editorial row for flagship, foundation and mentorship programmes */
+function FeatureRow({ course }: { course: Course }) {
+  const flagship = course.category === "flagship";
+  const mentorship = course.category === "mentorship";
+  const light = flagship;
 
   return (
-    <TiltCard
-      max={wide ? 2 : 4}
-      className={`group relative rounded-2xl shadow-sm h-full flex flex-col ${wide ? "p-6 sm:p-8 lg:p-10" : "p-6"}`}
-      style={{ backgroundColor: C.cream, border: `1px solid ${C.border}` }}
+    <article
+      className={`grid lg:grid-cols-12 gap-10 lg:gap-12 ${flagship ? "p-7 sm:p-10 lg:p-14" : "py-12 lg:py-14 border-t rule"}`}
+      style={flagship ? { backgroundColor: C.primary } : undefined}
     >
-      {/* Big faint icon in the corner */}
-      <Icon aria-hidden className={`absolute pointer-events-none ${wide ? "right-6 bottom-6 w-40 h-40" : "right-4 bottom-16 w-24 h-24"}`} style={{ color: C.green, opacity: 0.05 }} strokeWidth={1.2} />
-      <div className="relative flex items-start justify-between gap-3 mb-4">
-        <div className="flex items-center gap-3">
-          <span
-            className="icon-tile w-11 h-11 rounded-xl flex items-center justify-center flex-shrink-0 shadow-sm"
-            style={{ background: course.category === "flagship" ? `linear-gradient(135deg, ${C.green}, ${C.greenDark})` : `linear-gradient(135deg, ${C.gold}, #6E5310)` }}
-          >
-            <Icon className="w-5 h-5" style={{ color: C.cream }} />
-          </span>
-          <span className="text-[10px] tracking-[0.2em] uppercase font-semibold" style={{ color: C.gold }}>
-            {CATEGORY_LABEL[course.category]}
-          </span>
-        </div>
-        {course.badge && (
-          <span
-            className="float-slow px-3 py-1 rounded-full text-[11px] font-semibold whitespace-nowrap"
-            style={{ backgroundColor: course.category === "flagship" ? C.green : C.gold, color: C.cream }}
-          >
-            {course.badge}
-          </span>
-        )}
-      </div>
-
-      <div className={`flex ${wide ? "flex-col sm:flex-row sm:items-start" : "flex-col"} justify-between gap-3 mb-4`}>
-        <h3 className={`${wide ? "text-xl sm:text-2xl" : "text-lg"} font-serif font-bold`} style={{ color: C.green }}>
+      <div className="lg:col-span-5 flex flex-col">
+        <p className="text-[11px] tracking-[0.18em] uppercase font-semibold mb-4" style={{ color: light ? C.bronzeLight : C.bronze }}>
+          {CATEGORY_LABEL[course.category]}
+          {course.badge && (
+            <span className="serif serif-italic normal-case tracking-normal text-[14px] font-normal ml-2">— {course.badge}</span>
+          )}
+        </p>
+        <h3 className="display text-[2.2rem] sm:text-[2.8rem] mb-5" style={{ color: light ? C.cream : C.primary }}>
           {course.title}
         </h3>
-        <div className={wide ? "sm:text-right flex-shrink-0" : ""}>
-          <p className={`flex items-center gap-1.5 text-xs mb-1 ${wide ? "sm:justify-end" : ""}`} style={{ color: C.gold }}>
-            <Clock className="w-3.5 h-3.5" />
-            {isMentorship ? "Schedule: Fully Flexible" : `Duration: ${course.duration}`}
-          </p>
-          <div className={`flex items-baseline gap-2 ${wide ? "sm:justify-end" : ""}`}>
-            {course.originalPrice && (
-              <span className="text-sm line-through" style={{ color: C.brownLight }}>
-                {course.originalPrice}
-              </span>
-            )}
-            <span className={`${wide ? "text-2xl" : "text-xl"} font-serif font-bold`} style={{ color: C.green }}>
-              {course.offerPrice}
-            </span>
-          </div>
-        </div>
-      </div>
-
-      {course.batchInfo && (
-        <p
-          className="self-start text-xs font-semibold px-3 py-1 rounded-full mb-4"
-          style={{ backgroundColor: C.parchment, color: C.gold, border: `1px solid ${C.border}` }}
-        >
-          ✦ {course.batchInfo}
+        <p className="text-[13px] tracking-wide mb-6" style={{ color: light ? "rgba(248,243,234,0.7)" : C.brownMid }}>
+          {mentorship ? "Schedule: fully flexible" : `Duration: ${course.duration}`}
+          {course.batchInfo && <span className="block mt-1 serif serif-italic text-[15px]" style={{ color: light ? C.bronzeLight : C.bronze }}>{course.batchInfo}</span>}
         </p>
-      )}
+        <Price course={course} light={light} />
 
-      <p className={`${wide ? "text-sm sm:text-base" : "text-xs"} leading-relaxed mb-5`} style={{ color: C.brownMid }}>
-        {course.description}
-      </p>
-
-      <div className={`grid ${wide && course.projects ? "sm:grid-cols-2" : ""} gap-5 mb-6`}>
-        <div>
-          <h4 className="font-semibold text-sm mb-2" style={{ color: C.green }}>
-            {isMentorship ? "What's Included:" : "What You'll Learn:"}
-          </h4>
-          <ul className="space-y-1.5">
-            {visibleLearn?.map((item) => (
-              <li key={item} className="flex items-start gap-2 text-xs mb-0" style={{ color: C.brown }}>
-                <Bullet color={C.gold} />
-                {item}
-              </li>
-            ))}
-          </ul>
-          {!wide && (learnList?.length ?? 0) > 3 && (
-            <button
-              type="button"
-              onClick={() => setOpen((o) => !o)}
-              className="mt-2 text-xs font-semibold underline-offset-4 hover:underline"
-              style={{ color: C.gold }}
-            >
-              {open ? "Show less ↑" : `+${hiddenCount} more ↓`}
-            </button>
+        <div className="mt-8 lg:mt-auto lg:pt-10 flex flex-wrap items-center gap-x-6 gap-y-4">
+          {mentorship ? (
+            <Link href={`/?course=${course.id}#contact`} className="btn-z btn-solid">
+              Enquire about 1:1 classes <span className="arr" aria-hidden>→</span>
+            </Link>
+          ) : (
+            <>
+              <Link href={`/courses/${course.id}`} className={`btn-z ${light ? "btn-cream" : "btn-solid"}`}>
+                View details &amp; enrol <span className="arr" aria-hidden>→</span>
+              </Link>
+              <Link href={`/?course=${course.id}#contact`} className="ulink on text-[14px]" style={{ color: light ? C.cream : C.primary }}>
+                Ask a question
+              </Link>
+            </>
           )}
         </div>
-        {course.projects && (wide || open) && (
-          <div className="pop-in">
-            <h4 className="flex items-center gap-1.5 font-semibold text-sm mb-2" style={{ color: C.green }}>
-              <Hammer className="w-4 h-4" style={{ color: C.gold }} /> Projects:
-            </h4>
-            <ul className="space-y-1.5">
-              {course.projects.map((project) => (
-                <li key={project} className="flex items-start gap-2 text-xs mb-0" style={{ color: C.brown }}>
-                  <Bullet color={C.green} />
-                  {project}
-                </li>
-              ))}
-            </ul>
-          </div>
-        )}
       </div>
 
-      <div className="relative mt-auto flex flex-wrap gap-3">
-        {isMentorship ? (
-          <Link
-            href={`/?course=${course.id}#contact`}
-            className="btn-shine inline-flex items-center gap-2 px-6 py-3 rounded-full font-semibold text-sm tracking-wide hover:-translate-y-0.5"
-            style={{ backgroundColor: C.green, color: C.cream }}
-          >
-            <MessageCircle className="w-4 h-4" />
-            Enquire About 1:1 Classes
-          </Link>
-        ) : (
-          <>
-            <Link
-              href={`/courses/${course.id}`}
-              className={`btn-shine inline-flex items-center justify-center gap-1.5 ${wide ? "px-6 py-3 text-sm" : "flex-1 py-2.5 text-xs"} rounded-full font-semibold tracking-wide hover:-translate-y-0.5`}
-              style={{ backgroundColor: C.green, color: C.cream }}
-            >
-              View Details & Enrol
-              <ArrowRight className="w-3.5 h-3.5" />
-            </Link>
-            <Link
-              href={`/?course=${course.id}#contact`}
-              className={`inline-block ${wide ? "px-6 py-3 text-sm" : "px-4 py-2.5 text-xs"} rounded-full font-semibold tracking-wide hover:-translate-y-0.5`}
-              style={{ border: `1.5px solid ${C.green}`, color: C.green }}
-            >
-              Ask a Question
-            </Link>
-          </>
-        )}
+      <div className="lg:col-span-7">
+        <p className="text-[16.5px] leading-[1.75] mb-8" style={{ color: light ? "rgba(248,243,234,0.82)" : C.brown }}>
+          {course.description}
+        </p>
+        <div className={`grid ${course.projects ? "sm:grid-cols-2" : ""} gap-8`}>
+          <div>
+            <h4 className="text-[11px] tracking-[0.18em] uppercase font-semibold mb-2" style={{ color: light ? C.bronzeLight : C.bronze }}>
+              {mentorship ? "What's included" : "What you'll learn"}
+            </h4>
+            <DashList items={mentorship ? course.whatsIncluded : course.whatYouLearn} light={light} />
+          </div>
+          {course.projects && (
+            <div>
+              <h4 className="text-[11px] tracking-[0.18em] uppercase font-semibold mb-2" style={{ color: light ? C.bronzeLight : C.bronze }}>
+                Projects
+              </h4>
+              <DashList items={course.projects} light={light} />
+            </div>
+          )}
+        </div>
       </div>
-    </TiltCard>
+    </article>
+  );
+}
+
+/** Compact, expandable index row for specialisation courses */
+function IndexRow({ course, index }: { course: Course; index: number }) {
+  const [open, setOpen] = useState(false);
+  const panelId = `course-panel-${course.id}`;
+
+  return (
+    <article className="border-t rule">
+      <button
+        type="button"
+        onClick={() => setOpen((o) => !o)}
+        aria-expanded={open}
+        aria-controls={panelId}
+        className="row-hover w-full text-left grid grid-cols-[2.5rem_1fr_auto] sm:grid-cols-[3rem_1fr_9rem_8rem_2rem] items-baseline gap-x-4 py-6 sm:px-3"
+      >
+        <span className="serif serif-italic text-[15px]" style={{ color: C.bronze }}>
+          {String(index + 1).padStart(2, "0")}
+        </span>
+        <span>
+          <span className="display block text-[1.6rem] sm:text-[1.85rem]" style={{ color: C.primary }}>
+            {course.title}
+          </span>
+          <span className="sm:hidden block mt-1 text-[13px]" style={{ color: C.brownMid }}>
+            {course.duration} · {course.offerPrice}
+          </span>
+        </span>
+        <span className="hidden sm:block text-[14px]" style={{ color: C.brownMid }}>{course.duration}</span>
+        <span className="hidden sm:block">
+          <Price course={course} size="sm" />
+        </span>
+        <span
+          aria-hidden
+          className="justify-self-end text-xl leading-none"
+          style={{ color: C.primary, transform: `rotate(${open ? 45 : 0}deg)`, transition: "transform 300ms ease" }}
+        >
+          +
+        </span>
+      </button>
+
+      <div id={panelId} className="accordion-body" data-open={open}>
+        <div>
+          <div className="grid lg:grid-cols-12 gap-8 pb-10 pt-2 sm:px-3 lg:pl-[4.75rem]">
+            <div className="lg:col-span-5">
+              <p className="text-[15.5px] leading-[1.75] mb-6" style={{ color: C.brown }}>{course.description}</p>
+              <div className="flex flex-wrap items-center gap-x-6 gap-y-4">
+                <Link href={`/courses/${course.id}`} className="btn-z btn-solid">
+                  View details &amp; enrol <span className="arr" aria-hidden>→</span>
+                </Link>
+                <Link href={`/?course=${course.id}#contact`} className="ulink on text-[14px]" style={{ color: C.primary }}>
+                  Ask a question
+                </Link>
+              </div>
+            </div>
+            <div className="lg:col-span-7 grid sm:grid-cols-2 gap-8">
+              <div>
+                <h4 className="text-[11px] tracking-[0.18em] uppercase font-semibold mb-2" style={{ color: C.bronze }}>What you&rsquo;ll learn</h4>
+                <DashList items={course.whatYouLearn} />
+              </div>
+              <div>
+                <h4 className="text-[11px] tracking-[0.18em] uppercase font-semibold mb-2" style={{ color: C.bronze }}>Projects</h4>
+                <DashList items={course.projects} />
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </article>
   );
 }
 
@@ -205,124 +209,132 @@ const Courses = () => {
     return map;
   }, []);
 
-  const visible = tab === "all" ? listedCourses : listedCourses.filter((c) => c.category === tab);
-  const wideCategories = new Set(["flagship", "foundation", "mentorship"]);
+  const show = (cat: string) => tab === "all" || tab === cat;
+  const flagship = listedCourses.filter((c) => c.category === "flagship");
+  const foundation = listedCourses.filter((c) => c.category === "foundation");
+  const specialisation = listedCourses.filter((c) => c.category === "specialisation");
+  const mentorship = listedCourses.filter((c) => c.category === "mentorship");
 
   return (
-    <section id="courses" className="relative overflow-hidden py-12 sm:py-16 md:py-20" style={{ backgroundColor: C.parchment }}>
-      <SectionBg pattern="grid" opacity={0.45} fade="top" />
-      <div className="relative max-w-6xl mx-auto px-4 sm:px-6">
+    <section id="courses" style={{ backgroundColor: C.cream }}>
+      <div className="wrap py-20 lg:py-28">
         {/* Header */}
-        <Reveal>
-          <div className="text-center mb-8 sm:mb-10">
-            <p className="text-xs tracking-[0.25em] uppercase font-semibold mb-3" style={{ color: C.gold }}>
-              ✦ Course Catalogue 2026
+        <div className="grid lg:grid-cols-12 gap-10 mb-14 items-end">
+          <Reveal className="lg:col-span-7">
+            <p className="label mb-6">
+              <span className="label-num">03</span> Course catalogue 2026
             </p>
-            <h2 className="text-4xl sm:text-5xl md:text-6xl font-serif font-bold mb-4" style={{ color: C.green }}>
-              Zyphraa Courses
+            <h2 className="display text-[2.8rem] sm:text-[3.8rem] lg:text-[4.4rem]" style={{ color: C.primary }}>
+              Zyphraa <em style={{ color: C.bronze }}>courses</em>
             </h2>
-            <p className="text-base sm:text-lg max-w-3xl mx-auto leading-relaxed" style={{ color: C.brownMid }}>
-              Industry-aligned programmes built around real-world projects, hands-on implementation,
-              and job-ready skills. All courses include practical projects, personalised support,
-              and live mock interview practice.
+            <p className="lede mt-6 mb-0 max-w-xl">
+              Industry-aligned programmes built around real-world projects, hands-on implementation, and job-ready
+              skills. All courses include practical projects, personalised support, and live mock interview practice.
             </p>
-          </div>
-        </Reveal>
+          </Reveal>
+          <Reveal delay={120} className="hidden lg:block lg:col-span-4 lg:col-start-9">
+            <div className="relative aspect-[3/2] overflow-hidden settle">
+              <Image src={codingImg} alt="A developer writing code on a laptop" fill placeholder="blur" sizes="30vw" className="photo object-cover" />
+            </div>
+          </Reveal>
+        </div>
 
         {/* Filter tabs */}
-        <Reveal>
-          <div role="tablist" aria-label="Filter courses" className="flex flex-wrap justify-center gap-2 mb-10">
-            {TABS.map((t) => {
-              const selected = tab === t.key;
-              return (
-                <button
-                  key={t.key}
-                  role="tab"
-                  aria-selected={selected}
-                  onClick={() => setTab(t.key)}
-                  className="inline-flex items-center gap-1.5 px-4 py-2 rounded-full text-xs sm:text-sm font-semibold tracking-wide hover:-translate-y-0.5"
-                  style={{
-                    backgroundColor: selected ? C.green : C.cream,
-                    color: selected ? C.cream : C.brown,
-                    border: `1px solid ${selected ? C.green : C.border}`,
-                    boxShadow: selected ? "0 6px 16px rgba(45,74,62,0.2)" : "none",
-                  }}
-                >
-                  <t.Icon className="w-4 h-4" />
-                  {t.label}
-                  <span
-                    className="ml-2 inline-flex items-center justify-center min-w-5 h-5 px-1 rounded-full text-[10px]"
-                    style={{ backgroundColor: selected ? "rgba(245,239,230,0.2)" : C.parchment }}
-                  >
-                    {counts[t.key] ?? 0}
-                  </span>
-                </button>
-              );
-            })}
-          </div>
-        </Reveal>
-
-        {/* Course grid — keyed by tab so cards re-animate when the filter changes */}
-        <div key={tab} className="grid sm:grid-cols-2 lg:grid-cols-6 gap-6 mb-14">
-          {visible.map((course, i) => {
-            const wide = wideCategories.has(course.category);
+        <div role="tablist" aria-label="Filter courses" className="flex gap-6 sm:gap-9 overflow-x-auto border-b rule mb-10 -mx-1 px-1">
+          {TABS.map((t) => {
+            const selected = tab === t.key;
             return (
-              <div
-                key={course.id}
-                className={`pop-in ${wide ? "sm:col-span-2 lg:col-span-6" : "lg:col-span-2"}`}
-                style={{ animationDelay: `${i * 70}ms` }}
+              <button
+                key={t.key}
+                role="tab"
+                aria-selected={selected}
+                onClick={() => setTab(t.key)}
+                className="tabline whitespace-nowrap text-[14.5px]"
+                style={{ color: selected ? C.primary : C.brownMid, fontWeight: selected ? 600 : 500 }}
               >
-                <CourseCard course={course} wide={wide} />
-              </div>
+                {t.label}
+                <sup className="ml-1 text-[10px]" style={{ color: C.bronze }}>{counts[t.key] ?? 0}</sup>
+              </button>
             );
           })}
         </div>
 
-        {/* Course summary table */}
+        {/* Courses — keyed by tab so they re-animate when the filter changes */}
+        <div key={tab} className="pop-in">
+          {show("flagship") && flagship.map((c) => <FeatureRow key={c.id} course={c} />)}
+
+          {show("foundation") && foundation.length > 0 && (
+            <div className={tab === "all" ? "mt-16" : ""}>
+              {tab === "all" && (
+                <h3 className="text-[12px] tracking-[0.18em] uppercase font-semibold mb-2" style={{ color: C.bronze }}>
+                  Foundation programmes — start from zero
+                </h3>
+              )}
+              {foundation.map((c) => <FeatureRow key={c.id} course={c} />)}
+            </div>
+          )}
+
+          {show("specialisation") && specialisation.length > 0 && (
+            <div className={tab === "all" ? "mt-16" : ""}>
+              {tab === "all" && (
+                <h3 className="text-[12px] tracking-[0.18em] uppercase font-semibold mb-2" style={{ color: C.bronze }}>
+                  Specialisations — focused learning paths
+                </h3>
+              )}
+              <div className="border-b rule">
+                {specialisation.map((c, i) => <IndexRow key={c.id} course={c} index={i} />)}
+              </div>
+            </div>
+          )}
+
+          {show("mentorship") && mentorship.length > 0 && (
+            <div className={tab === "all" ? "mt-16" : ""}>
+              {mentorship.map((c) => <FeatureRow key={c.id} course={c} />)}
+            </div>
+          )}
+        </div>
+
+        {/* At a glance */}
         <Reveal>
-          <div className="rounded-2xl p-6 sm:p-8 shadow-sm" style={{ backgroundColor: C.cream, border: `1px solid ${C.border}` }}>
-            <p className="text-xs tracking-[0.2em] uppercase font-semibold mb-2 text-center" style={{ color: C.gold }}>
-              ✦ Quick Overview
-            </p>
-            <h3 className="text-2xl sm:text-3xl font-serif font-bold mb-6 text-center" style={{ color: C.green }}>
-              Course Summary
-            </h3>
+          <div className="mt-20 pt-10 border-t-2" style={{ borderColor: C.primary }}>
+            <div className="flex flex-col sm:flex-row sm:items-baseline justify-between gap-2 mb-6">
+              <h3 className="display text-[1.9rem]" style={{ color: C.primary }}>Course summary</h3>
+              <p className="text-[13px] mb-0" style={{ color: C.brownLight }}>Quick overview · prices in INR</p>
+            </div>
             <div className="overflow-x-auto">
-              <table className="w-full text-xs sm:text-sm">
+              <table className="w-full text-[14px]">
                 <thead>
-                  <tr style={{ borderBottom: `2px solid ${C.border}` }}>
-                    {["Course", "Duration", "Original Price", "Offer Price"].map((h) => (
-                      <th key={h} className="text-left py-3 px-2 font-semibold" style={{ color: C.green }}>
+                  <tr className="border-b rule">
+                    {["Course", "Duration", "Original", "Offer"].map((h, i) => (
+                      <th key={h} className={`py-3 pr-4 font-semibold text-[11px] tracking-[0.16em] uppercase ${i > 1 ? "text-right" : "text-left"}`} style={{ color: C.bronze }}>
                         {h}
                       </th>
                     ))}
                   </tr>
                 </thead>
                 <tbody>
-                  {listedCourses.map((course, i) => (
-                    <tr
-                      key={course.id}
-                      className="summary-row"
-                      style={{ borderBottom: `1px solid ${C.sand}`, backgroundColor: i % 2 === 0 ? "transparent" : C.parchment }}
-                    >
-                      <td className="py-3 px-2 font-medium">
-                        <Link href={course.category === "mentorship" ? `/?course=${course.id}#contact` : `/courses/${course.id}`} className="hover:underline underline-offset-4" style={{ color: C.brown }}>
+                  {listedCourses.map((course) => (
+                    <tr key={course.id} className="row-hover border-b rule">
+                      <td className="py-3.5 pr-4">
+                        <Link
+                          href={course.category === "mentorship" ? `/?course=${course.id}#contact` : `/courses/${course.id}`}
+                          className="ulink font-medium"
+                          style={{ color: C.primary }}
+                        >
                           {course.title}
                         </Link>
                       </td>
-                      <td className="py-3 px-2" style={{ color: C.brownMid }}>{course.duration}</td>
-                      <td className="py-3 px-2 line-through" style={{ color: C.brownLight }}>{course.originalPrice || "—"}</td>
-                      <td className="py-3 px-2 font-bold font-serif" style={{ color: C.green }}>{course.offerPrice}</td>
+                      <td className="py-3.5 pr-4 whitespace-nowrap" style={{ color: C.brownMid }}>{course.duration}</td>
+                      <td className="py-3.5 pr-4 text-right line-through whitespace-nowrap" style={{ color: C.brownLight }}>{course.originalPrice || "—"}</td>
+                      <td className="py-3.5 text-right serif text-[16px] whitespace-nowrap" style={{ color: C.primary }}>{course.offerPrice}</td>
                     </tr>
                   ))}
                 </tbody>
               </table>
-              <style>{`.summary-row:hover { background-color: ${C.sand} !important; }`}</style>
             </div>
-            <p className="text-xs mt-5 text-center leading-relaxed" style={{ color: C.brownLight }}>
-              Zyphraa Online Learning Platform · All courses include hands-on projects and mock interview practice.
-              Questions about enrolment?{" "}
-              <Link href="/#contact" className="underline">Send us a message</Link>.
+            <p className="text-[13px] mt-6 mb-0" style={{ color: C.brownMid }}>
+              All courses include hands-on projects and mock interview practice. Questions about enrolment?{" "}
+              <Link href="/#contact" className="ulink on" style={{ color: C.primary }}>Send us a message</Link>
             </p>
           </div>
         </Reveal>

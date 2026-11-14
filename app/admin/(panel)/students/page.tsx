@@ -61,9 +61,9 @@ export default async function StudentsPage({ searchParams }: { searchParams: Sea
             <option key={s} value={s}>{STATUS_STYLES[s].label}</option>
           ))}
         </select>
-        <button className="px-5 py-2 rounded-full text-sm font-semibold" style={{ backgroundColor: C.green, color: C.cream }}>Filter</button>
+        <button className="px-5 py-2 rounded-full text-sm font-semibold" style={{ backgroundColor: C.primary, color: C.cream }}>Filter</button>
         {filtered && (
-          <Link href="/admin/students" className="px-4 py-2 text-sm text-center" style={{ color: C.gold }}>Clear</Link>
+          <Link href="/admin/students" className="px-4 py-2 text-sm text-center" style={{ color: C.bronze }}>Clear</Link>
         )}
       </form>
 
@@ -82,7 +82,7 @@ export default async function StudentsPage({ searchParams }: { searchParams: Sea
               <thead>
                 <tr style={{ backgroundColor: C.parchment }}>
                   {["Student", "Course / Batch", "Status", "Fees", "Started", ""].map((h) => (
-                    <th key={h} className="text-left px-4 py-3 text-xs font-semibold tracking-wide whitespace-nowrap" style={{ color: C.green }}>{h}</th>
+                    <th key={h} className="text-left px-4 py-3 text-xs font-semibold tracking-wide whitespace-nowrap" style={{ color: C.primary }}>{h}</th>
                   ))}
                 </tr>
               </thead>
@@ -92,12 +92,12 @@ export default async function StudentsPage({ searchParams }: { searchParams: Sea
                   return (
                     <tr key={s.id} className="admin-row border-t" style={{ borderColor: C.sand }}>
                       <td className="px-4 py-3">
-                        <Link href={`/admin/students/${s.id}`} className="font-semibold hover:underline" style={{ color: C.green }}>{s.name}</Link>
+                        <Link href={`/admin/students/${s.id}`} className="font-semibold hover:underline" style={{ color: C.primary }}>{s.name}</Link>
                         <div className="text-xs" style={{ color: C.brownLight }}>{s.email}{s.phone ? ` · ${s.phone}` : ""}</div>
                       </td>
                       <td className="px-4 py-3">
                         <div className="text-xs" style={{ color: C.brown }}>{coursesData.find((c) => c.id === s.course_id)?.title ?? "—"}</div>
-                        {s.batch && <div className="text-[11px]" style={{ color: C.gold }}>{s.batch}</div>}
+                        {s.batch && <div className="text-[11px]" style={{ color: C.bronze }}>{s.batch}</div>}
                       </td>
                       <td className="px-4 py-3"><StatusBadge status={s.status} /></td>
                       <td className="px-4 py-3 min-w-36">
@@ -105,12 +105,12 @@ export default async function StudentsPage({ searchParams }: { searchParams: Sea
                           {formatRupees(s.fee_paid)} <span style={{ color: C.brownLight }}>/ {formatRupees(s.fee_total)}</span>
                         </div>
                         <div className="h-1.5 rounded-full overflow-hidden" style={{ backgroundColor: C.sand }}>
-                          <div className="h-full rounded-full" style={{ width: `${pct}%`, backgroundColor: pct >= 100 ? "#2D6A4F" : C.gold }} />
+                          <div className="h-full rounded-full" style={{ width: `${pct}%`, backgroundColor: pct >= 100 ? C.primary : C.bronze }} />
                         </div>
                       </td>
                       <td className="px-4 py-3 text-xs whitespace-nowrap" style={{ color: C.brownMid }}>{formatDate(s.start_date)}</td>
                       <td className="px-4 py-3 text-right">
-                        <Link href={`/admin/students/${s.id}`} className="text-xs font-semibold hover:underline" style={{ color: C.gold }}>Edit →</Link>
+                        <Link href={`/admin/students/${s.id}`} className="text-xs font-semibold hover:underline" style={{ color: C.bronze }}>Edit →</Link>
                       </td>
                     </tr>
                   );

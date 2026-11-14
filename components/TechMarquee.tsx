@@ -2,30 +2,30 @@ import React from "react";
 import { C } from "@/lib/theme";
 
 const TECH = [
-  "React", "Next.js", "TypeScript", "Tailwind CSS", "Spring Boot", "Java", "Python",
-  "Django", "Node.js", "PostgreSQL", "MySQL", "MongoDB", "scikit-learn", "Pandas",
-  "Docker", "CI/CD", "Git", "GitHub", "JWT Auth", "REST APIs", "Microservices", "JUnit",
+  "React", "Next.js", "TypeScript", "Tailwind CSS", "Spring Boot", "Java", "Python", "Django", "Node.js",
+  "PostgreSQL", "MySQL", "MongoDB", "scikit-learn", "Pandas", "Docker", "CI/CD", "Git", "REST APIs", "JUnit",
 ];
 
-/** Infinite scrolling strip of the technologies taught across Zyphraa courses. */
+/** A quiet, typographic list of the tools taught across Zyphraa courses. */
 const TechMarquee = () => (
-  <section aria-label="Technologies you'll learn" className="py-8 border-y" style={{ backgroundColor: C.green, borderColor: C.greenDark }}>
-    <p className="text-center text-[10px] tracking-[0.3em] uppercase font-semibold mb-4" style={{ color: C.goldLight }}>
-      ✦ Tools & technologies you&rsquo;ll work with
-    </p>
-    <div className="marquee overflow-hidden">
-      <div className="marquee-track gap-3">
-        {[...TECH, ...TECH].map((t, i) => (
-          <span
-            key={`${t}-${i}`}
-            aria-hidden={i >= TECH.length}
-            className="px-4 py-2 rounded-full text-sm font-medium whitespace-nowrap"
-            style={{ backgroundColor: "rgba(245,239,230,0.08)", color: C.cream, border: "1px solid rgba(245,239,230,0.18)" }}
-          >
-            {t}
-          </span>
+  <section aria-label="Technologies you'll learn" style={{ backgroundColor: C.primary }}>
+    <div className="wrap py-10 lg:py-12 grid lg:grid-cols-12 gap-6 items-baseline">
+      <p className="lg:col-span-3 serif serif-italic text-xl" style={{ color: C.bronzeLight }}>
+        The toolbelt you&rsquo;ll graduate with
+      </p>
+      <p className="min-w-0 lg:col-span-9 text-[15px] leading-[2] mb-0" style={{ color: "rgba(248,243,234,0.88)" }}>
+        {TECH.map((t, i) => (
+          <React.Fragment key={t}>
+            <span className="whitespace-nowrap">{t}</span>
+            {i < TECH.length - 1 && (
+              <>
+                {" "}
+                <span aria-hidden className="mx-2" style={{ color: C.bronzeLight, opacity: 0.6 }}>/</span>{" "}
+              </>
+            )}
+          </React.Fragment>
         ))}
-      </div>
+      </p>
     </div>
   </section>
 );

@@ -1,138 +1,116 @@
 import React from "react";
 import Link from "next/link";
-import { ArrowRight, CalendarDays, MessageCircle, Code2, Database, Cloud, Brain, Laptop, CheckCircle2 } from "lucide-react";
+import Image from "next/image";
 import { C } from "@/lib/theme";
 import { coursesData, getEnrolLink } from "@/config/courses";
-import RotatingWord from "./RotatingWord";
-import HeroVisual from "./HeroVisual";
-import SectionBg from "./SectionBg";
+import heroImg from "@/public/images/learner-outdoors.jpg";
 
 // Price and link come from config/courses.ts so they always match the course page
 const workshop = coursesData.find((c) => c.id === "3-day-workshop");
 
-const HIGHLIGHTS = ["Live sessions", "Real projects", "Mock interviews", "Limited seats"];
+const FACTS = [
+  { k: "Live", v: "Mentor-led sessions, never pre-recorded" },
+  { k: "Real", v: "Projects you build, ship and show recruiters" },
+  { k: "Ready", v: "Mock interviews included in every programme" },
+  { k: "Small", v: "Limited seats, so you're never just a number" },
+];
 
 const Home = () => {
   return (
-    <section
-      id="home"
-      className="relative overflow-hidden min-h-[calc(100vh-72px)] flex items-center px-4 sm:px-6 py-16 sm:py-20"
-      style={{ backgroundColor: C.cream }}
-    >
-      {/* Animated background */}
-      <div aria-hidden className="absolute inset-0">
-        <div className="blob w-[420px] h-[420px] -top-24 -left-24" style={{ background: "#CFE0D2" }} />
-        <div className="blob w-[380px] h-[380px] top-1/3 -right-28" style={{ background: "#EBD9AE", animationDelay: "-6s" }} />
-        <div className="blob w-[300px] h-[300px] -bottom-24 left-1/3" style={{ background: "#E4CFC0", animationDelay: "-12s" }} />
-      </div>
-      <SectionBg
-        pattern="circuit"
-        opacity={0.55}
-        icons={[
-          { Icon: Code2, className: "top-16 left-[4%] w-14 h-14", rotate: -12 },
-          { Icon: Database, className: "bottom-20 left-[6%] w-12 h-12", rotate: 8 },
-          { Icon: Cloud, className: "top-12 right-[40%] w-12 h-12", rotate: 0 },
-          { Icon: Brain, className: "bottom-10 right-[44%] w-12 h-12", rotate: 10 },
-          { Icon: Laptop, className: "top-20 right-[4%] w-12 h-12", rotate: -6 },
-        ]}
-      />
+    <section id="home" className="grain relative overflow-hidden" style={{ backgroundColor: C.cream }}>
+      <div className="wrap pt-12 sm:pt-16 lg:pt-20 pb-16 lg:pb-20">
+        <div className="grid lg:grid-cols-12 gap-12 lg:gap-8 items-start">
+          {/* Copy */}
+          <div className="lg:col-span-7 lg:pr-6 lg:pt-6">
+            <p className="hero-in hero-in-1 label mb-8">Mentor-led · Online · Project-first</p>
 
-      <div className="relative z-10 max-w-6xl mx-auto w-full grid grid-cols-1 lg:grid-cols-[1.1fr_1fr] gap-14 lg:gap-10 items-center">
-        {/* Text column */}
-        <div className="min-w-0 flex flex-col items-center lg:items-start text-center lg:text-left">
-          <div
-            className="hero-in hero-in-1 inline-flex items-center gap-2 px-4 py-1.5 rounded-full text-[10px] sm:text-xs font-semibold tracking-[0.12em] sm:tracking-[0.15em] uppercase mb-6"
-            style={{ backgroundColor: C.sand, color: C.gold, border: `1px solid ${C.border}` }}
-          >
-            <span className="pulse-dot w-2 h-2 rounded-full" style={{ backgroundColor: C.green }} />
-            Admissions open · Learn. Improve. Grow.
+            <h1 className="hero-in hero-in-2 display text-[3.1rem] sm:text-[4.4rem] lg:text-[5.6rem] mb-8" style={{ color: C.primary }}>
+              Become a <em style={{ color: C.bronze }}>job&#8209;ready</em>
+              <br />
+              developer.
+            </h1>
+
+            <p className="hero-in hero-in-3 lede max-w-[34rem] mb-5">
+              Learn Full Stack Development, Python &amp; AI/ML, Java &amp; Spring Boot, and DevOps — and build
+              real-world projects with Zyphraa. No boring theory, no filler modules, just practical skills that get
+              you hired.
+            </p>
+            <p className="hero-in hero-in-3 text-[15px] max-w-[34rem] mb-10 pl-4 border-l-2" style={{ color: C.brown, borderColor: C.bronzeLight }}>
+              Every programme now includes live mock interview practice, so you graduate interview-ready, not just
+              skill-ready.
+            </p>
+
+            <div className="hero-in hero-in-4 flex flex-col sm:flex-row sm:items-center gap-4 sm:gap-6">
+              <Link href="/#courses" className="btn-z btn-solid">
+                Explore courses <span className="arr" aria-hidden>→</span>
+              </Link>
+              <Link href="/#contact" className="ulink on text-[15px] self-start sm:self-auto" style={{ color: C.primary }}>
+                Ask a question
+              </Link>
+            </div>
+            <p className="hero-in hero-in-5 serif serif-italic text-[15px] mt-10" style={{ color: C.brownLight }}>
+              New skills. New opportunities. New you.
+            </p>
           </div>
 
-          <h1
-            className="hero-in hero-in-2 text-4xl sm:text-5xl md:text-6xl font-serif font-bold mb-6 leading-tight"
-            style={{ color: C.green }}
-          >
-            Become a
-            <br />
-            <RotatingWord
-              words={["Job-Ready", "Interview-Ready", "Project-Ready", "Confident"]}
-              className="italic"
-              style={{ color: C.gold }}
-            />
-            <br />
-            Developer
-          </h1>
+          {/* Photograph + next-up note */}
+          <div className="lg:col-span-5 relative hero-in hero-in-3">
+            <div className="frame mr-4 sm:mr-6 lg:mr-0">
+              <div className="relative aspect-[3/2] lg:aspect-[4/5] overflow-hidden" style={{ backgroundColor: C.parchment }}>
+                <Image
+                  src={heroImg}
+                  alt="A student working on her laptop on a bench outdoors"
+                  fill
+                  priority
+                  placeholder="blur"
+                  sizes="(min-width: 1024px) 40vw, 100vw"
+                  className="photo object-cover object-[50%_40%] lg:object-center"
+                />
+              </div>
+            </div>
 
-          <p className="hero-in hero-in-3 text-base sm:text-lg max-w-xl mb-4 leading-relaxed" style={{ color: C.brownMid }}>
-            Learn Full Stack Development, Python & AI/ML, Java & Spring Boot, and DevOps —
-            and build real-world projects with Zyphraa. No boring theory, no filler modules,
-            just practical skills that get you hired.
-          </p>
-
-          <p className="hero-in hero-in-3 text-sm sm:text-base max-w-xl mb-8 leading-relaxed" style={{ color: C.gold }}>
-            ♡ Every programme includes live mock interview practice — graduate interview-ready, not just skill-ready.
-          </p>
-
-          {/* Buttons */}
-          <div className="hero-in hero-in-5 flex flex-col sm:flex-row flex-wrap gap-2.5 justify-center lg:justify-start w-full">
-            <Link
-              href="/#courses"
-              className="btn-shine group whitespace-nowrap inline-flex items-center justify-center gap-2 px-6 py-3.5 rounded-full font-semibold text-sm tracking-wide hover:-translate-y-0.5 shadow-md"
-              style={{ backgroundColor: C.green, color: C.cream }}
-            >
-              Explore Courses
-              <ArrowRight className="w-4 h-4 group-hover:translate-x-1" style={{ transition: "translate 200ms ease" }} />
-            </Link>
             {workshop && (
-            <Link
-              href={getEnrolLink(workshop)}
-              className="home-outline-btn whitespace-nowrap inline-flex items-center justify-center gap-2 px-6 py-3.5 rounded-full font-semibold text-sm tracking-wide hover:-translate-y-0.5"
-              style={{ border: `1.5px solid ${C.green}`, color: C.green }}
-            >
-              <CalendarDays className="w-4 h-4" />
-              Join Workshop — {workshop.offerPrice}
-            </Link>
+              <div
+                className="relative z-10 lg:absolute lg:-left-16 lg:bottom-10 mt-8 lg:mt-0 lg:w-[19rem] p-6 shadow-[0_18px_40px_-18px_rgba(18,28,44,0.35)]"
+                style={{ backgroundColor: "#FCF8F1", borderTop: `3px solid ${C.primary}` }}
+              >
+                <p className="text-[11px] tracking-[0.18em] uppercase font-semibold mb-2" style={{ color: C.bronze }}>
+                  Next up
+                </p>
+                <p className="display text-[1.6rem] mb-1" style={{ color: C.primary }}>
+                  {workshop.title}
+                </p>
+                <p className="text-[13px] mb-4" style={{ color: C.brownMid }}>
+                  {workshop.duration} · Full stack, testing &amp; DevOps
+                </p>
+                <div className="flex items-center justify-between gap-4 pt-4 border-t rule">
+                  <span className="serif text-xl" style={{ color: C.primary }}>{workshop.offerPrice}</span>
+                  <Link href={getEnrolLink(workshop)} className="ulink on text-[14px]" style={{ color: C.primary }}>
+                    Join Workshop <span aria-hidden>→</span>
+                  </Link>
+                </div>
+              </div>
             )}
-            <Link
-              href="/#contact"
-              className="home-outline-btn whitespace-nowrap inline-flex items-center justify-center gap-2 px-4 py-3.5 rounded-full font-semibold text-sm tracking-wide hover:-translate-y-0.5"
-              style={{ color: C.gold }}
-            >
-              <MessageCircle className="w-4 h-4" />
-              Ask a Question
-            </Link>
-            <style>{`.home-outline-btn:hover { background-color: ${C.sand}; }`}</style>
           </div>
-
-          {/* Highlights */}
-          <ul className="hero-in hero-in-6 flex flex-wrap justify-center lg:justify-start gap-x-5 gap-y-2 mt-8">
-            {HIGHLIGHTS.map((h) => (
-              <li key={h} className="flex items-center gap-1.5 text-xs font-medium mb-0" style={{ color: C.brownMid }}>
-                <CheckCircle2 className="w-4 h-4" style={{ color: C.green }} />
-                {h}
-              </li>
-            ))}
-          </ul>
         </div>
 
-        {/* Visual column */}
-        <div className="hero-in hero-in-4 min-w-0 px-2 sm:px-12 lg:px-4">
-          <HeroVisual />
-        </div>
+        {/* Facts strip */}
+        <dl className="hero-in hero-in-5 mt-16 lg:mt-24 grid grid-cols-2 lg:grid-cols-4 border-t rule">
+          {FACTS.map((f, i) => (
+            <div
+              key={f.k}
+              className={`pt-6 pb-2 pr-6 ${i % 2 === 1 ? "pl-6 border-l rule" : ""} ${i === 2 ? "lg:pl-6 lg:border-l" : ""} ${i >= 2 ? "border-t lg:border-t-0 rule" : ""}`}
+            >
+              <dt className="display serif-italic text-[1.6rem] mb-1" style={{ color: C.bronze }}>
+                {f.k}
+              </dt>
+              <dd className="text-[14px] leading-snug" style={{ color: C.brown }}>
+                {f.v}
+              </dd>
+            </div>
+          ))}
+        </dl>
       </div>
-
-      {/* Scroll cue */}
-      <Link
-        href="/#about"
-        aria-label="Scroll to about"
-        className="absolute bottom-5 left-1/2 -translate-x-1/2 hidden lg:flex flex-col items-center gap-1 text-[10px] tracking-widest uppercase"
-        style={{ color: C.brownLight }}
-      >
-        Scroll
-        <span className="w-5 h-8 rounded-full border-2 flex justify-center pt-1.5" style={{ borderColor: C.brownLight }}>
-          <span className="float-slow w-1 h-2 rounded-full" style={{ backgroundColor: C.brownLight }} />
-        </span>
-      </Link>
     </section>
   );
 };

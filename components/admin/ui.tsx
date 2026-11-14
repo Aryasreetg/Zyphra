@@ -6,12 +6,12 @@ import { C } from "@/lib/theme";
 export const STATUS_STYLES: Record<string, { bg: string; fg: string; label: string }> = {
   // enquiries
   new: { bg: "#E3EEF9", fg: "#1F4F82", label: "New" },
-  contacted: { bg: "#FDF1D8", fg: "#8B6914", label: "Contacted" },
-  converted: { bg: "#DDEFE3", fg: "#2D6A4F", label: "Converted" },
-  closed: { bg: "#ECE7E1", fg: "#6B5744", label: "Closed" },
+  contacted: { bg: "#FDF1D8", fg: "#86592B", label: "Contacted" },
+  converted: { bg: "#1B2A41", fg: "#F8F3EA", label: "Converted" },
+  closed: { bg: "#ECE7E1", fg: "#5C5047", label: "Closed" },
   // students
-  active: { bg: "#DDEFE3", fg: "#2D6A4F", label: "Active" },
-  paused: { bg: "#FDF1D8", fg: "#8B6914", label: "Paused" },
+  active: { bg: "#1B2A41", fg: "#F8F3EA", label: "Active" },
+  paused: { bg: "#FDF1D8", fg: "#86592B", label: "Paused" },
   completed: { bg: "#E3EEF9", fg: "#1F4F82", label: "Completed" },
   dropped: { bg: "#F7E1DC", fg: "#B3412E", label: "Dropped" },
 };
@@ -28,7 +28,7 @@ export function StatusBadge({ status }: { status: string }) {
 
 export function Panel({ children, className = "", style }: { children: React.ReactNode; className?: string; style?: React.CSSProperties }) {
   return (
-    <div className={`rounded-2xl shadow-sm ${className}`} style={{ backgroundColor: "#FFFDF9", border: `1px solid ${C.border}`, ...style }}>
+    <div className={`rounded-2xl shadow-sm ${className}`} style={{ backgroundColor: "#FFFDF8", border: `1px solid ${C.border}`, ...style }}>
       {children}
     </div>
   );
@@ -38,7 +38,7 @@ export function PageTitle({ title, subtitle, action }: { title: string; subtitle
   return (
     <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-4 mb-6">
       <div>
-        <h1 className="font-serif font-bold text-3xl mb-1" style={{ color: C.green }}>{title}</h1>
+        <h1 className="font-serif font-bold text-3xl mb-1" style={{ color: C.primary }}>{title}</h1>
         {subtitle && <p className="text-sm mb-0" style={{ color: C.brownMid }}>{subtitle}</p>}
       </div>
       {action}
@@ -46,10 +46,10 @@ export function PageTitle({ title, subtitle, action }: { title: string; subtitle
   );
 }
 
-export function StatCard({ label, value, hint, accent = C.green }: { label: string; value: React.ReactNode; hint?: string; accent?: string }) {
+export function StatCard({ label, value, hint, accent = C.primary }: { label: string; value: React.ReactNode; hint?: string; accent?: string }) {
   return (
     <Panel className="p-5 hover-lift">
-      <p className="text-[10px] tracking-[0.2em] uppercase font-semibold mb-2" style={{ color: C.gold }}>{label}</p>
+      <p className="text-[10px] tracking-[0.2em] uppercase font-semibold mb-2" style={{ color: C.bronze }}>{label}</p>
       <p className="font-serif font-bold text-3xl mb-1" style={{ color: accent }}>{value}</p>
       {hint && <p className="text-xs mb-0" style={{ color: C.brownLight }}>{hint}</p>}
     </Panel>
@@ -57,9 +57,9 @@ export function StatCard({ label, value, hint, accent = C.green }: { label: stri
 }
 
 export const btnPrimary = "inline-flex items-center justify-center gap-2 px-4 py-2 rounded-full text-sm font-semibold hover:opacity-90 hover:-translate-y-0.5 disabled:opacity-60";
-export const btnPrimaryStyle: React.CSSProperties = { backgroundColor: C.green, color: C.cream };
+export const btnPrimaryStyle: React.CSSProperties = { backgroundColor: C.primary, color: C.cream };
 export const btnOutline = "inline-flex items-center justify-center gap-2 px-4 py-2 rounded-full text-sm font-semibold hover:-translate-y-0.5";
-export const btnOutlineStyle: React.CSSProperties = { border: `1.5px solid ${C.green}`, color: C.green };
+export const btnOutlineStyle: React.CSSProperties = { border: `1.5px solid ${C.primary}`, color: C.primary };
 
 export function formatDate(d: Date | string | null | undefined, withTime = false) {
   if (!d) return "—";
