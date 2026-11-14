@@ -243,19 +243,12 @@ export const coursesData: Course[] = [
   },
 ];
 
-// Enrolment links keyed by course id. Falls back to the generic form below
-// when a course doesn't have a dedicated Google Form.
-export const courseEnrolLinks: Record<string, string> = {
-  "frontend-mastery": "https://forms.gle/3eACANepzSr72HSm9",
-  "software-testing": "https://forms.gle/3mn6icFrWE5HgvEy7",
-  "3-day-workshop": "https://forms.gle/WBvxgVHSrCuZspqVA",
-};
-
-export const defaultEnrolLink = "https://forms.gle/AdaaT56F6GMVCEUu9";
-
+// Every "Enrol Now" button opens the website's own contact form with the course
+// pre-selected. Submissions are saved and appear in /admin → Enquiries.
+// Courses priced "Contact Us" open the same form as a general enquiry.
 export function getEnrolLink(course: Pick<Course, "id" | "offerPrice">) {
   if (course.offerPrice === "Contact Us") return `/?course=${course.id}#contact`;
-  return courseEnrolLinks[course.id] ?? defaultEnrolLink;
+  return `/?course=${course.id}&enrol=1#contact`;
 }
 
 // Options for the "Interested in" dropdown on the contact form. Also used by

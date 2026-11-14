@@ -171,15 +171,13 @@ export default async function CoursePage({ params }: CoursePageProps) {
               </span>
             </div>
 
-            <a
+            <Link
               href={enrolLink}
-              target={isContact ? undefined : "_blank"}
-              rel={isContact ? undefined : "noopener noreferrer"}
               className="enrol-btn px-7 py-3.5 rounded-full font-semibold text-sm tracking-wide transition-opacity hover:opacity-85 shadow-lg"
               style={{ backgroundColor: C.cream, color: C.green }}
             >
               {isContact ? "Contact Us to Enquire ✦" : "Enrol Now ✦"}
-            </a>
+            </Link>
           </div>
         </div>
       </div>
@@ -359,15 +357,13 @@ export default async function CoursePage({ params }: CoursePageProps) {
             Secure your spot and take the first step toward your dream career. ♡
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center items-center">
-            <a
+            <Link
               href={enrolLink}
-              target={isContact ? undefined : "_blank"}
-              rel={isContact ? undefined : "noopener noreferrer"}
               className="px-8 py-3.5 rounded-full font-bold text-sm tracking-wide transition-opacity hover:opacity-85 shadow-lg"
               style={{ backgroundColor: C.cream, color: C.green }}
             >
               {isContact ? "Contact Us ✦" : "Enrol Now — " + course.offerPrice + " ✦"}
-            </a>
+            </Link>
             {!isContact && (
               <Link
                 href={`/?course=${course.id}#contact`}

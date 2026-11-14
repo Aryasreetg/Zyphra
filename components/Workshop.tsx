@@ -1,9 +1,12 @@
 import React from "react";
+import Link from "next/link";
 import Reveal from "./Reveal";
-import { coursesData } from "@/config/courses";
+import { coursesData, getEnrolLink } from "@/config/courses";
 
 // Price comes from config/courses.ts so it always matches the rest of the site
-const workshopPrice = coursesData.find((c) => c.id === "3-day-workshop")?.offerPrice ?? "";
+const workshopCourse = coursesData.find((c) => c.id === "3-day-workshop");
+const workshopPrice = workshopCourse?.offerPrice ?? "";
+const workshopEnrolLink = workshopCourse ? getEnrolLink(workshopCourse) : "/#contact";
 
 const workshopDays = [
   {
@@ -246,15 +249,13 @@ const Workshop = () => {
             Secure your spot today and take the first step toward your dream career. ♡
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center items-center">
-            <a
-              href="https://forms.gle/WBvxgVHSrCuZspqVA"
-              target="_blank"
-              rel="noopener noreferrer"
+            <Link
+              href={workshopEnrolLink}
               className="px-8 py-4 rounded-full font-bold text-sm tracking-wide transition-all hover:opacity-85 hover:-translate-y-0.5 shadow-lg"
               style={{ backgroundColor: "#F5EFE6", color: "#2D4A3E" }}
             >
               Register Now — {workshopPrice} ✦
-            </a>
+            </Link>
             <p className="text-xs" style={{ color: "#C4A96A" }}>
               Limited to 20 students · First come, first served
             </p>

@@ -3,7 +3,8 @@
 import React, { useActionState, useState } from "react";
 import { useSearchParams } from "next/navigation";
 import { submitEnquiry, type ContactState } from "@/app/actions/contact";
-import { enquiryTopics as ENQUIRY_TOPICS } from "@/config/courses";
+import { coursesData, enquiryTopics as ENQUIRY_TOPICS } from "@/config/courses";
+import { GraduationCap } from "lucide-react";
 import { C } from "@/lib/theme";
 
 const initialState: ContactState = { status: "idle" };
@@ -20,15 +21,21 @@ function FieldError({ msg }: { msg?: string }) {
 const ContactForm = () => {
   const [state, formAction, pending] = useActionState(submitEnquiry, initialState);
   const searchParams = useSearchParams();
-  // Character count: follows typing, and resets to the echoed message after each submit
-  const [typed, setTyped] = useState<{ forState: ContactState; len: number } | null>(null);
-  const messageLen = typed && typed.forState === state ? typed.len : state.values?.message?.length ?? 0;
   // Lets the visitor go back to an empty form after a successful send
   const [dismissed, setDismissed] = useState<ContactState | null>(null);
 
   // Pre-select the course when arriving from an "Ask a Question" button (/?course=<id>#contact)
   const fromUrl = searchParams.get("course") ?? "";
   const urlCourse = ENQUIRY_TOPICS.some((t) => t.value === fromUrl) ? fromUrl : "";
+
+  // "Enrol Now" buttons add &enrol=1: show which course they're enrolling in and pre-fill the message
+  const enrolCourse = searchParams.get("enrol") === "1" ? coursesData.find((c) => c.id === urlCourse) : undefined;
+  const enrolMessage = enrolCourse
+    ? `Hi, I'd like to enrol in ${enrolCourse.title} (${enrolCourse.offerPrice}). Please share the next batch dates and payment details.`
+    : "";
+
+  // Character count: follows typing, and resets to the echoed/pre-filled message after each submit
+  const [typed, setTyped] = useState<{ forState: ContactState; len: number } | null>(null);
 
   if (state.status === "success" && dismissed !== state) {
     return (
@@ -58,6 +65,8 @@ const ContactForm = () => {
   // React clears form fields after an action; refill them from the last submission on error
   const v = state.status === "error" ? state.values ?? {} : {};
   const initialCourse = v.course ?? urlCourse;
+  const initialMessage = v.message ?? enrolMessage;
+  const messageLen = typed && typed.forState === state ? typed.len : initialMessage.length;
 
   return (
     <form action={formAction} noValidate className="space-y-4">
@@ -68,6 +77,20 @@ const ContactForm = () => {
           <input type="text" name="website" tabIndex={-1} autoComplete="off" />
         </label>
       </div>
+
+      {enrolCourse && (
+        <div className="pop-in flex items-center gap-3 rounded-xl px-4 py-3" style={{ backgroundColor: "#DDEFE3", border: "1px solid #B9DCC5" }}>
+          <span className="w-9 h-9 rounded-lg flex items-center justify-center flex-shrink-0" style={{ backgroundColor: C.green }}>
+            <GraduationCap className="w-5 h-5" style={{ color: C.cream }} />
+          </span>
+          <p className="text-sm mb-0" style={{ color: C.green }}>
+            You&rsquo;re enrolling in <strong>{enrolCourse.title}</strong> — {enrolCourse.offerPrice}.
+            <span className="block text-xs" style={{ color: C.brownMid }}>
+              Fill in your details and we&rsquo;ll send batch dates and payment details within 24 hours.
+            </span>
+          </p>
+        </div>
+      )}
 
       <div className="grid sm:grid-cols-2 gap-4">
         <div>
@@ -111,16 +134,17 @@ const ContactForm = () => {
 
       <div>
         <label htmlFor="message" className="flex justify-between text-xs font-semibold mb-1.5 tracking-wide" style={{ color: C.green }}>
-          <span>Your question *</span>
+          <span>{enrolCourse ? "Message *" : "Your question *"}</span>
           <span className="font-normal" style={{ color: messageLen > 2000 ? C.red : C.brownLight }}>{messageLen}/2000</span>
         </label>
         <textarea
+          key={initialMessage}
           id="message"
           name="message"
           required
           rows={5}
           maxLength={2000}
-          defaultValue={v.message}
+          defaultValue={initialMessage}
           placeholder="Tell us about your background, goals, or anything you'd like to know…"
           className="field resize-y"
           aria-invalid={Boolean(err.message)}
@@ -147,7 +171,7 @@ const ContactForm = () => {
             Sending…
           </>
         ) : (
-          <>Send Message ✦</>
+          <>{enrolCourse ? "Send Enrolment Request ✦" : "Send Message ✦"}</>
         )}
       </button>
       <p className="text-[11px] mb-0" style={{ color: C.brownLight }}>

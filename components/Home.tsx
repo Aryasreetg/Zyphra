@@ -84,16 +84,14 @@ const Home = () => {
               <ArrowRight className="w-4 h-4 group-hover:translate-x-1" style={{ transition: "translate 200ms ease" }} />
             </Link>
             {workshop && (
-            <a
+            <Link
               href={getEnrolLink(workshop)}
-              target="_blank"
-              rel="noopener noreferrer"
               className="home-outline-btn whitespace-nowrap inline-flex items-center justify-center gap-2 px-6 py-3.5 rounded-full font-semibold text-sm tracking-wide hover:-translate-y-0.5"
               style={{ border: `1.5px solid ${C.green}`, color: C.green }}
             >
               <CalendarDays className="w-4 h-4" />
               Join Workshop — {workshop.offerPrice}
-            </a>
+            </Link>
             )}
             <Link
               href="/#contact"
