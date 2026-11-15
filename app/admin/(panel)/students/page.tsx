@@ -106,7 +106,7 @@ export default async function StudentsPage({ searchParams }: { searchParams: Sea
                       </td>
                       <td className="px-4 py-3"><StatusBadge status={s.status} /></td>
                       <td className="px-4 py-3 text-xs whitespace-nowrap" style={{ color: C.brown }}>
-                        {f.tracking ? `${s.attended} / ${s.sessions_included}` : s.attended || "—"}
+                        {f.tracking ? `${f.attended} / ${s.sessions_included}` : f.attended || "—"}
                         {f.extraSessions > 0 && (
                           <div className="text-[11px] font-semibold" style={{ color: C.bronze }}>+{f.extraSessions} extra</div>
                         )}

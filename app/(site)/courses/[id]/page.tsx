@@ -1,9 +1,12 @@
 import React from "react";
 import Link from "next/link";
 import { notFound } from "next/navigation";
-import { coursesData, getEnrolLink, type Course } from "@/config/courses";
+import { coursesData, displayDuration, DURATION_NOTE, getEnrolLink, type Course } from "@/config/courses";
 import { C } from "@/lib/theme";
 import Reveal from "@/components/Reveal";
+import JsonLd from "@/components/JsonLd";
+import { courseSchema, organization } from "@/lib/schema";
+import { absoluteUrl } from "@/lib/site";
 
 const CATEGORY_LABEL: Record<string, string> = {
   flagship: "Flagship programme",
@@ -65,10 +68,17 @@ export async function generateStaticParams() {
 export async function generateMetadata({ params }: CoursePageProps) {
   const { id } = await params;
   const course = coursesData.find((c) => c.id === id);
-  if (!course) return { title: "Course Not Found | Zyphraa" };
+  if (!course) return { title: "Course not found" };
+  const isFlexible = course.duration === "Flexible";
+  const title = isFlexible ? `${course.title} — Online Mentorship` : `${course.title} — ${course.duration} Online Course`;
+  const priceText = course.offerPrice === "Contact Us" ? "" : ` ${course.offerPrice}.`;
+  const description = `${course.description.split(". ")[0]}. Live, mentor-led and project-based.${priceText}`.slice(0, 300);
   return {
-    title: `${course.title} | Zyphraa Online Learning Platform`,
-    description: course.description,
+    title,
+    description,
+    alternates: { canonical: `/courses/${course.id}` },
+    openGraph: { type: "website", locale: "en_IN", siteName: "Zyphraa", url: `/courses/${course.id}`, title: `${title} | Zyphraa`, description },
+    twitter: { card: "summary_large_image", title: `${title} | Zyphraa`, description },
   };
 }
 
@@ -79,11 +89,27 @@ export default async function CoursePage({ params }: CoursePageProps) {
 
   const isContact = course.offerPrice === "Contact Us";
   const enrolLink = getEnrolLink(course);
+  const structuredData = {
+    "@context": "https://schema.org",
+    "@graph": [
+      organization,
+      courseSchema(course),
+      {
+        "@type": "BreadcrumbList",
+        itemListElement: [
+          { "@type": "ListItem", position: 1, name: "Home", item: absoluteUrl("/") },
+          { "@type": "ListItem", position: 2, name: "Courses", item: absoluteUrl("/#courses") },
+          { "@type": "ListItem", position: 3, name: course.title, item: absoluteUrl(`/courses/${course.id}`) },
+        ],
+      },
+    ],
+  };
   let n = 0;
   const next = () => String(++n).padStart(2, "0");
 
   return (
     <div style={{ backgroundColor: C.cream }}>
+      <JsonLd data={structuredData} />
       {/* Breadcrumb */}
       <nav aria-label="Breadcrumb" className="wrap pt-8 text-[13px] flex flex-wrap items-center gap-2" style={{ color: C.brownLight }}>
         <Link href="/" className="ulink font-normal" style={{ color: C.primary }}>Home</Link>
@@ -109,7 +135,7 @@ export default async function CoursePage({ params }: CoursePageProps) {
             <dl className="grid grid-cols-2 sm:grid-cols-3 border-t rule">
               <div className="py-4 pr-4">
                 <dt className="text-[11px] tracking-[0.16em] uppercase font-semibold mb-1" style={{ color: C.bronze }}>Duration</dt>
-                <dd className="serif text-lg mb-0" style={{ color: C.primary }}>{course.duration}</dd>
+                <dd className="serif text-lg mb-0" style={{ color: C.primary }}>{displayDuration(course)}</dd>
               </div>
               <div className="py-4 pl-4 border-l rule">
                 <dt className="text-[11px] tracking-[0.16em] uppercase font-semibold mb-1" style={{ color: C.bronze }}>Format</dt>
@@ -120,6 +146,9 @@ export default async function CoursePage({ params }: CoursePageProps) {
                 <dd className="serif text-lg mb-0" style={{ color: C.primary }}>{course.category === "workshop" ? "Mini-project" : "Mock interviews"}</dd>
               </div>
             </dl>
+            {course.duration !== "Flexible" && (
+              <p className="text-[12.5px] mt-3 mb-0" style={{ color: C.brownLight }}>{DURATION_NOTE}</p>
+            )}
             {course.batchInfo && (
               <p className="serif serif-italic text-[17px] mt-5 mb-0" style={{ color: C.bronze }}>{course.batchInfo}</p>
             )}
@@ -242,7 +271,7 @@ export default async function CoursePage({ params }: CoursePageProps) {
             </p>
             <PriceBlock course={course} />
             <p className="text-[13.5px] mt-3 mb-7" style={{ color: C.brownMid }}>
-              {isContact ? "Tailored to your goals and schedule." : `${course.duration} · live online · projects included`}
+              {isContact ? "Tailored to your goals and schedule." : `${displayDuration(course)} · live online · projects included`}
             </p>
             <Link href={enrolLink} className="btn-z btn-solid w-full">
               {isContact ? "Contact Us to Enquire" : "Enrol Now"} <span className="arr" aria-hidden>→</span>

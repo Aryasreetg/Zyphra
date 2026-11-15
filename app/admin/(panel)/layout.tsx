@@ -5,7 +5,7 @@ import { logout } from "../actions";
 import AdminNav from "@/components/admin/AdminNav";
 import { C } from "@/lib/theme";
 
-export const metadata = { title: "Admin | Zyphraa", robots: { index: false, follow: false } };
+export const metadata = { title: "Admin", robots: { index: false, follow: false }, alternates: { canonical: null } };
 
 export default async function AdminPanelLayout({ children }: { children: React.ReactNode }) {
   await requireAdmin();

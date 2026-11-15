@@ -34,7 +34,7 @@ export async function GET(req: Request, { params }: { params: Promise<{ type: st
     // Add the calculated fee columns so the spreadsheet matches the admin panel
     rows = students.map((s) => {
       const f = feeSummary(s, s.attended);
-      return { ...s, extra_sessions: f.extraSessions, extra_fee: f.extraFee, total_due: f.totalDue, balance: f.balance };
+      return { ...s, logged_sessions: s.attended, total_attended: f.attended, extra_sessions: f.extraSessions, extra_fee: f.extraFee, total_due: f.totalDue, balance: f.balance };
     });
   } else if (type === "attendance") {
     const studentId = Number(new URL(req.url).searchParams.get("student")) || null;

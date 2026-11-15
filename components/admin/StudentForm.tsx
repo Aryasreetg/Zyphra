@@ -44,6 +44,7 @@ export default function StudentForm({ student, attended = 0 }: { student?: Stude
   const [feePaid, setFeePaid] = useState(String(student?.fee_paid ?? ""));
   const [sessions, setSessions] = useState(String(student?.sessions_included ?? ""));
   const [rate, setRate] = useState(student?.extra_session_rate != null ? String(student.extra_session_rate) : "");
+  const [prior, setPrior] = useState(String(student?.sessions_prior ?? ""));
   const err = state.fieldErrors ?? {};
 
   const total = Number(feeTotal) || 0;
@@ -53,6 +54,7 @@ export default function StudentForm({ student, attended = 0 }: { student?: Stude
     fee_paid: paid,
     sessions_included: Number(sessions) || 0,
     extra_session_rate: rate === "" ? null : Number(rate) || 0,
+    sessions_prior: Number(prior) || 0,
   };
   const sum = feeSummary(feeInputs, attended);
   const defaultRate = sessionRate({ ...feeInputs, extra_session_rate: null });
@@ -117,6 +119,13 @@ export default function StudentForm({ student, attended = 0 }: { student?: Stude
             <input name="sessions_included" type="number" min={0} step={1} value={sessions} onChange={(e) => setSessions(e.target.value)} placeholder="e.g. 24" className="field mt-1.5 font-normal" />
           </Field>
           <Field
+            label="Sessions already completed"
+            error={err.sessions_prior}
+            hint="For ongoing students: classes done before you started logging. No dates or times needed."
+          >
+            <input name="sessions_prior" type="number" min={0} step={1} value={prior} onChange={(e) => setPrior(e.target.value)} placeholder="e.g. 8" className="field mt-1.5 font-normal" />
+          </Field>
+          <Field
             label="Fee per extra session (₹)"
             error={err.extra_session_rate}
             hint={defaultRate > 0 ? `Leave empty to use the default: ${rupees(defaultRate)} (total fee ÷ sessions)` : "Leave empty to use total fee ÷ sessions"}
@@ -137,10 +146,10 @@ export default function StudentForm({ student, attended = 0 }: { student?: Stude
             <input name="fee_paid" type="number" min={0} step={1} value={feePaid} onChange={(e) => setFeePaid(e.target.value)} className="field mt-1.5 font-normal" />
           </Field>
         </div>
-        {student && sum.tracking && (
+        {(student || feeInputs.sessions_prior > 0) && sum.tracking && (
           <dl className="grid grid-cols-2 sm:grid-cols-4 gap-3 mb-4 text-xs">
             {[
-              { k: "Attended", v: `${attended} / ${feeInputs.sessions_included}` },
+              { k: "Attended", v: `${sum.attended} / ${feeInputs.sessions_included}` },
               { k: "Extra sessions", v: String(sum.extraSessions) },
               { k: "Extra fee", v: rupees(sum.extraFee) },
               { k: "Total due", v: rupees(sum.totalDue) },

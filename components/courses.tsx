@@ -3,7 +3,7 @@
 import React, { useMemo, useState } from "react";
 import Link from "next/link";
 import Image from "next/image";
-import { coursesData, type Course } from "@/config/courses";
+import { coursesData, displayDuration, DURATION_NOTE, type Course } from "@/config/courses";
 import { C } from "@/lib/theme";
 import Reveal from "./Reveal";
 import codingImg from "@/public/images/coding-closeup.jpg";
@@ -27,22 +27,21 @@ const CATEGORY_LABEL: Record<string, string> = {
 
 const listedCourses = coursesData.filter((c) => c.category !== "workshop");
 
-/** Small list with en-dash markers and hairline separators */
-function DashList({ items, light = false }: { items?: string[]; light?: boolean }) {
+/** A single, minimal line of key topics. The full syllabus lives on each course page. */
+function KeyTopics({ items, light = false, label = "Key topics", max = 3 }: { items?: string[]; light?: boolean; label?: string; max?: number }) {
   if (!items?.length) return null;
+  // Drop "Frontend: " style prefixes so the line stays short
+  const shown = items.slice(0, max).map((t) => t.replace(/^[^:]{2,20}:\s*/, ""));
   return (
-    <ul className="mb-0">
-      {items.map((item) => (
-        <li
-          key={item}
-          className="flex gap-3 py-2.5 text-[14.5px] leading-snug border-b mb-0"
-          style={{ color: light ? "rgba(248,243,234,0.88)" : C.brown, borderColor: light ? "rgba(248,243,234,0.14)" : "rgba(58,50,43,0.12)" }}
-        >
-          <span aria-hidden style={{ color: light ? C.bronzeLight : C.bronze }}>—</span>
-          {item}
-        </li>
-      ))}
-    </ul>
+    <div>
+      <h4 className="text-[11px] tracking-[0.18em] uppercase font-semibold mb-2" style={{ color: light ? C.bronzeLight : C.bronze }}>
+        {label}
+      </h4>
+      <p className="text-[15px] leading-relaxed mb-0" style={{ color: light ? "rgba(248,243,234,0.88)" : C.brown }}>
+        {shown.join(" · ")}
+        {items.length > max && <span style={{ color: light ? "rgba(248,243,234,0.6)" : C.brownLight }}> · and more</span>}
+      </p>
+    </div>
   );
 }
 
@@ -83,7 +82,7 @@ function FeatureRow({ course }: { course: Course }) {
           {course.title}
         </h3>
         <p className="text-[13px] tracking-wide mb-6" style={{ color: light ? "rgba(248,243,234,0.7)" : C.brownMid }}>
-          {mentorship ? "Schedule: fully flexible" : `Duration: ${course.duration}`}
+          {mentorship ? "Schedule: fully flexible" : `Duration: ${displayDuration(course)}`}
           {course.batchInfo && <span className="block mt-1 serif serif-italic text-[15px]" style={{ color: light ? C.bronzeLight : C.bronze }}>{course.batchInfo}</span>}
         </p>
         <Price course={course} light={light} />
@@ -110,22 +109,11 @@ function FeatureRow({ course }: { course: Course }) {
         <p className="text-[16.5px] leading-[1.75] mb-8" style={{ color: light ? "rgba(248,243,234,0.82)" : C.brown }}>
           {course.description}
         </p>
-        <div className={`grid ${course.projects ? "sm:grid-cols-2" : ""} gap-8`}>
-          <div>
-            <h4 className="text-[11px] tracking-[0.18em] uppercase font-semibold mb-2" style={{ color: light ? C.bronzeLight : C.bronze }}>
-              {mentorship ? "What's included" : "What you'll learn"}
-            </h4>
-            <DashList items={mentorship ? course.whatsIncluded : course.whatYouLearn} light={light} />
-          </div>
-          {course.projects && (
-            <div>
-              <h4 className="text-[11px] tracking-[0.18em] uppercase font-semibold mb-2" style={{ color: light ? C.bronzeLight : C.bronze }}>
-                Projects
-              </h4>
-              <DashList items={course.projects} light={light} />
-            </div>
-          )}
-        </div>
+        {mentorship ? (
+          <KeyTopics items={course.whatsIncluded} light={light} label="What's included" max={2} />
+        ) : (
+          <KeyTopics items={course.whatYouLearn} light={light} />
+        )}
       </div>
     </article>
   );
@@ -153,10 +141,10 @@ function IndexRow({ course, index }: { course: Course; index: number }) {
             {course.title}
           </span>
           <span className="sm:hidden block mt-1 text-[13px]" style={{ color: C.brownMid }}>
-            {course.duration} · {course.offerPrice}
+            {displayDuration(course)} · {course.offerPrice}
           </span>
         </span>
-        <span className="hidden sm:block text-[14px]" style={{ color: C.brownMid }}>{course.duration}</span>
+        <span className="hidden sm:block text-[14px]" style={{ color: C.brownMid }}>{displayDuration(course)}</span>
         <span className="hidden sm:block">
           <Price course={course} size="sm" />
         </span>
@@ -183,15 +171,8 @@ function IndexRow({ course, index }: { course: Course; index: number }) {
                 </Link>
               </div>
             </div>
-            <div className="lg:col-span-7 grid sm:grid-cols-2 gap-8">
-              <div>
-                <h4 className="text-[11px] tracking-[0.18em] uppercase font-semibold mb-2" style={{ color: C.bronze }}>What you&rsquo;ll learn</h4>
-                <DashList items={course.whatYouLearn} />
-              </div>
-              <div>
-                <h4 className="text-[11px] tracking-[0.18em] uppercase font-semibold mb-2" style={{ color: C.bronze }}>Projects</h4>
-                <DashList items={course.projects} />
-              </div>
+            <div className="lg:col-span-7">
+              <KeyTopics items={course.whatYouLearn} />
             </div>
           </div>
         </div>
@@ -324,7 +305,7 @@ const Courses = () => {
                           {course.title}
                         </Link>
                       </td>
-                      <td className="py-3.5 pr-4 whitespace-nowrap" style={{ color: C.brownMid }}>{course.duration}</td>
+                      <td className="py-3.5 pr-4 whitespace-nowrap" style={{ color: C.brownMid }}>{displayDuration(course)}</td>
                       <td className="py-3.5 pr-4 text-right line-through whitespace-nowrap" style={{ color: C.brownLight }}>{course.originalPrice || "—"}</td>
                       <td className="py-3.5 text-right serif text-[16px] whitespace-nowrap" style={{ color: C.primary }}>{course.offerPrice}</td>
                     </tr>
@@ -336,6 +317,7 @@ const Courses = () => {
               All courses include hands-on projects and mock interview practice. Questions about enrolment?{" "}
               <Link href="/#contact" className="ulink on" style={{ color: C.primary }}>Send us a message</Link>
             </p>
+            <p className="text-[12.5px] mt-2 mb-0" style={{ color: C.brownLight }}>{DURATION_NOTE}</p>
           </div>
         </Reveal>
       </div>

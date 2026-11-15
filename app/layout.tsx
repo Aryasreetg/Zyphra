@@ -1,4 +1,5 @@
-import type { Metadata } from 'next';
+import type { Metadata, Viewport } from 'next';
+import { SITE } from '@/lib/site';
 import './globals.css';
 import { Fraunces, Instrument_Sans } from 'next/font/google';
 
@@ -17,19 +18,41 @@ const body = Instrument_Sans({
 });
 
 export const metadata: Metadata = {
-  title: 'Zyphraa — Mentor-led, project-first tech education',
-  description:
-    'Zyphra — where you build real-world skills, ship real projects, and become a job-ready developer ',
-  keywords:
-    'Java, Spring Boot, Microservices, React, Next.js, TypeScript, Software Engineer,  Project Lead',
-  authors: [{ name: 'Arya Sree T G' }],
+  metadataBase: new URL(SITE.url),
+  title: { default: SITE.title, template: "%s | Zyphraa" },
+  description: SITE.description,
+  applicationName: SITE.name,
+  keywords: SITE.keywords,
+  authors: [{ name: SITE.founder, url: SITE.sameAs[1] }],
+  creator: SITE.founder,
+  publisher: SITE.name,
+  category: "education",
+  alternates: { canonical: "/" },
   openGraph: {
-    type: 'website',
-    locale: 'en_US',
-    url: 'https://aryasree.dev',
-    title: 'Arya Sree T G | Senior Software Engineer',
-    description: 'Zyphra — where you build real-world skills, ship real projects, and become a job-ready developer ',
+    type: "website",
+    locale: "en_IN",
+    url: "/",
+    siteName: SITE.name,
+    title: SITE.title,
+    description: SITE.description,
   },
+  twitter: {
+    card: "summary_large_image",
+    title: SITE.title,
+    description: SITE.description,
+  },
+  robots: {
+    index: true,
+    follow: true,
+    googleBot: { index: true, follow: true, "max-image-preview": "large", "max-snippet": -1 },
+  },
+  formatDetection: { telephone: false },
+};
+
+export const viewport: Viewport = {
+  width: "device-width",
+  initialScale: 1,
+  themeColor: "#F8F3EA",
 };
 
 export default function RootLayout({
@@ -38,12 +61,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="en" className={`scroll-smooth scroll-pt-24 ${display.variable} ${body.variable}`}>
-      <head>
-        <meta charSet="utf-8" />
-        <meta name="viewport" content="width=device-width, initial-scale=1" />
-        <link rel="icon" href="/favicon.ico" />
-      </head>
+    <html lang="en-IN" className={`scroll-smooth scroll-pt-24 ${display.variable} ${body.variable}`}>
       <body className="antialiased">
         {children}
       </body>

@@ -264,3 +264,10 @@ export function topicLabel(value: string | null | undefined) {
   if (!value) return "—";
   return enquiryTopics.find((t) => t.value === value)?.label ?? value;
 }
+
+// Durations are indicative; show them with an asterisk and this footnote.
+export const DURATION_NOTE = "*Durations are indicative and may vary with batch pace and learner progress.";
+
+export function displayDuration(course: Pick<Course, "duration">) {
+  return course.duration === "Flexible" ? course.duration : `${course.duration}*`;
+}

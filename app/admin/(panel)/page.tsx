@@ -32,8 +32,8 @@ export default async function AdminDashboard() {
       select course_id, count(*)::int as n from students
       where status in ('active', 'paused')
       group by course_id order by n desc`,
-    sql<{ status: string; fee_total: number; fee_paid: number; sessions_included: number; extra_session_rate: number | null; attended: number }[]>`
-      select s.status, s.fee_total, s.fee_paid, s.sessions_included, s.extra_session_rate, coalesce(a.n, 0)::int as attended
+    sql<{ status: string; fee_total: number; fee_paid: number; sessions_included: number; extra_session_rate: number | null; sessions_prior: number; attended: number }[]>`
+      select s.status, s.fee_total, s.fee_paid, s.sessions_included, s.extra_session_rate, s.sessions_prior, coalesce(a.n, 0)::int as attended
       from students s
       left join (select student_id, count(*) as n from attendance group by student_id) a on a.student_id = s.id`,
     sql<{ n: number }[]>`select count(*)::int as n from attendance where session_date > current_date - 7`,

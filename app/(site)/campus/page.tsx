@@ -4,27 +4,52 @@ import path from "node:path";
 import Image from "next/image";
 import Reveal from "@/components/Reveal";
 import CampusProposalForm from "@/components/CampusProposalForm";
+import JsonLd from "@/components/JsonLd";
+import { organization } from "@/lib/schema";
+import { absoluteUrl } from "@/lib/site";
 import { C } from "@/lib/theme";
 import collabImg from "@/public/images/campus-collab.jpg";
 import studentsImg from "@/public/images/campus-students.jpg";
 import lectureImg from "@/public/images/campus-lecture.jpg";
 
+const CAMPUS_DESCRIPTION =
+  "Industry-ready, mentor-led tech workshops for colleges and universities: web development, full stack, Git, DevOps, software testing and career guidance. Request a customised campus proposal.";
+
 export const metadata = {
-  title: "Campus Workshops for Colleges | Zyphraa",
-  description:
-    "Industry-ready, mentor-led tech workshops for colleges and universities. Request a customised campus workshop proposal from Zyphraa.",
+  title: "Campus Tech Workshops for Colleges & Universities",
+  description: CAMPUS_DESCRIPTION,
+  alternates: { canonical: "/campus" },
+  openGraph: { type: "website", locale: "en_IN", siteName: "Zyphraa", url: "/campus", title: "Campus Tech Workshops for Colleges | Zyphraa", description: CAMPUS_DESCRIPTION },
+  twitter: { card: "summary_large_image", title: "Campus Tech Workshops for Colleges | Zyphraa", description: CAMPUS_DESCRIPTION },
+};
+
+const campusSchema = {
+  "@context": "https://schema.org",
+  "@graph": [
+    organization,
+    {
+      "@type": "Service",
+      name: "Campus tech workshops and bootcamps",
+      serviceType: "Technical training for colleges and universities",
+      description: CAMPUS_DESCRIPTION,
+      url: absoluteUrl("/campus"),
+      provider: { "@id": absoluteUrl("/#organization") },
+      areaServed: { "@type": "Country", name: "India" },
+      audience: { "@type": "EducationalAudience", educationalRole: "student" },
+    },
+  ],
 };
 
 const PROPOSAL = "#proposal";
 const hasFounderPhoto = fs.existsSync(path.join(process.cwd(), "public", "images", "founder.jpg"));
 
 const WORKSHOPS = [
-  { title: "Website Development", line: "Students build and deploy their first live website.", format: "1–3 days" },
-  { title: "Full Stack Development", line: "A complete app — frontend, backend and authentication.", format: "3–5 days" },
-  { title: "Git & Version Control", line: "The collaboration workflow every developer uses daily.", format: "1–2 days" },
-  { title: "DevOps Fundamentals", line: "Docker, CI/CD pipelines and real cloud deployment.", format: "2–3 days" },
-  { title: "Software Testing & QA", line: "Test cases, bug reports and quality-first thinking.", format: "1 day" },
-  { title: "Career Guidance", line: "Resumes, LinkedIn, interview prep and a 6-month roadmap.", format: "1–2 days" },
+  { title: "Website Development", line: "Students build and deploy their first live website.", format: "1–3 days*" },
+  { title: "Full Stack Development", line: "A complete app — frontend, backend and authentication.", format: "3–5 days*" },
+  { title: "Git & Version Control", line: "The collaboration workflow every developer uses daily.", format: "1–2 days*" },
+  { title: "DevOps Fundamentals", line: "Docker, CI/CD pipelines and real cloud deployment.", format: "2–3 days*" },
+  { title: "Software Testing & QA", line: "Test cases, bug reports and quality-first thinking.", format: "1 day*" },
+  { title: "Career Guidance", line: "Resumes, LinkedIn, interview prep and a 6-month roadmap.", format: "1–2 days*" },
 ];
 
 const REASONS = [
@@ -68,6 +93,7 @@ function Label({ num, children, light = false }: { num: string; children: React.
 export default function CampusPage() {
   return (
     <main style={{ backgroundColor: C.cream, color: C.brown }}>
+      <JsonLd data={campusSchema} />
       {/* ── 1. Hero ─────────────────────────────────────────────────── */}
       <section className="grain relative">
         <div className="wrap pt-12 lg:pt-16 pb-16 lg:pb-24 grid lg:grid-cols-12 gap-12 lg:gap-10 items-center">
@@ -169,9 +195,12 @@ export default function CampusPage() {
 
           <Reveal>
             <div className="mt-10 flex flex-col sm:flex-row sm:items-center justify-between gap-5">
-              <p className="serif serif-italic text-[18px] mb-0" style={{ color: C.primary }}>
-                Want the full catalogue and syllabus for each track?
-              </p>
+              <div>
+                <p className="serif serif-italic text-[18px] mb-1" style={{ color: C.primary }}>
+                  Want the full catalogue and syllabus for each track?
+                </p>
+                <p className="text-[12.5px] mb-0" style={{ color: C.brownLight }}>*Formats are indicative and can be tailored to your calendar.</p>
+              </div>
               <a href={PROPOSAL} className="btn-z btn-line self-start">
                 Request the catalogue <span className="arr" aria-hidden>→</span>
               </a>

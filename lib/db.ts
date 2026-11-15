@@ -100,6 +100,7 @@ const SCHEMA = [
   // Sessions & extra fees (added later; safe to run on existing databases)
   `alter table students add column if not exists sessions_included integer not null default 0`,
   `alter table students add column if not exists extra_session_rate integer`,
+  `alter table students add column if not exists sessions_prior integer not null default 0`,
   `create table if not exists attendance (
     id serial primary key,
     student_id integer not null references students(id) on delete cascade,
@@ -166,6 +167,8 @@ export interface Student {
   sessions_included: number;
   /** Fee per extra session in ₹; null = use fee_total ÷ sessions_included */
   extra_session_rate: number | null;
+  /** Sessions completed before attendance logging started */
+  sessions_prior: number;
   created_at: Date;
   updated_at: Date;
 }

@@ -6,6 +6,8 @@ export interface FeeInputs {
   fee_paid: number;
   sessions_included: number;
   extra_session_rate: number | null;
+  /** Sessions completed before attendance logging started (no dates/times needed) */
+  sessions_prior?: number;
 }
 
 /** ₹ per extra session: the custom rate if set, otherwise base fee ÷ included sessions. */
@@ -15,7 +17,10 @@ export function sessionRate(s: Pick<FeeInputs, "fee_total" | "sessions_included"
   return 0;
 }
 
-export function feeSummary(s: FeeInputs, attended: number) {
+/** `logged` = sessions recorded in the attendance log; earlier sessions are added on top */
+export function feeSummary(s: FeeInputs, logged: number) {
+  const prior = s.sessions_prior ?? 0;
+  const attended = prior + logged;
   const tracking = s.sessions_included > 0;
   const rate = sessionRate(s);
   const extraSessions = tracking ? Math.max(0, attended - s.sessions_included) : 0;
@@ -25,7 +30,7 @@ export function feeSummary(s: FeeInputs, attended: number) {
   const balance = Math.max(0, totalDue - s.fee_paid);
   const overpaid = Math.max(0, s.fee_paid - totalDue);
   const pctPaid = totalDue > 0 ? Math.min(100, Math.round((s.fee_paid / totalDue) * 100)) : 0;
-  return { tracking, rate, attended, extraSessions, remaining, extraFee, totalDue, balance, overpaid, pctPaid };
+  return { tracking, rate, attended, prior, logged, extraSessions, remaining, extraFee, totalDue, balance, overpaid, pctPaid };
 }
 
 /** "09:30:00" → "9:30 am" */

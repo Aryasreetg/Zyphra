@@ -2,7 +2,7 @@ import React from "react";
 import Link from "next/link";
 import Image from "next/image";
 import { C } from "@/lib/theme";
-import { coursesData, getEnrolLink } from "@/config/courses";
+import { coursesData, displayDuration, getEnrolLink } from "@/config/courses";
 import heroImg from "@/public/images/learner-outdoors.jpg";
 
 // Price and link come from config/courses.ts so they always match the course page
@@ -81,7 +81,7 @@ const Home = () => {
                   {workshop.title}
                 </p>
                 <p className="text-[13px] mb-4" style={{ color: C.brownMid }}>
-                  {workshop.duration} · Full stack, testing &amp; DevOps
+                  {displayDuration(workshop)} · Full stack, testing &amp; DevOps
                 </p>
                 <div className="flex items-center justify-between gap-4 pt-4 border-t rule">
                   <span className="serif text-xl" style={{ color: C.primary }}>{workshop.offerPrice}</span>
@@ -89,6 +89,7 @@ const Home = () => {
                     Join Workshop <span aria-hidden>→</span>
                   </Link>
                 </div>
+                <p className="text-[11px] mt-3 mb-0" style={{ color: C.brownLight }}>*Duration may vary</p>
               </div>
             )}
           </div>

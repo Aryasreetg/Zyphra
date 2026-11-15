@@ -37,10 +37,12 @@ export default async function EditStudentPage({ params, searchParams }: Props) {
     select * from attendance where student_id = ${student.id}
     order by session_date asc, start_time asc, id asc
   `;
-  const attended = sessionsAsc.length;
-  const fees = feeSummary(student, attended);
+  const logged = sessionsAsc.length;
+  const fees = feeSummary(student, logged);
+  const prior = fees.prior;
   const totalMinutes = sessionsAsc.reduce((m, a) => m + minutesBetween(a.start_time, a.end_time), 0);
-  const numbered = sessionsAsc.map((a, i) => ({ ...a, n: i + 1 })).reverse();
+  // Logged sessions are numbered after any earlier (pre-logging) sessions
+  const numbered = sessionsAsc.map((a, i) => ({ ...a, n: prior + i + 1 })).reverse();
   const last = numbered[0];
 
   return (
@@ -60,7 +62,7 @@ export default async function EditStudentPage({ params, searchParams }: Props) {
 
       <div className="grid lg:grid-cols-3 gap-6">
         <Panel className="lg:col-span-2 p-6 sm:p-8">
-          <StudentForm student={student} attended={attended} />
+          <StudentForm student={student} attended={logged} />
         </Panel>
 
         <div className="space-y-6">
@@ -109,7 +111,11 @@ export default async function EditStudentPage({ params, searchParams }: Props) {
         {/* Summary */}
         <dl className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-7 gap-3 mb-8">
           {[
-            { k: "Attended", v: fees.tracking ? `${attended} / ${student.sessions_included}` : String(attended), hint: formatDuration(totalMinutes) + " total" },
+            {
+              k: "Attended",
+              v: fees.tracking ? `${fees.attended} / ${student.sessions_included}` : String(fees.attended),
+              hint: prior > 0 ? `${prior} earlier + ${logged} logged` : `${formatDuration(totalMinutes)} total`,
+            },
             { k: "Remaining", v: fees.tracking ? String(fees.remaining) : "—", hint: "included sessions" },
             { k: "Extra sessions", v: fees.tracking ? String(fees.extraSessions) : "—", hint: "beyond included", warn: fees.extraSessions > 0 },
             { k: "Rate / extra", v: fees.tracking ? rupees(fees.rate) : "—", hint: student.extra_session_rate != null ? "custom rate" : "fee ÷ sessions" },
@@ -141,7 +147,9 @@ export default async function EditStudentPage({ params, searchParams }: Props) {
           <div className="min-w-0 lg:col-span-3">
             <h3 className="text-sm font-semibold mb-3" style={{ color: C.primary }}>History</h3>
             {numbered.length === 0 ? (
-              <p className="text-sm" style={{ color: C.brownLight }}>No sessions logged yet.</p>
+              <p className="text-sm" style={{ color: C.brownLight }}>
+                {prior > 0 ? `${prior} earlier session${prior === 1 ? "" : "s"} counted (no dates). New sessions you log will appear here.` : "No sessions logged yet."}
+              </p>
             ) : (
               <div className="overflow-x-auto">
                 <table className="w-full text-[13px]">
@@ -180,6 +188,11 @@ export default async function EditStudentPage({ params, searchParams }: Props) {
                     })}
                   </tbody>
                 </table>
+                {prior > 0 && (
+                  <p className="text-xs mt-3 mb-0" style={{ color: C.brownLight }}>
+                    + Sessions 1–{prior} completed before logging started (set under &ldquo;Sessions already completed&rdquo;).
+                  </p>
+                )}
               </div>
             )}
           </div>

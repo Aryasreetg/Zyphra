@@ -36,7 +36,8 @@ create index if not exists students_created_at_idx on students (created_at desc)
 
 -- Sessions & extra fees
 alter table students add column if not exists sessions_included integer not null default 0;  -- sessions covered by fee_total
-alter table students add column if not exists extra_session_rate integer;                    -- ₹ per extra session; null = fee_total / sessions_included
+alter table students add column if not exists extra_session_rate integer;
+alter table students add column if not exists sessions_prior integer not null default 0;      -- sessions done before logging started                    -- ₹ per extra session; null = fee_total / sessions_included
 
 create table if not exists attendance (
   id serial primary key,

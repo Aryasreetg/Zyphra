@@ -116,6 +116,7 @@ const studentSchema = z
       .optional(),
     notes: z.string().max(5000).optional(),
     sessions_included: z.coerce.number().int("Whole number only").min(0, "Can't be negative").max(1000),
+    sessions_prior: z.coerce.number().int("Whole number only").min(0, "Can't be negative").max(1000),
     // Empty = use the default (total fee ÷ sessions)
     extra_session_rate: z
       .union([z.literal(""), z.coerce.number().int("Whole rupees only").min(0, "Can't be negative")])
@@ -139,6 +140,7 @@ function parseStudent(formData: FormData) {
     start_date: get("start_date"),
     notes: get("notes"),
     sessions_included: get("sessions_included") || 0,
+    sessions_prior: get("sessions_prior") || 0,
     extra_session_rate: get("extra_session_rate") ?? "",
   });
 }
@@ -177,6 +179,7 @@ export async function saveStudent(_prev: StudentFormState, formData: FormData): 
     start_date: s.start_date || null,
     notes: s.notes?.trim() || null,
     sessions_included: s.sessions_included,
+    sessions_prior: s.sessions_prior,
     extra_session_rate: s.extra_session_rate === "" || s.extra_session_rate === undefined ? null : s.extra_session_rate,
   };
 
@@ -208,6 +211,7 @@ export async function saveStudent(_prev: StudentFormState, formData: FormData): 
         fee_total = ${values.fee_total}, fee_paid = ${values.fee_paid},
         start_date = ${values.start_date}, notes = ${values.notes},
         sessions_included = ${values.sessions_included}, extra_session_rate = ${values.extra_session_rate},
+        sessions_prior = ${values.sessions_prior},
         updated_at = now()
       where id = ${id}
     `;
@@ -215,19 +219,20 @@ export async function saveStudent(_prev: StudentFormState, formData: FormData): 
     return { saved: true };
   }
 
-  if (values.fee_total > 0 && values.fee_paid > values.fee_total) {
+  const dueNew = feeSummary(values, 0).totalDue;
+  if (values.fee_total > 0 && values.fee_paid > dueNew) {
     return {
       error: "Please fix the highlighted fields.",
-      fieldErrors: { fee_paid: "Paid amount is more than the total fee" },
+      fieldErrors: { fee_paid: `Paid amount is more than the total due (₹${dueNew.toLocaleString("en-IN")})` },
       values: echo(),
     };
   }
   const [created] = await sql<{ id: number }[]>`
-    insert into students (name, email, phone, course_id, batch, status, fee_total, fee_paid, start_date, notes, sessions_included, extra_session_rate)
+    insert into students (name, email, phone, course_id, batch, status, fee_total, fee_paid, start_date, notes, sessions_included, extra_session_rate, sessions_prior)
     values (
       ${values.name}, ${values.email}, ${values.phone}, ${values.course_id}, ${values.batch},
       ${values.status}, ${values.fee_total}, ${values.fee_paid}, ${values.start_date}, ${values.notes},
-      ${values.sessions_included}, ${values.extra_session_rate}
+      ${values.sessions_included}, ${values.extra_session_rate}, ${values.sessions_prior}
     )
     returning id
   `;

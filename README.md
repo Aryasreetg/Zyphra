@@ -90,3 +90,20 @@ atmosphere only — never presented as Zyphraa students, staff or sessions. Each
   the About and Campus mentor sections use it automatically.
 - For the most authentic result, replace stock photos with your own (same file names): a live class, a
   student demo, a campus session.
+
+## SEO
+
+- **Metadata:** titles, descriptions, canonical URLs and social previews are set in `app/layout.tsx`
+  (site-wide, from `lib/site.ts`), each course page and the campus page.
+- **Share images:** generated automatically (`opengraph-image.tsx` files) — one per course with its name,
+  duration and price, so links shared on WhatsApp / LinkedIn / X look branded.
+- **Structured data (schema.org):** organisation, website, course list with INR prices, FAQ (homepage),
+  Course + breadcrumbs (course pages) and Service (campus). Helps Google show rich results.
+- **`/sitemap.xml`** lists every public page (new courses in `config/courses.ts` are added automatically);
+  **`/robots.txt`** keeps `/admin` out of search engines.
+- **Site URL:** taken from Netlify's `URL` variable (your custom domain once added). To override, set
+  `NEXT_PUBLIC_SITE_URL`.
+
+**After deploying:** add the site to [Google Search Console](https://search.google.com/search-console),
+verify it, and submit `https://<your-domain>/sitemap.xml`. Check structured data with
+[Google's Rich Results Test](https://search.google.com/test/rich-results).
