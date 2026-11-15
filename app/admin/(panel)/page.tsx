@@ -2,6 +2,7 @@ import Link from "next/link";
 import { requireAdmin } from "@/lib/admin-auth";
 import { db, type Enquiry } from "@/lib/db";
 import { coursesData, topicLabel } from "@/config/courses";
+import { feeSummary } from "@/lib/fees";
 import { C } from "@/lib/theme";
 import { Panel, PageTitle, StatCard, StatusBadge, formatDate, formatRupees } from "@/components/admin/ui";
 
@@ -10,7 +11,7 @@ export default async function AdminDashboard() {
   await requireAdmin();
   const sql = await db();
 
-  const [[enq], [stu], recent, byCourse] = await Promise.all([
+  const [[enq], [stu], recent, byCourse, feeRows, [week]] = await Promise.all([
     sql<{ total: number; new: number; week: number; converted: number }[]>`
       select
         count(*)::int as total,
@@ -31,9 +32,17 @@ export default async function AdminDashboard() {
       select course_id, count(*)::int as n from students
       where status in ('active', 'paused')
       group by course_id order by n desc`,
+    sql<{ status: string; fee_total: number; fee_paid: number; sessions_included: number; extra_session_rate: number | null; attended: number }[]>`
+      select s.status, s.fee_total, s.fee_paid, s.sessions_included, s.extra_session_rate, coalesce(a.n, 0)::int as attended
+      from students s
+      left join (select student_id, count(*) as n from attendance group by student_id) a on a.student_id = s.id`,
+    sql<{ n: number }[]>`select count(*)::int as n from attendance where session_date > current_date - 7`,
   ]);
 
-  const pending = Math.max(0, stu.fee_total - stu.fee_paid);
+  // Pending includes fees for extra sessions beyond each student's included sessions
+  const pending = feeRows
+    .filter((r) => r.status !== "dropped")
+    .reduce((sum, r) => sum + feeSummary(r, r.attended).balance, 0);
   const conversion = enq.total ? Math.round((enq.converted / enq.total) * 100) : 0;
   const maxCourse = Math.max(1, ...byCourse.map((c) => c.n));
 
@@ -44,7 +53,7 @@ export default async function AdminDashboard() {
       <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 mb-8">
         <StatCard label="New enquiries" value={enq.new} hint={`${enq.week} received this week`} accent={enq.new ? C.bronze : C.primary} />
         <StatCard label="Total enquiries" value={enq.total} hint={`${conversion}% converted to students`} />
-        <StatCard label="Active students" value={stu.active} hint={`${stu.total} total · ${stu.completed} completed`} />
+        <StatCard label="Active students" value={stu.active} hint={`${stu.total} total · ${week.n} sessions this week`} />
         <StatCard label="Fees collected" value={formatRupees(stu.fee_paid)} hint={`${formatRupees(pending)} pending`} />
       </div>
 

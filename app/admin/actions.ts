@@ -6,6 +6,7 @@ import { revalidatePath } from "next/cache";
 import { checkPassword, createAdminSession, destroyAdminSession, isAdminConfigured, requireAdmin } from "@/lib/admin-auth";
 import { db, ENQUIRY_STATUSES, STUDENT_STATUSES, type Enquiry } from "@/lib/db";
 import { coursesData } from "@/config/courses";
+import { feeSummary, minutesBetween } from "@/lib/fees";
 
 // ── Auth ────────────────────────────────────────────────────────────────────
 
@@ -114,10 +115,11 @@ const studentSchema = z
       .regex(/^(\d{4}-\d{2}-\d{2})?$/, "Invalid date")
       .optional(),
     notes: z.string().max(5000).optional(),
-  })
-  .refine((s) => s.fee_paid <= s.fee_total || s.fee_total === 0, {
-    message: "Paid amount is more than the total fee",
-    path: ["fee_paid"],
+    sessions_included: z.coerce.number().int("Whole number only").min(0, "Can't be negative").max(1000),
+    // Empty = use the default (total fee ÷ sessions)
+    extra_session_rate: z
+      .union([z.literal(""), z.coerce.number().int("Whole rupees only").min(0, "Can't be negative")])
+      .optional(),
   });
 
 function parseStudent(formData: FormData) {
@@ -136,6 +138,8 @@ function parseStudent(formData: FormData) {
     fee_paid: get("fee_paid") || 0,
     start_date: get("start_date"),
     notes: get("notes"),
+    sessions_included: get("sessions_included") || 0,
+    extra_session_rate: get("extra_session_rate") ?? "",
   });
 }
 
@@ -172,28 +176,58 @@ export async function saveStudent(_prev: StudentFormState, formData: FormData): 
     fee_paid: s.fee_paid,
     start_date: s.start_date || null,
     notes: s.notes?.trim() || null,
+    sessions_included: s.sessions_included,
+    extra_session_rate: s.extra_session_rate === "" || s.extra_session_rate === undefined ? null : s.extra_session_rate,
   };
 
   const sql = await db();
+  const echo = () => {
+    const out: Record<string, string> = {};
+    formData.forEach((val, key) => {
+      if (typeof val === "string") out[key] = val;
+    });
+    return out;
+  };
+
   if (idRaw) {
     const id = idSchema.parse(idRaw);
+    // Paid can't exceed what's due, including fees for extra sessions already attended
+    const [{ n: attended }] = await sql<{ n: number }[]>`select count(*)::int as n from attendance where student_id = ${id}`;
+    const due = feeSummary(values, attended).totalDue;
+    if (values.fee_total > 0 && values.fee_paid > due) {
+      return {
+        error: "Please fix the highlighted fields.",
+        fieldErrors: { fee_paid: `Paid amount is more than the total due (₹${due.toLocaleString("en-IN")})` },
+        values: echo(),
+      };
+    }
     await sql`
       update students set
         name = ${values.name}, email = ${values.email}, phone = ${values.phone},
         course_id = ${values.course_id}, batch = ${values.batch}, status = ${values.status},
         fee_total = ${values.fee_total}, fee_paid = ${values.fee_paid},
-        start_date = ${values.start_date}, notes = ${values.notes}, updated_at = now()
+        start_date = ${values.start_date}, notes = ${values.notes},
+        sessions_included = ${values.sessions_included}, extra_session_rate = ${values.extra_session_rate},
+        updated_at = now()
       where id = ${id}
     `;
     refresh();
     return { saved: true };
   }
 
+  if (values.fee_total > 0 && values.fee_paid > values.fee_total) {
+    return {
+      error: "Please fix the highlighted fields.",
+      fieldErrors: { fee_paid: "Paid amount is more than the total fee" },
+      values: echo(),
+    };
+  }
   const [created] = await sql<{ id: number }[]>`
-    insert into students (name, email, phone, course_id, batch, status, fee_total, fee_paid, start_date, notes)
+    insert into students (name, email, phone, course_id, batch, status, fee_total, fee_paid, start_date, notes, sessions_included, extra_session_rate)
     values (
       ${values.name}, ${values.email}, ${values.phone}, ${values.course_id}, ${values.batch},
-      ${values.status}, ${values.fee_total}, ${values.fee_paid}, ${values.start_date}, ${values.notes}
+      ${values.status}, ${values.fee_total}, ${values.fee_paid}, ${values.start_date}, ${values.notes},
+      ${values.sessions_included}, ${values.extra_session_rate}
     )
     returning id
   `;
@@ -208,4 +242,51 @@ export async function deleteStudent(formData: FormData) {
   await sql`delete from students where id = ${id}`;
   refresh();
   redirect("/admin/students");
+}
+
+// ── Attendance ──────────────────────────────────────────────────────────────
+
+export type AttendanceState = { error?: string; fieldErrors?: Record<string, string>; added?: number };
+
+const attendanceSchema = z
+  .object({
+    student_id: idSchema,
+    session_date: z.string().regex(/^\d{4}-\d{2}-\d{2}$/, "Choose a date"),
+    start_time: z.string().regex(/^\d{2}:\d{2}$/, "Enter a start time"),
+    end_time: z.string().regex(/^\d{2}:\d{2}$/, "Enter an end time"),
+    topic: z.string().trim().max(300).optional(),
+  })
+  .refine((a) => minutesBetween(a.start_time, a.end_time) > 0, {
+    message: "End time must be after the start time",
+    path: ["end_time"],
+  });
+
+export async function addAttendance(_prev: AttendanceState, formData: FormData): Promise<AttendanceState> {
+  await requireAdmin();
+  const parsed = attendanceSchema.safeParse({
+    student_id: formData.get("student_id"),
+    session_date: String(formData.get("session_date") ?? ""),
+    start_time: String(formData.get("start_time") ?? ""),
+    end_time: String(formData.get("end_time") ?? ""),
+    topic: String(formData.get("topic") ?? ""),
+  });
+  if (!parsed.success) return { error: "Please fix the highlighted fields.", fieldErrors: toFieldErrors(parsed.error) };
+
+  const a = parsed.data;
+  const sql = await db();
+  await sql`
+    insert into attendance (student_id, session_date, start_time, end_time, topic)
+    values (${a.student_id}, ${a.session_date}, ${a.start_time}, ${a.end_time}, ${a.topic || null})
+  `;
+  await sql`update students set updated_at = now() where id = ${a.student_id}`;
+  refresh();
+  return { added: Date.now() };
+}
+
+export async function deleteAttendance(formData: FormData) {
+  await requireAdmin();
+  const id = idSchema.parse(formData.get("id"));
+  const sql = await db();
+  await sql`delete from attendance where id = ${id}`;
+  refresh();
 }

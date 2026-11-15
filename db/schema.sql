@@ -33,3 +33,18 @@ create table if not exists students (
 
 create index if not exists enquiries_created_at_idx on enquiries (created_at desc);
 create index if not exists students_created_at_idx on students (created_at desc);
+
+-- Sessions & extra fees
+alter table students add column if not exists sessions_included integer not null default 0;  -- sessions covered by fee_total
+alter table students add column if not exists extra_session_rate integer;                    -- ₹ per extra session; null = fee_total / sessions_included
+
+create table if not exists attendance (
+  id serial primary key,
+  student_id integer not null references students(id) on delete cascade,
+  session_date date not null,
+  start_time time not null,
+  end_time time not null,
+  topic text,
+  created_at timestamptz not null default now()
+);
+create index if not exists attendance_student_idx on attendance (student_id, session_date desc);

@@ -6,6 +6,7 @@ import { saveStudent, type StudentFormState } from "@/app/admin/actions";
 import { coursesData } from "@/config/courses";
 import type { Student } from "@/lib/db";
 import { C } from "@/lib/theme";
+import { feeSummary, sessionRate } from "@/lib/fees";
 
 const STATUS_OPTIONS = [
   { value: "active", label: "Active" },
@@ -34,15 +35,28 @@ function priceOf(courseId: string) {
   return digits ? Number(digits) : null;
 }
 
-export default function StudentForm({ student }: { student?: Student }) {
+const rupees = (n: number) => `₹${n.toLocaleString("en-IN")}`;
+
+/** `attended` = sessions logged so far (edit page only), used for the live fee summary */
+export default function StudentForm({ student, attended = 0 }: { student?: Student; attended?: number }) {
   const [state, action, pending] = useActionState<StudentFormState, FormData>(saveStudent, {});
   const [feeTotal, setFeeTotal] = useState(String(student?.fee_total ?? ""));
   const [feePaid, setFeePaid] = useState(String(student?.fee_paid ?? ""));
+  const [sessions, setSessions] = useState(String(student?.sessions_included ?? ""));
+  const [rate, setRate] = useState(student?.extra_session_rate != null ? String(student.extra_session_rate) : "");
   const err = state.fieldErrors ?? {};
 
   const total = Number(feeTotal) || 0;
   const paid = Number(feePaid) || 0;
-  const pct = total > 0 ? Math.min(100, Math.round((paid / total) * 100)) : 0;
+  const feeInputs = {
+    fee_total: total,
+    fee_paid: paid,
+    sessions_included: Number(sessions) || 0,
+    extra_session_rate: rate === "" ? null : Number(rate) || 0,
+  };
+  const sum = feeSummary(feeInputs, attended);
+  const defaultRate = sessionRate({ ...feeInputs, extra_session_rate: null });
+  const pct = sum.pctPaid;
 
   // React clears uncontrolled inputs after an action, so on error refill them
   // from what was just submitted rather than the saved record.
@@ -95,20 +109,52 @@ export default function StudentForm({ student }: { student?: Student }) {
         </Field>
       </div>
 
+      {/* Sessions */}
+      <div className="rounded-2xl p-5" style={{ backgroundColor: C.cream, border: `1px solid ${C.border}` }}>
+        <p className="text-[10px] tracking-[0.2em] uppercase font-semibold mb-3" style={{ color: C.bronze }}>Sessions</p>
+        <div className="grid sm:grid-cols-2 gap-4">
+          <Field label="Sessions included in fee" error={err.sessions_included} hint="How many classes the course fee covers. Leave 0 to skip session tracking.">
+            <input name="sessions_included" type="number" min={0} step={1} value={sessions} onChange={(e) => setSessions(e.target.value)} placeholder="e.g. 24" className="field mt-1.5 font-normal" />
+          </Field>
+          <Field
+            label="Fee per extra session (₹)"
+            error={err.extra_session_rate}
+            hint={defaultRate > 0 ? `Leave empty to use the default: ${rupees(defaultRate)} (total fee ÷ sessions)` : "Leave empty to use total fee ÷ sessions"}
+          >
+            <input name="extra_session_rate" type="number" min={0} step={1} value={rate} onChange={(e) => setRate(e.target.value)} placeholder={defaultRate > 0 ? String(defaultRate) : "Default"} className="field mt-1.5 font-normal" />
+          </Field>
+        </div>
+      </div>
+
       {/* Fees */}
       <div className="rounded-2xl p-5" style={{ backgroundColor: C.cream, border: `1px solid ${C.border}` }}>
         <p className="text-[10px] tracking-[0.2em] uppercase font-semibold mb-3" style={{ color: C.bronze }}>Fees (₹)</p>
         <div className="grid sm:grid-cols-2 gap-4 mb-4">
-          <Field label="Total fee" error={err.fee_total}>
+          <Field label="Course fee (base)" error={err.fee_total}>
             <input name="fee_total" type="number" min={0} step={1} value={feeTotal} onChange={(e) => setFeeTotal(e.target.value)} className="field mt-1.5 font-normal" />
           </Field>
           <Field label="Amount paid" error={err.fee_paid}>
             <input name="fee_paid" type="number" min={0} step={1} value={feePaid} onChange={(e) => setFeePaid(e.target.value)} className="field mt-1.5 font-normal" />
           </Field>
         </div>
+        {student && sum.tracking && (
+          <dl className="grid grid-cols-2 sm:grid-cols-4 gap-3 mb-4 text-xs">
+            {[
+              { k: "Attended", v: `${attended} / ${feeInputs.sessions_included}` },
+              { k: "Extra sessions", v: String(sum.extraSessions) },
+              { k: "Extra fee", v: rupees(sum.extraFee) },
+              { k: "Total due", v: rupees(sum.totalDue) },
+            ].map((x) => (
+              <div key={x.k} className="rounded-lg px-3 py-2" style={{ backgroundColor: C.paper, border: `1px solid ${C.border}` }}>
+                <dt style={{ color: C.brownLight }}>{x.k}</dt>
+                <dd className="font-semibold mb-0" style={{ color: C.primary }}>{x.v}</dd>
+              </div>
+            ))}
+          </dl>
+        )}
         <div className="flex justify-between text-xs mb-1.5" style={{ color: C.brownMid }}>
           <span>{pct}% paid</span>
-          <span>Balance: ₹{Math.max(0, total - paid).toLocaleString("en-IN")}</span>
+          <span>Balance: {rupees(sum.balance)}{sum.extraFee > 0 ? " (incl. extra sessions)" : ""}</span>
         </div>
         <div className="h-2.5 rounded-full overflow-hidden" style={{ backgroundColor: C.sand }}>
           <div className="h-full rounded-full" style={{ width: `${pct}%`, backgroundColor: pct >= 100 ? C.primary : C.bronze, transition: "width 400ms ease" }} />
@@ -116,7 +162,7 @@ export default function StudentForm({ student }: { student?: Student }) {
       </div>
 
       <Field label="Notes">
-        <textarea name="notes" rows={4} defaultValue={v("notes", student?.notes ?? "")} placeholder="Progress, attendance, payment reminders…" className="field mt-1.5 font-normal" />
+        <textarea name="notes" rows={4} defaultValue={v("notes", student?.notes ?? "")} placeholder="Progress, payment reminders…" className="field mt-1.5 font-normal" />
       </Field>
 
       {state.error && (

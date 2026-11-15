@@ -2,6 +2,7 @@ import Link from "next/link";
 import { requireAdmin } from "@/lib/admin-auth";
 import { db, STUDENT_STATUSES, type Student } from "@/lib/db";
 import { coursesData } from "@/config/courses";
+import { feeSummary } from "@/lib/fees";
 import { C } from "@/lib/theme";
 import { Panel, PageTitle, StatusBadge, STATUS_STYLES, formatDate, formatRupees, btnPrimary, btnPrimaryStyle, btnOutline, btnOutlineStyle } from "@/components/admin/ui";
 
@@ -16,8 +17,10 @@ export default async function StudentsPage({ searchParams }: { searchParams: Sea
   const like = q ? `%${q}%` : null;
 
   const sql = await db();
-  const students = await sql<Student[]>`
-    select * from students
+  const students = await sql<(Student & { attended: number })[]>`
+    select s.*, coalesce(a.n, 0)::int as attended
+    from students s
+    left join (select student_id, count(*) as n from attendance group by student_id) a on a.student_id = s.id
     where (${status}::text is null or status = ${status}::text)
       and (${course}::text is null or course_id = ${course}::text)
       and (${like}::text is null
@@ -26,8 +29,9 @@ export default async function StudentsPage({ searchParams }: { searchParams: Sea
     order by created_at desc
     limit 500`;
 
+  // Totals include fees for extra sessions beyond what each student's fee covers
   const totals = students.reduce(
-    (a, s) => ({ fee: a.fee + (s.status === "dropped" ? 0 : s.fee_total), paid: a.paid + s.fee_paid }),
+    (a, s) => ({ fee: a.fee + (s.status === "dropped" ? 0 : feeSummary(s, s.attended).totalDue), paid: a.paid + s.fee_paid }),
     { fee: 0, paid: 0 }
   );
   const filtered = Boolean(status || course || q);
@@ -81,14 +85,15 @@ export default async function StudentsPage({ searchParams }: { searchParams: Sea
             <table className="w-full text-sm">
               <thead>
                 <tr style={{ backgroundColor: C.parchment }}>
-                  {["Student", "Course / Batch", "Status", "Fees", "Started", ""].map((h) => (
+                  {["Student", "Course / Batch", "Status", "Sessions", "Fees", "Started", ""].map((h) => (
                     <th key={h} className="text-left px-4 py-3 text-xs font-semibold tracking-wide whitespace-nowrap" style={{ color: C.primary }}>{h}</th>
                   ))}
                 </tr>
               </thead>
               <tbody>
                 {students.map((s) => {
-                  const pct = s.fee_total > 0 ? Math.min(100, Math.round((s.fee_paid / s.fee_total) * 100)) : 0;
+                  const f = feeSummary(s, s.attended);
+                  const pct = f.pctPaid;
                   return (
                     <tr key={s.id} className="admin-row border-t" style={{ borderColor: C.sand }}>
                       <td className="px-4 py-3">
@@ -100,10 +105,19 @@ export default async function StudentsPage({ searchParams }: { searchParams: Sea
                         {s.batch && <div className="text-[11px]" style={{ color: C.bronze }}>{s.batch}</div>}
                       </td>
                       <td className="px-4 py-3"><StatusBadge status={s.status} /></td>
+                      <td className="px-4 py-3 text-xs whitespace-nowrap" style={{ color: C.brown }}>
+                        {f.tracking ? `${s.attended} / ${s.sessions_included}` : s.attended || "—"}
+                        {f.extraSessions > 0 && (
+                          <div className="text-[11px] font-semibold" style={{ color: C.bronze }}>+{f.extraSessions} extra</div>
+                        )}
+                      </td>
                       <td className="px-4 py-3 min-w-36">
                         <div className="text-xs mb-1" style={{ color: C.brown }}>
-                          {formatRupees(s.fee_paid)} <span style={{ color: C.brownLight }}>/ {formatRupees(s.fee_total)}</span>
+                          {formatRupees(s.fee_paid)} <span style={{ color: C.brownLight }}>/ {formatRupees(f.totalDue)}</span>
                         </div>
+                        {f.extraFee > 0 && (
+                          <div className="text-[11px] mb-1" style={{ color: C.bronze }}>incl. {formatRupees(f.extraFee)} extra</div>
+                        )}
                         <div className="h-1.5 rounded-full overflow-hidden" style={{ backgroundColor: C.sand }}>
                           <div className="h-full rounded-full" style={{ width: `${pct}%`, backgroundColor: pct >= 100 ? C.primary : C.bronze }} />
                         </div>

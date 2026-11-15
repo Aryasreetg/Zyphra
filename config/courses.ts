@@ -36,7 +36,7 @@ export const coursesData: Course[] = [
     title: "Full Stack Developer Program",
     duration: "3 Months",
     originalPrice: "₹45,000",
-    offerPrice: "₹30,000",
+    offerPrice: "₹40,000",
     category: "flagship",
     badge: "Most Popular",
     description:

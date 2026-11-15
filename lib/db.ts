@@ -97,6 +97,19 @@ const SCHEMA = [
   )`,
   `create index if not exists enquiries_created_at_idx on enquiries (created_at desc)`,
   `create index if not exists students_created_at_idx on students (created_at desc)`,
+  // Sessions & extra fees (added later; safe to run on existing databases)
+  `alter table students add column if not exists sessions_included integer not null default 0`,
+  `alter table students add column if not exists extra_session_rate integer`,
+  `create table if not exists attendance (
+    id serial primary key,
+    student_id integer not null references students(id) on delete cascade,
+    session_date date not null,
+    start_time time not null,
+    end_time time not null,
+    topic text,
+    created_at timestamptz not null default now()
+  )`,
+  `create index if not exists attendance_student_idx on attendance (student_id, session_date desc)`,
 ];
 
 async function ensureSchema(sql: Sql) {
@@ -149,6 +162,21 @@ export interface Student {
   start_date: string | null;
   notes: string | null;
   enquiry_id: number | null;
+  /** Number of sessions the base fee covers (0 = not tracked) */
+  sessions_included: number;
+  /** Fee per extra session in ₹; null = use fee_total ÷ sessions_included */
+  extra_session_rate: number | null;
   created_at: Date;
   updated_at: Date;
+}
+
+/** One attended class. Times come back from Postgres as "HH:MM:SS" strings. */
+export interface Attendance {
+  id: number;
+  student_id: number;
+  session_date: string;
+  start_time: string;
+  end_time: string;
+  topic: string | null;
+  created_at: Date;
 }
