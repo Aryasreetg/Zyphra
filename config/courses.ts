@@ -61,7 +61,6 @@ export const coursesData: Course[] = [
     originalPrice: "₹45,000",
     offerPrice: "₹30,000",
     category: "foundation",
-    badge: "First Batch Offer",
     batchInfo: "First batch limited to 30 seats",
     description:
       "A foundation programme that takes you from Python fundamentals to building and deploying real machine learning models. Designed for beginners who want a structured, project-first route into AI/ML — no prior programming experience required.",
